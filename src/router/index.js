@@ -1225,6 +1225,15 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: "/client/clientDashboard/ClientNotification",
+      name: "ClientNotification",
+      component: () => import("@/views/ClientDashBoard/ClientNotification.vue"),
+      meta: {
+        requiresAuth: true,
+        requiresClient: true,
+      },
+    },
     // {
     //   path: "/client/clientDashboard/timesheet",
     //   name: "ClientTimesheet",

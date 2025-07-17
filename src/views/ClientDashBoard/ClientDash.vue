@@ -22,9 +22,7 @@
           <div class="row mt-3">
             <div class="col-md-12 d-flex gap-5">
               <div class="col-12 mb-3 pb-2">
-                <div
-                  class="card h-100 info-card sales-card border-left-blue py-4"
-                >
+                <div class="card h-100 info-card sales-card border-left-blue py-4">
                   <h5 class="card-title fw-bold d-flex fs-6 m-2 ps-3">
                     Client Current Week Overview
                   </h5>
@@ -41,9 +39,9 @@
                         /></a>
                       </div>
                       <div class="card-icon d-flex gap-3">
-                        <h4 class="text-muted">
+                        <h5 class="text-muted">
                           {{ getRecords.vacancies || 0 }}
-                        </h4>
+                        </h5>
                         <p class="card-text mb-0">Shifts</p>
                       </div>
                     </div>
@@ -61,9 +59,9 @@
                         /></a>
                       </div>
                       <div class="card-icon d-flex gap-3">
-                        <h4 class="text-muted">
+                        <h5 class="text-muted">
                           {{ getRecords.bookigs || 0 }}
-                        </h4>
+                        </h5>
                         <p class="card-text mb-0">Bookings</p>
                       </div>
                     </div>
@@ -81,7 +79,7 @@
                         /></a>
                       </div>
                       <div class="card-icon d-flex gap-3">
-                        <h4 class="text-muted">{{ getRecords.sites || 0 }}</h4>
+                        <h5 class="text-muted">{{ getRecords.sites || 0 }}</h5>
                         <p class="card-title text-capitalize">Total Sites</p>
                       </div>
                     </div>
@@ -98,9 +96,9 @@
                         /></a>
                       </div>
                       <div class="card-icon d-flex gap-3">
-                        <h4 class="text-muted">
+                        <h5 class="text-muted">
                           {{ getRecords.invoices || 0 }}
-                        </h4>
+                        </h5>
                         <p class="card-text mb-0">Invoices</p>
                       </div>
                     </div>
@@ -132,9 +130,7 @@
                     <span v-for="(date, index) in shift.dates" :key="index">
                       {{ date }}
 
-                      <template v-if="index !== shift.dates.length - 1"
-                        >,
-                      </template>
+                      <template v-if="index !== shift.dates.length - 1">, </template>
                     </span>
                   </td>
                   <td>{{ shift.site_shift }}</td>
@@ -178,15 +174,12 @@ export default {
     async fetchData() {
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/client_dashboard_home_api`,
-          {
-            headers: {
-              "content-type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${VITE_API_URL}/client_dashboard_home_api`, {
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         // this.getRecords = response.data;
         if (response.data && response.data.client_name) {
           this.getRecords = response.data;
@@ -330,6 +323,12 @@ table th {
 }
 table th.cw {
   transform: translateX(-34px);
+}
+.border-left-right {
+  width: 2px;
+  height: 50px;
+
+  border: 1px solid #f0f1f3;
 }
 #main {
   transition: all 0.3s;

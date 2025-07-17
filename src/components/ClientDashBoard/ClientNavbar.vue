@@ -105,11 +105,12 @@
         </ul>
         <ul class="navbar-nav m-0 mb-2 mb-lg-0 inline-nav ps-4">
           <li class="nav-item dropdown mt-2">
-            <a
-              class="nav-link nav-icon"
-              href="#"
-              data-bs-toggle="dropdown"
-              v-if="showNotificationIcon"
+            <router-link
+              class="nav-link"
+              aria-current="page"
+              to="/client/clientDashboard/ClientNotification"
+            
+             
               @click="markAllAsRead"
             >
               <i class="bi bi-bell pe-1"></i>
@@ -120,7 +121,7 @@
               >
                 {{ unread_count }}
               </span>
-            </a>
+          </router-link>
             <li class="me-4">
               <hr class="" />
             </li>
@@ -479,7 +480,7 @@ export default {
           }
         });
       }
-      this.blurActiveElement();
+ 
     },
     async fetchProfileImage() {
       const token = localStorage.getItem("token");
@@ -503,12 +504,12 @@ export default {
     },
   },
   mounted() {
-    this.fetchNotifications();
-    this.$store.dispatch("fetchUser");
+    // this.fetchNotifications();
+    // this.$store.dispatch("fetchUser");
     this.fetchProfileImage();
     const clientId = localStorage.getItem("c_unique");
-    const token = localStorage.getItem("token");
-    if (clientId && token) {
+    // const token = localStorage.getItem("token");
+    if (clientId) {
       this.clientLink = `/client/clientDashboard/${clientId}`;
     }
   },
@@ -552,9 +553,8 @@ ul.dropdown li a:hover,
 .nav-link:focus {
   background: #1b59f81a;
   color: #1b59f8;
-  width: 193px;
-  height: 38px;
-  padding-left: 5px;
+  width: auto;
+
   border-radius: 10px;
 }
 .sidebar-header h3 {

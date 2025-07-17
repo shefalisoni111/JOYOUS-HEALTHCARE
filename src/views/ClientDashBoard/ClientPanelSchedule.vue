@@ -1,19 +1,33 @@
 <template>
-  <div>
-    <ClientNavbar />
-    <div class="container-fluid p-0">
+  <div id="main" class="main d-flex">
+    <div
+      class=""
+      style="
+        background: #fff;
+
+        border-radius: 20px;
+      "
+    >
+      <ClientNavbar />
+    </div>
+    <div class="container-fluid p-0 ms-4">
       <div id="main">
-        <div class="pagetitle d-flex justify-content-between px-2 pt-3">
+        <div class="pagetitle d-flex justify-content-between pt-3">
           <div class="py-3">
             <ol class="breadcrumb mb-1">
-              <li class="breadcrumb-item active text-uppercase fs-6">
-                <router-link
-                  class="nav-link d-inline"
-                  aria-current="page"
-                  to="/home"
-                  >Dashboard</router-link
+              <li class="breadcrumb-item active">
+                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                  >Schedule</a
                 >
-                / <span class="color-fonts">Schedule</span>
+                <p>
+                  <router-link
+                    class="nav-link d-inline fw-bolder"
+                    style="color: #000000"
+                    aria-current="page"
+                    to="/staff-list"
+                    >Schedule</router-link
+                  >
+                </p>
               </li>
             </ol>
           </div>
@@ -29,160 +43,97 @@
             <div></div>
           </div>
           <div class="table-wrapper">
-            <div class="sidebar-container scheduleTable">
-              <div class="sidebar-button" :class="{ 'slide-left': isOpen }">
-                <div class="d-flex justify-content-between">
-                  <div>
-                    <button
-                      @click="toggleSidebar"
-                      class="btn btn-default border-0 pe-2 fs-5"
-                    >
-                      <i class="bi bi-funnel-fill"></i>
-                    </button>
-                    <span v-if="isOpen" class="text-danger fs-5 ps-2"
-                      >Filter
-                    </span>
-                  </div>
-                  <div>
-                    <i
-                      v-if="isOpen"
-                      class="bi bi-x float-end fs-2 d-flex cursor-pointer"
-                      @click="toggleSidebar"
-                    ></i>
-                  </div>
-                </div>
-
-                <div class="d-flex mt-2">
-                  <!-- <div>
-                    <button
-                      @click="toggleSidebar"
-                      class="btn btn-default border-0 ps-0 pe-2 fs-5 mt-2"
-                    >
-                      <i
-                        class="bi bi-suitcase-lg-fill"
-                        style="border-radius: 50%; background: #28c77d; padding: 10px"
-                      ></i>
-                    </button>
-                  </div> -->
-                  <div>
-                    <div class="filters" v-show="isOpen">
-                      <select
-                        v-model="job_id"
-                        for="selectJobTitle"
-                        class="form-select"
-                        @change="filterData(job_id, 'job')"
-                      >
-                        <option value="" selected disabled>Select Jobs</option>
-
-                        <option
-                          id="selectJobTitle"
-                          v-for="option in options"
-                          :key="option.id"
-                          :value="option.id"
+            <div class="row me-4">
+              <div class="col-12 pe-0">
+                <div>
+                  <div class="sidebar-button" :class="{ 'slide-left': isOpen }">
+                    <div class="d-flex justify-content-end">
+                      <div class="mb-2">
+                        <button
+                          @click="toggleSidebar"
+                          class="btn btn-danger text-nowrap btn-lg"
                         >
-                          {{ option.name }}
-                        </option>
-                      </select>
+                          <i class="bi bi-funnel-fill"></i> Show Filters
+                        </button>
+                        <!-- <span v-if="isOpen" class="text-danger fs-5 ps-2">Filter </span> -->
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div class="d-flex mt-2">
-                  <!-- <div>
-                    <button
-                      @click="toggleSidebar"
-                      class="btn btn-default border-0 ps-0 pe-2 fs-5 mt-2"
-                    >
-                      <i
-                        class="bi bi-building"
-                        style="border-radius: 50%; background: #ffeb3b; padding: 10px"
-                      ></i>
-                    </button>
-                  </div> -->
-                  <div>
-                    <div class="filters" v-show="isOpen">
-                      <select
-                        v-model="site_id"
-                        for="selectBusinessUnit"
-                        class="form-select"
-                        @change="onSiteChange"
-                      >
-                        <option value="" selected disabled>Select Site</option>
+                    <div
+                      v-show="isOpen"
+                      class="pe-3 pb-3 mt-2 filters"
+                      style="
+                        background: #fff;
 
-                        <option
-                          id="selectBusinessUnit"
-                          v-for="option in businessUnit"
-                          :key="option.id"
-                          :value="option.id"
-                        >
-                          {{ option.site_name }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="d-flex mt-2">
-                  <!-- <div>
-                    <button
-                      @click="toggleSidebar"
-                      class="btn btn-default border-0 ps-0 pe-2 fs-5 mt-2"
+                        display: flex;
+                        margin-bottom: 20px;
+                        justify-content: end;
+                        gap: 20px;
+                        border-radius: 14px;
+                      "
                     >
-                      <i
-                        class="bi bi-calendar3"
-                        style="border-radius: 50%; background: #ff6d3f; padding: 10px"
-                      ></i>
-                    </button>
-                  </div> -->
-                  <div>
-                    <div class="filters" v-show="isOpen">
-                      <select
-                        v-model="site_shift_id"
-                        for="selectShifts"
-                        class="form-select"
-                        @change="filterData(site_shift_id, 'shift')"
-                      >
-                        <option value="" selected disabled>All Shift</option>
+                      <div class="d-flex mt-2">
+                        <div>
+                          <div class="filters" v-show="isOpen">
+                            <select
+                              v-model="availability_id"
+                              for="SelectAvailability"
+                              class="form-select"
+                              @change="filterData($event.target.value, 'availablity')"
+                            >
+                              <option value="" selected for="SelectAvailability" disabled>
+                                All Availability
+                              </option>
+                              <option id="SelectAvailability" value="Late">Late</option>
+                              <option id="SelectAvailability" value="Night">Night</option>
+                              <option id="SelectAvailability" value="Unavailable">
+                                Unavailable
+                              </option>
+                              <option id="SelectAvailability" value="Early">Early</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="d-flex mt-2">
+                        <div>
+                          <div class="filters" v-show="isOpen">
+                            <select
+                              v-model="job_id"
+                              for="selectJobTitle"
+                              class="form-select"
+                              @change="filterData($event.target.value, 'job')"
+                            >
+                              <option value="" selected disabled>Select Jobs</option>
+                              <option
+                                id="selectJobTitle"
+                                v-for="option in options"
+                                :key="option.name"
+                                :value="option.name"
+                              >
+                                {{ option.name }}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
 
-                        <option
-                          v-for="option in shiftsTime"
-                          :key="option.id"
-                          :value="option.id"
-                          id="selectShifts"
-                        >
-                          {{
-                            option.shift_name
-                              ? option.shift_name.replace(/_/g, " ")
-                              : ""
-                          }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="d-flex mt-2">
-                  <!-- <div>
-                    <button
-                      @click="toggleSidebar"
-                      class="btn btn-default border-0 ps-0 pe-2 fs-5 mt-2"
-                    >
-                      <i
-                        class="bi bi-bell-fill"
-                        style="border-radius: 50%; background: #5388d5; padding: 10px"
-                      ></i>
-                    </button>
-                  </div> -->
-                  <div>
-                    <div class="filters" v-show="isOpen">
-                      <button
-                        :disabled="!isFilterSelected"
-                        @click="resetFilters"
-                        class="btn btn-secondary"
-                      >
-                        Reset <i class="bi bi-funnel-fill"></i>
-                      </button>
+                      <div>
+                        <div class="filters" v-show="isOpen">
+                          <button
+                            :disabled="!isFilterSelected"
+                            @click="resetFilters"
+                            class="btn btn-secondary text-nowrap btn-lg"
+                          >
+                            Reset
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
+            <div class="sidebar-container scheduleTable me-4">
+              <div class="sidebar-button" :class="{ 'slide-left': isOpen }"></div>
 
               <div class="sidebar-content" :class="{ 'slide-left': isOpen }">
                 <div class="table-container">
@@ -199,21 +150,14 @@
                                 @click="moveToPrevious"
                               ></i>
                               <i class="bi bi-calendar2-check-fill"></i>
-                              <i
-                                class="bi bi-caret-right-fill"
-                                @click="moveToNext"
-                              ></i>
+                              <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
                             </div>
                           </div>
                         </th>
 
                         <th>
                           <div class="calendar-grid">
-                            <div
-                              v-for="day in daysOfWeek"
-                              :key="day"
-                              class="day-header"
-                            >
+                            <div v-for="day in daysOfWeek" :key="day" class="day-header">
                               {{ day }}
                             </div>
                             <div
@@ -230,9 +174,7 @@
 
                     <tbody v-if="candidateList?.length > 0">
                       <tr class="sticky-header">
-                        <td
-                          style="border-right: 1px solid rgb(209, 208, 208)"
-                        ></td>
+                        <td style="border-right: 1px solid rgb(209, 208, 208)"></td>
                         <td>
                           <div
                             class="calendar-grid"
@@ -272,12 +214,9 @@
                                     'bg-primary': liIndex >= 3,
                                   }"
                                 >
-                                  <span
-                                    class="d-flex flex-column align-items-baseline"
-                                  >
+                                  <span class="d-flex flex-column align-items-baseline">
                                     <span class="text-capitalize"
-                                      >{{ vacancy.site }},
-                                      {{ vacancy.job_title }}</span
+                                      >{{ vacancy.site }}, {{ vacancy.job_title }}</span
                                     >
                                     <span>{{
                                       vacancy.site_shift.replace(/_/g, " ")
@@ -304,10 +243,7 @@
 
                           <span class="fs-6 text-muted fw-100"
                             ><br /><span
-                              style="
-                                background: rgb(209, 207, 207);
-                                padding: 3px;
-                              "
+                              style="background: rgb(209, 207, 207); padding: 3px"
                               >{{ staff.job }}</span
                             ></span
                           >
@@ -344,10 +280,7 @@
 
                                         <br />
                                         {{
-                                          assignStaff.site_shift_name?.replace(
-                                            /_/g,
-                                            " "
-                                          )
+                                          assignStaff.site_shift_name?.replace(/_/g, " ")
                                         }}, {{ assignStaff.job_name }} &nbsp;
 
                                         <br />
@@ -387,11 +320,7 @@
                     </tbody>
                     <tbody v-else>
                       <tr>
-                        <td
-                          colspan="7"
-                          class="text-danger text-center"
-                          v-if="!isLoading"
-                        >
+                        <td colspan="7" class="text-danger text-center" v-if="!isLoading">
                           {{ errorMessage || "Data Not found!" }}
                         </td>
                       </tr>
@@ -449,19 +378,13 @@
       </button>
       <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
-            >20 Records</a
-          >
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
         </li>
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
-            >50 Records</a
-          >
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
         </li>
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
-            >100 Records</a
-          >
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
         </li>
       </ul>
       &nbsp;&nbsp;
@@ -564,9 +487,7 @@ export default {
       return Math.ceil(this.candidateList.length / this.itemsPerPage);
     },
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find(
-        (option) => option.id === this.site_id
-      );
+      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
       return site_id ? site_id.site_name : "";
     },
     selectJobTitle() {
@@ -582,9 +503,7 @@ export default {
       return this.searchResults.slice(startIndex, endIndex);
     },
     selectShifts() {
-      const shifts_id = this.shiftsTime.find(
-        (option) => option.id === this.shifts_id
-      );
+      const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
       return shifts_id ? shifts_id.shift_name : "";
     },
     totalRecordsOnPage() {
@@ -645,9 +564,7 @@ export default {
       return this.formatDate(this.selectedDateRow[0]);
     },
     formattedEndDate() {
-      return this.formatDate(
-        this.selectedDateRow[this.selectedDateRow.length - 1]
-      );
+      return this.formatDate(this.selectedDateRow[this.selectedDateRow.length - 1]);
     },
     filteredAssignStaff() {
       return function (candidateId) {
@@ -818,13 +735,9 @@ export default {
     extractTimeRange(shift) {
       if (shift && shift.includes("Holiday")) {
         if (shift && shift.includes("Day Shift")) {
-          return shift
-            .replace("Holiday Day Shift", "Holiday Night Shift")
-            .split(" ")[3];
+          return shift.replace("Holiday Day Shift", "Holiday Night Shift").split(" ")[3];
         } else if (shift && shift.includes("Night Shift")) {
-          return shift
-            .replace("Holiday Night Shift", "Holiday Day Shift")
-            .split(" ")[3];
+          return shift.replace("Holiday Night Shift", "Holiday Day Shift").split(" ")[3];
         }
       } else if (shift && shift.includes("Day Shift")) {
         return shift.split(" ")[2];
@@ -882,9 +795,7 @@ export default {
     updateDateRange() {
       if (this.currentView === "weekly") {
         const weekStart = new Date(this.startDate);
-        weekStart.setDate(
-          this.startDate.getDate() - this.startDate.getDay() + 1
-        );
+        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
         this.startDate = weekStart;
 
         const weekEnd = new Date(this.startDate);
@@ -892,16 +803,8 @@ export default {
         this.endDate = weekEnd;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
-        this.startDate = new Date(
-          currentDate.getFullYear(),
-          currentDate.getMonth(),
-          1
-        );
-        this.endDate = new Date(
-          currentDate.getFullYear(),
-          currentDate.getMonth() + 1,
-          0
-        );
+        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
       }
 
       localStorage.setItem("startDate", this.startDate.toISOString());
@@ -1044,10 +947,7 @@ export default {
 
     getCandidateName() {
       if (this.selectedCandidate) {
-        if (
-          this.selectedCandidate.first_name &&
-          this.selectedCandidate.last_name
-        ) {
+        if (this.selectedCandidate.first_name && this.selectedCandidate.last_name) {
           return `${this.selectedCandidate.first_name} ${this.selectedCandidate.last_name}`;
         } else {
           return (
@@ -1071,9 +971,7 @@ export default {
         return;
       }
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/site_shift/${selectionSite}`
-        );
+        const response = await axios.get(`${VITE_API_URL}/site_shift/${selectionSite}`);
 
         this.shiftsTime =
           response.data.site_shift_data.map((shift) => ({
@@ -1254,8 +1152,8 @@ export default {
 
 <style scoped>
 #main {
-  background-color: #fdce5e17;
-  padding-top: 65px;
+  background-color: rgb(249 249 249);
+  height: 100vh;
 }
 
 .sidebar-container {
@@ -1274,7 +1172,6 @@ export default {
 }
 
 .sidebar-button {
-  padding: 10px;
   background: #faf8f4;
 }
 
