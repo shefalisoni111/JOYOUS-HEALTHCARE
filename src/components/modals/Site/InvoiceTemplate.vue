@@ -73,7 +73,7 @@ export default {
     },
     selectTemplate(template) {
       this.selectedTemplate = template;
-      console.log("Selected template:", template);
+      // console.log("Selected template:", template);
     },
   },
 };

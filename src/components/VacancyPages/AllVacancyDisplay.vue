@@ -574,7 +574,7 @@ export default {
             },
           }
         );
-        console.log(response.data.candidates_data);
+        // console.log(response.data.candidates_data);
       } catch (error) {
         // console.error("Error fetching vacancies:", error);
       }

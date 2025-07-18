@@ -509,7 +509,7 @@ export default {
         const response = await axios.get(`${VITE_API_URL}/sites`, { params });
 
         this.businessUnit = response.data.data;
-        console.log(this.businessUnit);
+        // console.log(this.businessUnit);
       } catch (error) {
         if (error.response?.status === 404) {
           // Handle 404
@@ -682,7 +682,7 @@ export default {
         // this.getSiteAllData = response.data.data;
         // this.totalRecords = response.data.total;
         // this.businessUnit = response.data.data;
-        console.log(this.businessUnit, this.client_id);
+        // console.log(this.businessUnit, this.client_id);
       } catch (error) {
         // console.error("Error fetching data:", error);
       } finally {

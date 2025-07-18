@@ -806,7 +806,7 @@ export default {
       const fullUrl = `${VITE_API_URL}${
         relativeUrl.startsWith("/") ? relativeUrl : "/" + relativeUrl
       }`;
-      console.log("Full Image URL:", fullUrl);
+      // console.log("Full Image URL:", fullUrl);
       return fullUrl;
     },
 
@@ -897,7 +897,7 @@ export default {
           status: "Approved",
           id: this.fetchSignedTimeSheet.booking_id,
         };
-        console.log(this.fetchSignedTimeSheet.booking_id);
+        // console.log(this.fetchSignedTimeSheet.booking_id);
 
         delete payload.total_hours;
         delete payload.total_cost;

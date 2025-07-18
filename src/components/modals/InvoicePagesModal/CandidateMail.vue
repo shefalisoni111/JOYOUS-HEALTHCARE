@@ -156,7 +156,7 @@ export default {
     //   this.signAttachments = event.target.files[0];
     // },
     async sendInvoice() {
-      console.log("Sending invoice with body:", this.body);
+      // console.log("Sending invoice with body:", this.body);
       const formData = new FormData();
       formData.append("staff_invoice[email][]", this.email);
       formData.append("staff_invoice[subject]", this.subject);

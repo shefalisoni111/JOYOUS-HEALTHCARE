@@ -912,7 +912,7 @@ export default {
           status: "Approved",
           id: this.fetchCustomTimeShetData.booking_id,
         };
-        console.log(this.fetchCustomTimeShetData.booking_id);
+        // console.log(this.fetchCustomTimeShetData.booking_id);
         delete payload.total_hours;
         delete payload.total_cost;
 

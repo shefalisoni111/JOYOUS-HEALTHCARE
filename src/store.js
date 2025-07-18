@@ -4,10 +4,7 @@ import axios from "axios";
 export default createStore({
   state: {
     channelSid: null,
-    agencyLogoUrl: new URL(
-      "",
-      "https://recpalapp.co.uk/api/rails/active_storage/blobs/redirect"
-    ).href,
+
     selectedAppliedItemId: null,
     selectedCandidateItemId: null,
     selectedAssignedItemId: null,

@@ -119,7 +119,7 @@ export default {
         const response = await axios.get(`${VITE_API_URL}/clients/${id}`);
 
         this.fetchClients = { ...this.fetchClients, ...response.data };
-        console.log(this.fetchClients);
+        // console.log(this.fetchClients);
         this.originalData = { ...this.fetchClients };
       } catch (error) {
         // console.error("Error fetching todo:", error);

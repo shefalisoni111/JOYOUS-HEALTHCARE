@@ -11,14 +11,16 @@
           border-radius: 20px;
         "
       >
-        <Navbar />
+        <Navbar :logo-url="filteredLogos?.logo_url" />
       </div>
       <div class="container-fluid px-5" style="background: rgb(82 74 74 / 6%)">
         <div class="col-10 pt-4 pt-3">
           <div class="col-12">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active">
-                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                <a
+                  class="nav-link d-inline fs-4 fw-bolder"
+                  style="color: #000000"
                   >App Settings</a
                 >
               </li>
@@ -27,11 +29,16 @@
         </div>
         <div class="d-flex gap-3 mt-4">
           <div class=""><Sidebar /></div>
-          <div class="col-3 p-3 bg-white borderight" style="border-radius: 30px">
+          <div
+            class="col-3 p-3 bg-white borderight"
+            style="border-radius: 30px"
+          >
             <div class="leftside">
               <div class="heading mb-3 position-relative">
                 <p class="bforeline"></p>
-                <p class="mb-0 text-capitalize fw-bold genSetting">agency Settings</p>
+                <p class="mb-0 text-capitalize fw-bold genSetting">
+                  agency Settings
+                </p>
                 <p class="afterline"></p>
               </div>
               <div>
@@ -66,12 +73,17 @@
                 <!-- End Page Title -->
               </div>
             </div>
-            <div class="col-12 bg-white" style="border-radius: 30px !important"></div>
+            <div
+              class="col-12 bg-white"
+              style="border-radius: 30px !important"
+            ></div>
             <div class="row">
               <div class="col-12">
                 <div class="">
                   <div class="col-5">
-                    <div class="d-flex justify-content-between align-items-center px-4">
+                    <div
+                      class="d-flex justify-content-between align-items-center px-4"
+                    >
                       <div class="position-relative">
                         <div>
                           <div v-if="filteredLogo">
@@ -102,7 +114,11 @@
 
                       <div class="d-flex flex-column text-capitalize">
                         <h5 class="mb-0">
-                          {{ getAgencyData.first_name + " " + getAgencyData.last_name }}
+                          {{
+                            getAgencyData.first_name +
+                            " " +
+                            getAgencyData.last_name
+                          }}
                         </h5>
                         <!-- <p class="mb-0">recruitment</p>
                       <span>Description</span> -->
@@ -167,7 +183,10 @@
                           aria-controls="contact"
                           aria-selected="false"
                         >
-                          <i class="bi bi-house-door-fill" style="color: #f9944b"></i>
+                          <i
+                            class="bi bi-house-door-fill"
+                            style="color: #f9944b"
+                          ></i>
                           Favicon & Logo
                         </button>
                       </li>
@@ -326,10 +345,11 @@
                         aria-labelledby="additional"
                       >
                         <p class="p-4">
-                          Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
-                          dolore quasi architecto magni aperiam totam. Quibusdam magnam
-                          eaque possimus ipsum. Necessitatibus molestias rerum architecto
-                          ipsam quis labore quod quo sint?
+                          Lorem ipsum dolor sit amet consectetur adipisicing
+                          elit. Eaque dolore quasi architecto magni aperiam
+                          totam. Quibusdam magnam eaque possimus ipsum.
+                          Necessitatibus molestias rerum architecto ipsam quis
+                          labore quod quo sint?
                         </p>
                       </div>
                       <div
@@ -378,7 +398,12 @@
                                     :id="'faviconInput-' + agencyLogoList.id"
                                     style="display: none"
                                     accept="image/*"
-                                    @change="previewAgencyLogo($event, agencyLogoList.id)"
+                                    @change="
+                                      previewAgencyLogo(
+                                        $event,
+                                        agencyLogoList.id
+                                      )
+                                    "
                                   />
                                   <label
                                     :for="'faviconInput-' + agencyLogoList.id"
@@ -386,7 +411,10 @@
                                     style="border-radius: 0px"
                                     >Upload
                                     {{
-                                      agencyLogoList.logo_type.replace(/_/g, " ")
+                                      agencyLogoList.logo_type.replace(
+                                        /_/g,
+                                        " "
+                                      )
                                     }}</label
                                   >
                                   <!-- <a
@@ -470,6 +498,11 @@ export default {
     filteredLogo() {
       return this.agencyLogoList.find((logo) => logo.id === 2);
     },
+    filteredLogos() {
+      return this.agencyLogoList.find(
+        (logo) => logo.logo_type === "agency_logo"
+      );
+    },
   },
   methods: {
     editagencyId(agencyId) {
@@ -508,18 +541,7 @@ export default {
               "Content-Type": "multipart/form-data",
             },
           })
-
           .then((response) => {
-            const agencyLogo = response.data.data.find(
-              (item) => item.logo_type === "agency_logo"
-            );
-            if (agencyLogo && agencyLogo.logo_url) {
-              const fullLogoUrl = `${import.meta.env.VITE_API_BASE}${
-                agencyLogo.logo_url
-              }`;
-              commit("setAgencyLogo", fullLogoUrl);
-            }
-            this.$store.dispatch("fetchAgencyLogo");
             const message = "Successfully Updated.";
             this.$refs.successAlert.showSuccess(message);
             if (response.status === 200) {
@@ -552,11 +574,14 @@ export default {
       }
 
       try {
-        const response = await axios.get(`${VITE_API_URL}/merchants/${merchantId}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/merchants/${merchantId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         this.getAgencyData = response.data.data;
       } catch (error) {
         if (error.response) {

@@ -203,7 +203,7 @@ export default {
       this.captchaError = false;
 
       // Submit logic goes here
-      console.log("Form submitted:", this.form);
+      // console.log("Form submitted:", this.form);
       alert("Support ticket submitted!");
       this.resetForm();
     },

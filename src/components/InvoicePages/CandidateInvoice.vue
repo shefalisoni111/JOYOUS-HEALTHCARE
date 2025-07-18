@@ -619,7 +619,7 @@ export default {
 
         if (response.status === 200) {
           data.data.invoice_lock = newLockValue;
-          console.log(data.data.invoice_lock);
+          // console.log(data.data.invoice_lock);
           const message = newLockValue
             ? "Staff Payroll locked successfully!"
             : "Staff Payroll unlocked successfully!";
