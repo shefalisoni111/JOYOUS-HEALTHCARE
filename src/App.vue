@@ -15,7 +15,7 @@ export default {
   },
   components: { Navbar },
   mounted() {
-    this.$store.dispatch("fetchAgencyLogo");
+    // this.$store.dispatch("fetchAgencyLogo");
   },
 };
 </script>

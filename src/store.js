@@ -4,7 +4,7 @@ import axios from "axios";
 export default createStore({
   state: {
     channelSid: null,
-
+    agencyLogo: null,
     selectedAppliedItemId: null,
     selectedCandidateItemId: null,
     selectedAssignedItemId: null,
@@ -29,7 +29,7 @@ export default createStore({
   },
   mutations: {
     setAgencyLogo(state, logoUrl) {
-      state.agencyLogoUrl = logoUrl;
+      state.agencyLogo = logoUrl;
     },
     setUser(state, user) {
       state.role = user.role;
@@ -122,32 +122,8 @@ export default createStore({
     },
   },
   actions: {
-    async fetchAgencyLogo({ commit }) {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/logos`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (response.data && Array.isArray(response.data.data)) {
-          const agencyLogo = response.data.data.find(
-            (item) => item.logo_type === "agency_logo"
-          );
-          if (agencyLogo && agencyLogo.logo_url) {
-            commit(
-              "setAgencyLogo",
-              `${import.meta.env.VITE_API_BASE}${agencyLogo.logo_url}`
-            );
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching agency logo:", error);
-      }
+    updateAgencyLogo({ commit }, logoUrl) {
+      commit("setAgencyLogo", logoUrl);
     },
     // setUser({ commit }, userData) {
     //   commit("setUser", userData);
@@ -230,9 +206,8 @@ export default createStore({
         if (!response.ok) {
           if (response.status === 404) {
           } else {
-            throw new Error(
-              `Failed to fetch note count (HTTP ${response.status})`
-            );
+            throw new Error();
+            // `Failed to fetch note count (HTTP ${response.status})`
           }
         } else {
           const data = await response.json();
@@ -248,7 +223,7 @@ export default createStore({
     userRole: (state) => state.role,
     // clientId: (state) => state.client_id,
     getInvoiceData: (state) => state.invoiceData,
-    getAgencyLogo: (state) => state.agencyLogoUrl,
+    getAgencyLogo: (state) => state.agencyLogo,
     getInvoiceStaffData: (state) => state.invoiceStaffData,
     getSelectedTemplate: (state) => state.selectedTemplate,
     getChannelSid: (state) => state.channelSid,

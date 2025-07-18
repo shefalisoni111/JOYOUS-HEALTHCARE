@@ -605,14 +605,23 @@ export default {
           },
         })
         .then((response) => {
-          // Handle the success response
-          // console.log("Agency Logo List:", response.data);
           this.agencyLogoList = response.data.data;
+
+          // Add full URL for each logo
           this.agencyLogoList.forEach((logo) => {
             if (logo.logo_url) {
               logo.logo_url = `${VITE_API_URL}${logo.logo_url}`;
             }
           });
+
+          // Find agency logo and store it globally
+          const agencyLogo = this.agencyLogoList.find(
+            (logo) => logo.logo_type === "agency_logo"
+          );
+
+          if (agencyLogo?.logo_url) {
+            this.$store.dispatch("updateAgencyLogo", agencyLogo.logo_url);
+          }
         })
         .catch((error) => {
           // Handle error

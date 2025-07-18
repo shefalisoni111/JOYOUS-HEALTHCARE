@@ -16,7 +16,7 @@
             href="/home"
             style="outline: none; box-shadow: none"
             ><img
-              :src="logoUrl"
+              :src="computedLogo"
               class="img-fluid"
               alt="RecPal"
               height="70"
@@ -388,6 +388,7 @@ import { mapMutations } from "vuex";
 import { nextTick } from "vue";
 import LoaderVue from "./Loader/Loader.vue";
 import fallbackLogo from "@/assets/logo.png";
+import { mapGetters } from "vuex";
 
 const axiosInstance = axios.create({
   headers: {
@@ -444,6 +445,10 @@ export default {
 
   components: {},
   computed: {
+    ...mapGetters(["getAgencyLogo"]),
+    computedLogo() {
+      return this.getAgencyLogo || fallbackLogo;
+    },
     isClientActive() {
       return ["/client-list", "/site/siteLists", "/rates_and_rules"].includes(
         this.$route.path
