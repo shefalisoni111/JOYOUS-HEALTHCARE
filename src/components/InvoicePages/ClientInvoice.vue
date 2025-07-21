@@ -275,8 +275,8 @@
                           <tr
                             v-for="(data, index) in getClientInvoiceDetail"
                             :key="index"
-                            @mouseenter="hoverRow = index"
-                            @mouseleave="hoverRow = null"
+                            @click="toggleActionMenu(index)"
+                            @mouseleave="selectedRow = null"
                           >
                             <td scope="col">{{ data.invoice_number }}</td>
                             <td scope="col">{{ data.client }}</td>
@@ -319,7 +319,7 @@
                                 <i class="bi bi-three-dots dot-icon"></i>
 
                                 <div
-                                  v-if="hoverRow === index"
+                                  v-if="selectedRow === index"
                                   class="action-menu"
                                 >
                                   <router-link
@@ -392,8 +392,8 @@
                           <tr
                             v-for="(data, index) in searchResults"
                             :key="index"
-                            @mouseenter="hoverRow = index"
-                            @mouseleave="hoverRow = null"
+                            @click="toggleActionMenu(index)"
+                            @mouseleave="selectedRow = null"
                           >
                             <td scope="col">{{ data.invoice_number }}</td>
                             <td scope="col">{{ data.client }}</td>
@@ -425,7 +425,7 @@
                                 <i class="bi bi-three-dots dot-icon"></i>
 
                                 <div
-                                  v-if="hoverRow === index"
+                                  v-if="selectedRow === index"
                                   class="action-menu"
                                 >
                                   <router-link
@@ -646,7 +646,7 @@ export default {
       searchResults: [],
       showFilters: false,
       totalPages: 1,
-      hoverRow: null,
+      selectedRow: null,
       currentPage: 1,
       itemsPerPage: 10,
       totalCount: 0,
@@ -707,6 +707,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     resetFilters() {
       this.site_id = "";
 

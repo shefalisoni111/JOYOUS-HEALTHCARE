@@ -273,8 +273,8 @@
                     <tr
                       v-for="(data, index) in paginateGetCustomTimeSheet"
                       :key="index"
-                      @mouseenter="hoverRow = index"
-                      @mouseleave="hoverRow = null"
+                      @click="toggleActionMenu(index)"
+                      @mouseleave="selectedRow = null"
                     >
                       <td>
                         <input
@@ -374,7 +374,7 @@
                         <div class="action-wrapper">
                           <i class="bi bi-three-dots dot-icon"></i>
 
-                          <div v-if="hoverRow === index" class="action-menu">
+                          <div v-if="selectedRow === index" class="action-menu">
                             <button
                               type="button"
                               class="btn btn-default text-nowrap border-0 shadow-soft"
@@ -747,7 +747,7 @@ export default {
       daysOfWeek: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
       startDate: new Date(),
       endDate: new Date(),
-      hoverRow: null,
+      selectedRow: null,
       getCustomTimeSheet: [],
       currentDate: new Date(),
       notes: "",
@@ -855,6 +855,9 @@ export default {
   },
 
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     async ApproveMethod(id) {
       const token = localStorage.getItem("token");
       try {

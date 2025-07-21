@@ -192,8 +192,8 @@
                           <tr
                             v-for="(data, index) in getStaffInvoiceDetail"
                             :key="index"
-                            @mouseenter="hoverRow = index"
-                            @mouseleave="hoverRow = null"
+                            @click="toggleActionMenu(index)"
+                            @mouseleave="selectedRow = null"
                           >
                             <td scope="col">#{{ index + 1 }}</td>
                             <td scope="col">{{ data.staff }}</td>
@@ -235,7 +235,7 @@
                                 <i class="bi bi-three-dots dot-icon"></i>
 
                                 <div
-                                  v-if="hoverRow === index"
+                                  v-if="selectedRow === index"
                                   class="action-menu"
                                 >
                                   <router-link
@@ -292,8 +292,8 @@
                           <tr
                             v-for="(data, index) in searchResults"
                             :key="index"
-                            @mouseenter="hoverRow = index"
-                            @mouseleave="hoverRow = null"
+                            @click="toggleActionMenu(index)"
+                            @mouseleave="selectedRow = null"
                           >
                             <td scope="col">#{{ data.id }}</td>
                             <td scope="col">{{ data.staff }}</td>
@@ -337,7 +337,7 @@
                                 <i class="bi bi-three-dots dot-icon"></i>
 
                                 <div
-                                  v-if="hoverRow === index"
+                                  v-if="selectedRow === index"
                                   class="action-menu"
                                 >
                                   <router-link
@@ -556,7 +556,7 @@ export default {
       searchResults: [],
       isLoading: false,
       errorMessage: "",
-      hoverRow: null,
+      selectedRow: null,
       totalPages: 1,
       currentPage: 1,
       itemsPerPage: 10,
@@ -598,6 +598,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     async toggleInvoiceLock(data) {
       const newLockValue = !data.invoice_lock;
 

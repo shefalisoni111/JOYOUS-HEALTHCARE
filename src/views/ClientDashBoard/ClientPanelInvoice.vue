@@ -64,15 +64,22 @@
                         }}
                       </span>
                       <span
-                        v-else-if="currentView === 'monthly' && startDate && endDate"
+                        v-else-if="
+                          currentView === 'monthly' && startDate && endDate
+                        "
                         class="fw-bold"
                       >
-                        {{ formatDate(startDate) + " to " + formatDate(endDate) }}
+                        {{
+                          formatDate(startDate) + " to " + formatDate(endDate)
+                        }}
                       </span>
                     </div>
                     &nbsp;&nbsp;
                     <div class="d-flex align-items-center fs-4">
-                      <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
+                      <i
+                        class="bi bi-caret-left-fill"
+                        @click="moveToPrevious"
+                      ></i>
                       <i class="bi bi-calendar2-check-fill"></i>
                       <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
                     </div>
@@ -99,7 +106,10 @@
               <div class="d-flex gap-2 mb-3 justify-content-between">
                 <div class="d-flex gap-2">
                   <div>
-                    <form @submit.prevent="search" class="w-md-auto position-relative">
+                    <form
+                      @submit.prevent="search"
+                      class="w-md-auto position-relative"
+                    >
                       <input
                         class="form-control form-control-lg mr-sm-2 bg-white"
                         type="search"
@@ -120,7 +130,10 @@
                     </form>
                   </div>
                   <div class="custom-select-wrapper">
-                    <select aria-label="Default select example" class="form-select">
+                    <select
+                      aria-label="Default select example"
+                      class="form-select"
+                    >
                       <option selected>Status</option>
                       <option value="1">One</option>
                       <option value="2">Two</option>
@@ -178,7 +191,12 @@
                     </tr>
                   </thead>
                   <tbody v-if="getBookingData?.length > 0">
-                    <tr v-for="data in getBookingData" :key="data.id">
+                    <tr
+                      v-for="(data, index) in getBookingData"
+                      :key="index"
+                      @click="toggleActionMenu(index)"
+                      @mouseleave="selectedRow = null"
+                    >
                       <td>{{ data.number }}</td>
                       <td>{{ data.site }}</td>
                       <td>{{ data.start_date }}</td>
@@ -195,14 +213,25 @@
                         <!-- <button class="btn btn-success" @click="viewInvoice(data.id)">
                             <i class="bi bi-eye"></i>
                           </button> -->
-                        <router-link
-                          :to="{
-                            name: 'ClientPanelInvoiceView',
-                            params: { id: data.id },
-                          }"
-                          class="text-success"
-                          ><i class="bi bi-eye"></i
-                        ></router-link>
+
+                        <div class="action-wrapper position-relative">
+                          <i class="bi bi-three-dots dot-icon"></i>
+
+                          <div
+                            v-if="selectedRow === index"
+                            class="action-menu position-absolute"
+                            style="top: 17px; left: 13px"
+                          >
+                            <router-link
+                              :to="{
+                                name: 'ClientPanelInvoiceView',
+                                params: { id: data.id },
+                              }"
+                              class="text-success"
+                              ><i class="bi bi-eye"></i> View</router-link
+                            >
+                          </div>
+                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -211,7 +240,9 @@
                     <tr>
                       <td colspan="9" class="text-danger text-center">
                         {{
-                          errorMessageBooking || errorMessageFilter || "No InvoicE found."
+                          errorMessageBooking ||
+                          errorMessageFilter ||
+                          "No InvoicE found."
                         }}
                       </td>
                     </tr>
@@ -224,7 +255,11 @@
       </div>
     </div>
   </div>
-  <div class="mx-3" style="text-align: right" v-if="getBookingData?.length >= 10">
+  <div
+    class="mx-3"
+    style="text-align: right"
+    v-if="getBookingData?.length >= 10"
+  >
     <!-- <button class="btn btn-outline-dark btn-sm">
         {{ getClientDetail.length }} Records Per Page
       </button> -->
@@ -239,13 +274,19 @@
     </button>
     <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
       <li>
-        <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+        <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+          >20 Records</a
+        >
       </li>
       <li>
-        <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+        <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+          >50 Records</a
+        >
       </li>
       <li>
-        <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+        <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+          >100 Records</a
+        >
       </li>
     </ul>
     &nbsp;&nbsp;
@@ -301,6 +342,7 @@ export default {
       debounceTimeout: null,
       searchResults: [],
       site_id: "",
+      selectedRow: null,
       businessUnit: [],
       candidateLists: [],
       id: "",
@@ -356,7 +398,9 @@ export default {
     },
 
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.site_name : "";
     },
 
@@ -387,6 +431,9 @@ export default {
     // },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     // handleDeleteBooking() {
     //   this.$refs.getDeleteBookingData();
     // },
@@ -411,11 +458,14 @@ export default {
       try {
         this.searchResults = [];
 
-        const response = await axiosInstance.get(`${VITE_API_URL}/search_candidate`, {
-          params: {
-            candidate_query: this.searchQuery,
-          },
-        });
+        const response = await axiosInstance.get(
+          `${VITE_API_URL}/search_candidate`,
+          {
+            params: {
+              candidate_query: this.searchQuery,
+            },
+          }
+        );
 
         if (
           response.status === 200 &&
@@ -430,7 +480,11 @@ export default {
           this.errorMessage = "";
         }
       } catch (error) {
-        if (error.response && error.response.data && error.response.data.message) {
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) {
           this.errorMessage = error.response.data.message;
         } else {
           this.errorMessage = "No Staff found for the specified criteria";
@@ -454,7 +508,9 @@ export default {
       // this.makeFilterAPICall(filters.filterType, filters.filterValue);
     },
     getCandidateName(id) {
-      const candidate = this.candidateLists.find((candidate) => candidate.id === id);
+      const candidate = this.candidateLists.find(
+        (candidate) => candidate.id === id
+      );
       return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
     },
     // async makeFilterAPICall(filterType, filterValue) {
@@ -645,7 +701,9 @@ export default {
     updateDateRange() {
       if (this.currentView === "weekly") {
         const weekStart = new Date(this.startDate);
-        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
+        weekStart.setDate(
+          this.startDate.getDate() - this.startDate.getDay() + 1
+        );
         this.startDate = weekStart;
 
         const weekEnd = new Date(this.startDate);
@@ -653,8 +711,16 @@ export default {
         this.endDate = weekEnd;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
-        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        this.startDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          1
+        );
+        this.endDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          0
+        );
       }
 
       localStorage.setItem("startDate", this.startDate.toISOString());
@@ -720,9 +786,11 @@ export default {
         this.getBookingData = response.data.data;
 
         if (this.getBookingData.length === 0) {
-          this.errorMessageBooking = "No Invoice found for the specified Criteria.";
+          this.errorMessageBooking =
+            "No Invoice found for the specified Criteria.";
         } else {
-          this.errorMessageBooking = "No Invoice found for the specified Criteria.";
+          this.errorMessageBooking =
+            "No Invoice found for the specified Criteria.";
         }
       } catch (error) {
         // Handle error

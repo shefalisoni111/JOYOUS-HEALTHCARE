@@ -55,7 +55,11 @@
                 </select>
                 <select v-model="job_id" id="selectedOptionText">
                   <option value="">Job Title</option>
-                  <option v-for="option in options" :key="option.id" :value="option.id">
+                  <option
+                    v-for="option in options"
+                    :key="option.id"
+                    :value="option.id"
+                  >
                     {{ option.name }}
                   </option>
                 </select>
@@ -85,11 +89,15 @@
                   <div class="row g-0">
                     <div class="d-flex">
                       <div class="d-flex align-items-center">
-                        <i class="bi bi-check-circle-fill text-success fs-1"></i>
+                        <i
+                          class="bi bi-check-circle-fill text-success fs-1"
+                        ></i>
                       </div>
                       <div class="">
                         <div class="card-body">
-                          <h5 class="card-title fw-bold">#Approved Timesheets</h5>
+                          <h5 class="card-title fw-bold">
+                            #Approved Timesheets
+                          </h5>
                         </div>
                       </div>
                     </div>
@@ -105,7 +113,9 @@
                       </div>
                       <div class="">
                         <div class="card-body">
-                          <h5 class="card-title fw-bold">#Invoiced Timesheets</h5>
+                          <h5 class="card-title fw-bold">
+                            #Invoiced Timesheets
+                          </h5>
                         </div>
                       </div>
                     </div>
@@ -117,11 +127,15 @@
                   <div class="row g-0">
                     <div class="d-flex">
                       <div class="d-flex align-items-center">
-                        <i class="bi bi-exclamation-triangle-fill fs-1 text-warning"></i>
+                        <i
+                          class="bi bi-exclamation-triangle-fill fs-1 text-warning"
+                        ></i>
                       </div>
                       <div class="">
                         <div class="card-body">
-                          <h5 class="card-title fw-bold">#Pending Timesheets</h5>
+                          <h5 class="card-title fw-bold">
+                            #Pending Timesheets
+                          </h5>
                         </div>
                       </div>
                     </div>
@@ -156,7 +170,9 @@
                   <h3 class="d-flex align-items-center mb-0">
                     Edit Assigned Shift -BOOKING CODE
                   </h3>
-                  <span class="close text-white" @click="closeModal">&times;</span>
+                  <span class="close text-white" @click="closeModal"
+                    >&times;</span
+                  >
                 </div>
 
                 <h4 class="text-capitalize">{{ getCandidateName() }}</h4>
@@ -175,10 +191,18 @@
                   <th rowspan="3">Shift</th>
                   <th>
                     <div class="calendar-grid">
-                      <div v-for="day in daysOfWeek" :key="day" class="day-header">
+                      <div
+                        v-for="day in daysOfWeek"
+                        :key="day"
+                        class="day-header"
+                      >
                         {{ day }}
                       </div>
-                      <div v-for="date in selectedDateRow" :key="date" class="day-header">
+                      <div
+                        v-for="date in selectedDateRow"
+                        :key="date"
+                        class="day-header"
+                      >
                         {{ formatDate(date) }}
 
                         <div
@@ -187,7 +211,10 @@
                           <tr>
                             <th
                               class="additional-header"
-                              style="border-right: 1px solid #e1d4d4; padding-right: 5px"
+                              style="
+                                border-right: 1px solid #e1d4d4;
+                                padding-right: 5px;
+                              "
                             >
                               Start
                             </th>
@@ -201,7 +228,10 @@
                             >
                               End
                             </th>
-                            <th class="additional-header" style="padding-left: 5px">
+                            <th
+                              class="additional-header"
+                              style="padding-left: 5px"
+                            >
                               Total
                             </th>
                           </tr>
@@ -305,7 +335,9 @@ export default {
       return this.formatDate(this.selectedDateRow[0]);
     },
     formattedEndDate() {
-      return this.formatDate(this.selectedDateRow[this.selectedDateRow.length - 1]);
+      return this.formatDate(
+        this.selectedDateRow[this.selectedDateRow.length - 1]
+      );
     },
     selectedDateRow() {
       const selectedDate = new Date(this.startDate);
@@ -339,6 +371,9 @@ export default {
   watch: {},
 
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     moveToPrevious() {
       if (this.currentView === "weekly") {
         this.startDate.setDate(this.startDate.getDate() - 7);
@@ -373,7 +408,9 @@ export default {
     updateDateRange() {
       if (this.currentView === "weekly") {
         const weekStart = new Date(this.startDate);
-        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
+        weekStart.setDate(
+          this.startDate.getDate() - this.startDate.getDay() + 1
+        );
         this.startDate = weekStart;
 
         const weekEnd = new Date(this.startDate);
@@ -381,8 +418,16 @@ export default {
         this.endDate = weekEnd;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
-        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        this.startDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          1
+        );
+        this.endDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          0
+        );
       }
 
       localStorage.setItem("startDate", this.startDate.toISOString());
@@ -447,7 +492,10 @@ export default {
           candidate_id: candidateId,
         };
 
-        const response = await axios.post(`${VITE_API_URL}/assign_vacancy`, payload);
+        const response = await axios.post(
+          `${VITE_API_URL}/assign_vacancy`,
+          payload
+        );
       } catch (error) {
       } finally {
         this.vacancyBeingDragged = null;
@@ -463,7 +511,9 @@ export default {
       return selectedDate.toISOString().split("T")[0];
     },
     getCandidateName() {
-      return this.selectedCandidate ? this.selectedCandidate.first_name : "Default Name";
+      return this.selectedCandidate
+        ? this.selectedCandidate.first_name
+        : "Default Name";
     },
 
     getWeekRange(date) {

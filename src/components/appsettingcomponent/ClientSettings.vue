@@ -9,14 +9,19 @@
           <div class="leftside">
             <div class="heading mb-1 position-relative">
               <p class="bforeline"></p>
-              <p class="mb-0 text-uppercase fw-bold genSetting">ClientSettings</p>
+              <p class="mb-0 text-uppercase fw-bold genSetting">
+                ClientSettings
+              </p>
               <p class="afterline"></p>
             </div>
             <div>
               <ul class="list-unstyled text-capitalize generalsetting px-3">
                 <li class="list-items d-flex">
                   <i class="bi bi-person rounded-circle"></i>
-                  <router-link to="basicClientSettings" class="text-decoration-none">
+                  <router-link
+                    to="basicClientSettings"
+                    class="text-decoration-none"
+                  >
                     <div class="job ms-2">
                       <h6 class="mb-0 text-capitalize clr">basic permission</h6>
                       <p class="text-capitalize mb-0">Modify</p>
@@ -25,9 +30,14 @@
                 </li>
                 <li class="list-items d-flex mt-3">
                   <i class="bi bi-person rounded-circle"></i>
-                  <router-link to="emailNotification" class="text-decoration-none">
+                  <router-link
+                    to="emailNotification"
+                    class="text-decoration-none"
+                  >
                     <div class="job ms-2">
-                      <h6 class="mb-0 text-capitalize clr">email notification</h6>
+                      <h6 class="mb-0 text-capitalize clr">
+                        email notification
+                      </h6>
                       <p class="text-capitalize mb-0">Modify email templates</p>
                     </div>
                   </router-link>

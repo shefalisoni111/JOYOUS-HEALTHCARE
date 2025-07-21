@@ -126,7 +126,10 @@
                                 <li class="d-flex justify-content-between">
                                   <span>Deby</span>
                                   <span
-                                    ><i class="bi bi-ban"></i><i class="bi bi-trash border-0 border-0"></i
+                                    ><i class="bi bi-ban"></i
+                                    ><i
+                                      class="bi bi-trash border-0 border-0"
+                                    ></i
                                   ></span>
                                 </li>
                               </ul>
@@ -138,7 +141,10 @@
                                 <li class="d-flex justify-content-between">
                                   <span>ID</span>
                                   <span
-                                    ><i class="bi bi-ban"></i><i class="bi bi-trash border-0 border-0"></i
+                                    ><i class="bi bi-ban"></i
+                                    ><i
+                                      class="bi bi-trash border-0 border-0"
+                                    ></i
                                   ></span>
                                 </li>
                               </ul>
@@ -150,7 +156,10 @@
                                 <li class="d-flex justify-content-between">
                                   <span>Address Proof</span>
                                   <span
-                                    ><i class="bi bi-ban"></i><i class="bi bi-trash border-0 border-0"></i
+                                    ><i class="bi bi-ban"></i
+                                    ><i
+                                      class="bi bi-trash border-0 border-0"
+                                    ></i
                                   ></span>
                                 </li>
                               </ul>
@@ -162,7 +171,10 @@
                                 <li class="d-flex justify-content-between">
                                   <span>Photo ID</span>
                                   <span
-                                    ><i class="bi bi-ban"></i><i class="bi bi-trash border-0 border-0"></i
+                                    ><i class="bi bi-ban"></i
+                                    ><i
+                                      class="bi bi-trash border-0 border-0"
+                                    ></i
                                   ></span>
                                 </li>
                               </ul>
@@ -230,6 +242,9 @@ export default {
   //   );
   // },
   // methods: {
+  toggleActionMenu(index) {
+    this.selectedRow = this.selectedRow === index ? null : index;
+  },
   //   showPopup() {
   //     myModal.show();
   //   },

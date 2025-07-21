@@ -21,8 +21,8 @@
           <tr
             v-for="(data, index) in getSiteActiveData"
             :key="index"
-            @mouseenter="hoverRow = index"
-            @mouseleave="hoverRow = null"
+            @click="toggleActionMenu(index)"
+            @mouseleave="selectedRow = null"
           >
             <!-- <td>{{ data.id }}</td> -->
             <td v-text="data.refer_code"></td>
@@ -75,7 +75,7 @@
               <div class="action-wrapper">
                 <i class="bi bi-three-dots dot-icon"></i>
 
-                <div v-if="hoverRow === index" class="action-menu">
+                <div v-if="selectedRow === index" class="action-menu">
                   <button
                     type="button"
                     class="btn text-nowrap border-0"
@@ -203,7 +203,7 @@ export default {
       getSiteActiveData: [],
       selectedsiteId: 0,
       isLoading: false,
-      hoverRow: null,
+      selectedRow: null,
       errorMessageFilter: "",
       currentPage: 1,
       totalPages: 1,
@@ -222,6 +222,9 @@ export default {
     // },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     changePage(page) {
       this.currentPage = page;
       this.getSiteActiveMethod();

@@ -188,7 +188,7 @@
                 width="40"
                 loading="eager"
               />
-              {{ getAdminData.client_name }}
+             &nbsp; {{ getAdminData.client_name }}
             </a>
 
             <ul
@@ -344,6 +344,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     toggleSidebar() {
       this.isSidebarVisible = !this.isSidebarVisible;
       const sidebar = document.getElementById("sidebar");

@@ -135,6 +135,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     prevMonth() {
       const newDate = new Date(this.currentDate);
       newDate.setMonth(newDate.getMonth() - 1);

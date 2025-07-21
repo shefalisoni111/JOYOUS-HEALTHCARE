@@ -137,8 +137,8 @@
                         <tr
                           v-for="(data, index) in paginateCandidates"
                           :key="index"
-                          @mouseenter="hoverRow = index"
-                          @mouseleave="hoverRow = null"
+                          @click="toggleActionMenu(index)"
+                          @mouseleave="selectedRow = null"
                         >
                           <td>
                             <div class="form-check">
@@ -254,7 +254,7 @@
                               <i class="bi bi-three-dots dot-icon"></i>
 
                               <div
-                                v-if="hoverRow === index"
+                                v-if="selectedRow === index"
                                 class="action-menu"
                               >
                                 <button
@@ -333,8 +333,8 @@
                         <tr
                           v-for="(data, index) in paginateSearchResults"
                           :key="index"
-                          @mouseenter="hoverRow = index"
-                          @mouseleave="hoverRow = null"
+                          @click="toggleActionMenu(index)"
+                          @mouseleave="selectedRow = null"
                         >
                           <td>
                             <div class="form-check">
@@ -450,7 +450,7 @@
                               <i class="bi bi-three-dots dot-icon"></i>
 
                               <div
-                                v-if="hoverRow === index"
+                                v-if="selectedRow === index"
                                 class="action-menu"
                               >
                                 <button
@@ -662,7 +662,7 @@ export default {
       site_id: "",
       businessUnit: [],
       candidateLists: [],
-      hoverRow: null,
+      selectedRow: null,
       isLoading: false,
       id: "",
       selectedCandidate: "",
@@ -747,6 +747,9 @@ export default {
   watch: {},
 
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     async ApproveMethod(id) {
       const token = localStorage.getItem("token");
       try {

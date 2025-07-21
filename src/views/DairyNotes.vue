@@ -116,8 +116,8 @@
                   <tr
                     v-for="(note, index) in notes"
                     :key="index"
-                    @mouseenter="hoverRow = index"
-                    @mouseleave="hoverRow = null"
+                    @click="toggleActionMenu(index)"
+                    @mouseleave="selectedRow = null"
                   >
                     <td>
                       <div v-if="note.isEditing">
@@ -168,8 +168,8 @@
                         <div
                           v-else
                           class="action-wrapper position-relative"
-                          @mouseenter="hoverRow = note.id"
-                          @mouseleave="hoverRow = null"
+                          @mouseenter="selectedRow = note.id"
+                          @mouseleave="selectedRow = null"
                         >
                           <i
                             class="bi bi-three-dots dot-icon"
@@ -177,7 +177,7 @@
                           ></i>
 
                           <div
-                            v-if="hoverRow === note.id"
+                            v-if="selectedRow === note.id"
                             class="action-menu position-absolute bg-white shadow rounded p-2"
                             style="right: 0; z-index: 100; width: 100px"
                           >
@@ -228,7 +228,7 @@ export default {
         title: "",
         description: "",
       },
-      hoverRow: null,
+      selectedRow: null,
       editingNote: null,
     };
   },

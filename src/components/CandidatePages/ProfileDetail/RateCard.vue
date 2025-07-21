@@ -124,8 +124,8 @@
                 <tr
                   v-for="(getrate, index) in getRateCard"
                   :key="index"
-                  @mouseenter="hoverRow = index"
-                  @mouseleave="hoverRow = null"
+                  @click="toggleActionMenu(index)"
+                  @mouseleave="selectedRow = null"
                 >
                   <td scope="row">
                     <div class="form-check">
@@ -152,7 +152,7 @@
                     <div class="action-wrapper">
                       <i class="bi bi-three-dots dot-icon"></i>
 
-                      <div v-if="hoverRow === index" class="action-menu">
+                      <div v-if="selectedRow === index" class="action-menu">
                         <div class="d-flex">
                           <i
                             class="bi bi-trash border-0 border-03 cursor-pointer text-nowrap"
@@ -234,7 +234,7 @@ export default {
       isModalVisible: false,
       confirmMessage: "",
       confirmCallback: null,
-      hoverRow: null,
+      selectedRow: null,
       getCandidates: [],
     };
   },

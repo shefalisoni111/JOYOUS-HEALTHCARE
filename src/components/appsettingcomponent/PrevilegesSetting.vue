@@ -18,9 +18,7 @@
           <div class="col-12">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active">
-                <a
-                  class="nav-link d-inline fs-4 fw-bolder"
-                  style="color: #000000"
+                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
                   >App Settings</a
                 >
               </li>
@@ -36,9 +34,7 @@
             <div class="leftside">
               <div class="heading mb-3 position-relative">
                 <p class="bforeline"></p>
-                <p class="mb-0 text-capitalize fw-bold genSetting">
-                  previleges Settings
-                </p>
+                <p class="mb-0 text-capitalize fw-bold genSetting">previleges Settings</p>
                 <p class="afterline"></p>
               </div>
               <div>
@@ -51,9 +47,7 @@
                       <div class="job ms-2 d-flex">
                         <i class="bi bi-file-earmark-text rounded-circle"></i>
                         <div>
-                          <h6 class="mb-0 text-capitalize">
-                            user & privileges
-                          </h6>
+                          <h6 class="mb-0 text-capitalize">user & privileges</h6>
                           <p class="text-capitalize mb-0">Add & Modify</p>
                         </div>
                       </div>
@@ -63,10 +57,7 @@
               </div>
             </div>
           </div>
-          <div
-            class="col-8 bg-white px-3"
-            style="border-radius: 30px !important"
-          >
+          <div class="col-8 bg-white px-3" style="border-radius: 30px !important">
             <div class="col-12">
               <div class="pagetitle d-flex justify-content-between">
                 <div class="d-flex align-items-center">
@@ -320,8 +311,8 @@
                               <tr
                                 v-for="(data, index) in rolesInActive"
                                 :key="data.id"
-                                @mouseenter="hoverRow = index"
-                                @mouseleave="hoverRow = null"
+                                @click="toggleActionMenu(index)"
+                                @mouseleave="selectedRow = null"
                               >
                                 <td>{{ data.id }}</td>
                                 <td scope="row">
@@ -337,7 +328,7 @@
                                     <i class="bi bi-three-dots dot-icon"></i>
 
                                     <div
-                                      v-if="hoverRow === index"
+                                      v-if="selectedRow === index"
                                       class="action-menu d-flex"
                                       style="
                                         left: -85px !important;
@@ -353,10 +344,7 @@
                                   </div>
                                   <button
                                     class="btn text-nowrap rounded-3"
-                                    style="
-                                      background: rgb(255 227 234);
-                                      color: #ff3b30;
-                                    "
+                                    style="background: rgb(255 227 234); color: #ff3b30"
                                     v-on:click="confirmed(data.id, true)"
                                   >
                                     Re-Activate
@@ -386,9 +374,7 @@
                             <tbody v-else>
                               <tr>
                                 <td colspan="6" class="text-danger">
-                                  {{
-                                    "Inactive users Not found!" || errorMessage
-                                  }}
+                                  {{ "Inactive users Not found!" || errorMessage }}
                                 </td>
                               </tr>
                             </tbody>
@@ -438,7 +424,7 @@ export default {
       confirmMessage: "",
       errorMessage: "",
       confirmCallback: null,
-      hoverRow: null,
+      selectedRow: null,
     };
   },
   components: {
@@ -451,6 +437,9 @@ export default {
   },
 
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     handlePrivilegesAdd() {
       this.$refs.addPrivileges.getRolesMethod();
     },
@@ -478,17 +467,14 @@ export default {
       this.isLoading = true;
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/find_active_inactive_users`,
-          {
-            headers: {
-              Authorization: "bearer " + token,
-            },
-            params: {
-              activated_filter_value: true,
-            },
-          }
-        );
+        const response = await axios.get(`${VITE_API_URL}/find_active_inactive_users`, {
+          headers: {
+            Authorization: "bearer " + token,
+          },
+          params: {
+            activated_filter_value: true,
+          },
+        });
         this.totalActiveUserCount = response.data.total_user;
         this.rolesActive = response.data.users;
       } catch (error) {
@@ -508,17 +494,14 @@ export default {
       this.isLoading = true;
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/find_active_inactive_users`,
-          {
-            headers: {
-              Authorization: "bearer " + token,
-            },
-            params: {
-              activated_filter_value: false,
-            },
-          }
-        );
+        const response = await axios.get(`${VITE_API_URL}/find_active_inactive_users`, {
+          headers: {
+            Authorization: "bearer " + token,
+          },
+          params: {
+            activated_filter_value: false,
+          },
+        });
         this.totalInActiveUserCount = response.data.total_user;
         this.rolesInActive = response.data.users;
       } catch (error) {
@@ -538,17 +521,14 @@ export default {
       this.isLoading = true;
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/find_active_inactive_users`,
-          {
-            headers: {
-              Authorization: "bearer " + token,
-            },
-            params: {
-              activated_filter_value: activatedFilterValue,
-            },
-          }
-        );
+        const response = await axios.get(`${VITE_API_URL}/find_active_inactive_users`, {
+          headers: {
+            Authorization: "bearer " + token,
+          },
+          params: {
+            activated_filter_value: activatedFilterValue,
+          },
+        });
 
         if (activatedFilterValue) {
           this.totalActiveUserCount = response.data.total_user;
@@ -633,14 +613,11 @@ export default {
         const token = localStorage.getItem("token");
 
         try {
-          const response = await axios.delete(
-            `${VITE_API_URL}/merchants/${id}`,
-            {
-              headers: {
-                Authorization: "bearer " + token,
-              },
-            }
-          );
+          const response = await axios.delete(`${VITE_API_URL}/merchants/${id}`, {
+            headers: {
+              Authorization: "bearer " + token,
+            },
+          });
 
           if (response.status === 200) {
             const message =

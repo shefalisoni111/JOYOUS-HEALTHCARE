@@ -20,8 +20,8 @@
           <tr
             v-for="(client, index) in paginateCandidates"
             :key="index"
-            @mouseenter="hoverRow = index"
-            @mouseleave="hoverRow = null"
+            @click="toggleActionMenu(index)"
+            @mouseleave="selectedRow = null"
           >
             <!-- <td v-text="client.id"></td> -->
             <td v-text="client.ref_code"></td>
@@ -101,7 +101,7 @@
               <div class="action-wrapper">
                 <i class="bi bi-three-dots dot-icon"></i>
 
-                <div v-if="hoverRow === index" class="action-menu">
+                <div v-if="selectedRow === index" class="action-menu">
                   <button
                     type="button"
                     class="btn text-nowrap border-0"
@@ -241,7 +241,7 @@ export default {
       totalCount: 0,
       // options: [],
       isLoading: false,
-      hoverRow: null,
+      selectedRow: null,
       client: {
         job_name: ["Job1", "Job2", "Job3", "Job4", "Job5", "Job6"],
       },
@@ -277,6 +277,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     getJobName(jobId) {
       const job = this.options.find((job) => job.id === jobId);
       return job ? job.name : "";

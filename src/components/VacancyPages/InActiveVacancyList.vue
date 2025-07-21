@@ -28,8 +28,8 @@
           <tr
             v-for="(data, index) in getInactiveData"
             :key="index"
-            @mouseenter="hoverRow = index"
-            @mouseleave="hoverRow = null"
+            @click="toggleActionMenu(index)"
+            @mouseleave="selectedRow = null"
           >
             <td v-text="data.id"></td>
             <td v-text="data.ref_code"></td>
@@ -68,7 +68,7 @@
               <div class="action-wrapper">
                 <i class="bi bi-three-dots dot-icon"></i>
 
-                <div v-if="hoverRow === index" class="action-menu">
+                <div v-if="selectedRow === index" class="action-menu">
                   <template v-if="isEditAllowed(data.dates)">
                     <button
                       type="button"
@@ -250,7 +250,7 @@ export default {
       totalCount: 0,
       totalPages: 1,
       isLoading: false,
-      hoverRow: null,
+      selectedRow: null,
       today: new Date(),
       isModalVisible: false,
       confirmMessage: "",
@@ -273,6 +273,9 @@ export default {
   },
 
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     async changePage(page) {
       this.currentPage = page;
       await this.getInactiveVacancyMethod();

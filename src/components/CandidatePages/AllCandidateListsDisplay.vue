@@ -20,8 +20,8 @@
             <tr
               v-for="(candidate, index) in getCandidatesData"
               :key="index"
-              @mouseenter="hoverRow = index"
-              @mouseleave="hoverRow = null"
+              @click="toggleActionMenu(index)"
+              @mouseleave="selectedRow = null"
             >
               <td v-text="candidate.id"></td>
               <td>
@@ -103,7 +103,7 @@
                 <div class="action-wrapper">
                   <i class="bi bi-three-dots dot-icon"></i>
 
-                  <div v-if="hoverRow === index" class="action-menu">
+                  <div v-if="selectedRow === index" class="action-menu">
                     <router-link
                       class="btn text-nowrap border-0"
                       :to="{ name: 'Profile', params: { id: candidate.id } }"
@@ -236,7 +236,7 @@ export default {
       totalCount: 0,
       totalPages: 1,
       isLoading: false,
-      hoverRow: null,
+      selectedRow: null,
       isModalVisible: false,
       confirmMessage: "",
       confirmCallback: null,
@@ -262,6 +262,9 @@ export default {
     // },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     confirmed(id) {
       this.isModalVisible = false;
 

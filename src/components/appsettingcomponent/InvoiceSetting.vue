@@ -466,6 +466,9 @@ export default {
     ...mapState(["selectedTemplateClient", "selectedTemplateStaff"]),
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     handleInputChange() {
       this.isModified = true;
     },

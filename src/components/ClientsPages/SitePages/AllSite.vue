@@ -151,8 +151,8 @@
           <tr
             v-for="(data, index) in getSiteAllData"
             :key="index"
-            @mouseenter="hoverRow = index"
-            @mouseleave="hoverRow = null"
+            @click="toggleActionMenu(index)"
+            @mouseleave="selectedRow = null"
           >
             <td>
               <input
@@ -216,7 +216,7 @@
               <div class="action-wrapper">
                 <i class="bi bi-three-dots dot-icon"></i>
 
-                <div v-if="hoverRow === index" class="action-menu">
+                <div v-if="selectedRow === index" class="action-menu">
                   <button
                     type="button"
                     class="btn text-nowrap border-0"
@@ -376,7 +376,7 @@ export default {
       selectedsiteId: 0,
 
       getSiteDetail: [],
-      hoverRow: null,
+      selectedRow: null,
       currentPage: 1,
       totalRecords: 0,
       itemsPerPage: 10,
@@ -446,6 +446,9 @@ export default {
   },
 
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     async onClientChange() {
       await this.getSiteAllDataMethod();
       this.filterData();

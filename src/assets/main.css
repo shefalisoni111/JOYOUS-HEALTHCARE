@@ -148,7 +148,6 @@ ul.navbar-nav li a span.badge {
   top: 0rem;
 }
 .action-wrapper {
-  position: relative;
   display: inline-block;
 }
 
@@ -225,7 +224,6 @@ input[type="search"]::-webkit-search-cancel-button {
   padding: 5px 13px;
 }
 .action-menu {
-  position: absolute;
   top: 17px;
   left: -25px;
   z-index: 1;

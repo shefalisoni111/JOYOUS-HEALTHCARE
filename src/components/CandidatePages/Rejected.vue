@@ -73,8 +73,8 @@
         <tr
           v-for="(pending, index) in paginateCandidates"
           :key="index"
-          @mouseenter="hoverRow = index"
-          @mouseleave="hoverRow = null"
+          @click="toggleActionMenu(index)"
+          @mouseleave="selectedRow = null"
         >
           <td v-text="pending.id"></td>
           <td class="text-capitalize">
@@ -117,7 +117,7 @@
             <div class="action-wrapper">
               <i class="bi bi-three-dots dot-icon"></i>
 
-              <div v-if="hoverRow === index" class="action-menu">
+              <div v-if="selectedRow === index" class="action-menu">
                 <button
                   type="button"
                   class="btn text-nowrap border-0"
@@ -244,7 +244,7 @@ export default {
       isLoading: false,
       isModalVisible: false,
       confirmMessage: "",
-      hoverRow: null,
+      selectedRow: null,
       confirmCallback: null,
     };
   },
@@ -265,6 +265,9 @@ export default {
     // },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;

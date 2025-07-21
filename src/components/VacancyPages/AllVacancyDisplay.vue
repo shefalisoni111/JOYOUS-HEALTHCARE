@@ -82,8 +82,8 @@
           <tr
             v-for="(getdata, index) in paginatedVacancies"
             :key="index"
-            @mouseenter="hoverRow = index"
-            @mouseleave="hoverRow = null"
+            @click="toggleActionMenu(index)"
+            @mouseleave="selectedRow = null"
           >
             <td v-text="getdata.id"></td>
             <td v-text="getdata.ref_code"></td>
@@ -246,7 +246,7 @@
               <div class="action-wrapper">
                 <i class="bi bi-three-dots dot-icon"></i>
 
-                <div v-if="hoverRow === index" class="action-menu">
+                <div v-if="selectedRow === index" class="action-menu">
                   <button
                     type="button"
                     class="btn text-nowrap text-nowrap shadow-soft"
@@ -390,7 +390,7 @@ export default {
     return {
       getVacancyDetail: [],
       selectedVacancyId: 0,
-      hoverRow: null,
+      selectedRow: null,
       totalCount: 0,
       totalPages: 0,
       currentPage: 1,
@@ -435,6 +435,9 @@ export default {
   },
 
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     async changePage(page) {
       this.currentPage = page;
       await this.createVacancy();

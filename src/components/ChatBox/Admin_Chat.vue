@@ -151,6 +151,11 @@
                   </div>
                 </div>
                 <div class="col-9" style="border-radius: 15px">
+                  <loader
+                    :isLoading="isLoading"
+                    style=""
+                    class="text-center m-auto"
+                  ></loader>
                   <div v-if="showChatBox" class="chat-box mt-1">
                     <div class="chat-container">
                       <div class="chat-header">
@@ -350,6 +355,7 @@ import axios from "axios";
 // import ConfirmationAlert from "./Alerts/ConfirmationAlert.vue";
 import Swal from "sweetalert2";
 import Navbar from "../Navbar.vue";
+import Loader from "../Loader/Loader.vue";
 // import logo from "../assets/logo.png";
 
 // import { nextTick } from "vue";
@@ -393,6 +399,7 @@ export default {
       itemsPerPage: 10,
       totalCount: 0,
       unread_count: 0,
+      isLoading: false,
       // channelSid: "",
       isLoading: true,
       // unreadNotifications: 0,
@@ -407,7 +414,7 @@ export default {
     };
   },
 
-  components: { Navbar },
+  components: { Navbar, Loader },
   computed: {
     unreadNotifications() {
       return this.notifications.filter((notification) => !notification.read);
@@ -467,6 +474,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     async loadMore() {
       this.currentPage++;
       await this.fetchNotifications();

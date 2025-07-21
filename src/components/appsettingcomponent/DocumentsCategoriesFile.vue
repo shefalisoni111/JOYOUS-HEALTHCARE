@@ -327,6 +327,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     isCheckboxDisabled(doc, field) {
       return doc[field] !== undefined;
     },

@@ -251,6 +251,9 @@ export default {
   },
 
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     confirmed(id) {
       this.isModalVisible = false;
 

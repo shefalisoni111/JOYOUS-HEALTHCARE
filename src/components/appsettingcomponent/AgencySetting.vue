@@ -505,6 +505,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     editagencyId(agencyId) {
       this.selectedAgencyId = agencyId;
     },

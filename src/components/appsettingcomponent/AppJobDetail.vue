@@ -285,8 +285,8 @@
               <tr
                 v-for="(jobs, index) in getInActiveJobs"
                 :key="index"
-                @mouseenter="hoverRow = index"
-                @mouseleave="hoverRow = null"
+                @click="toggleActionMenu(index)"
+                @mouseleave="selectedRow = null"
               >
                 <td v-text="jobs.id"></td>
                 <td scope="row">
@@ -325,7 +325,7 @@
                   <div class="action-wrapper">
                     <i class="bi bi-three-dots dot-icon"></i>
 
-                    <div v-if="hoverRow === index" class="action-menu">
+                    <div v-if="selectedRow === index" class="action-menu">
                       <button
                         type="button"
                         class="btn text-nowrap border-0"
@@ -469,7 +469,7 @@ export default {
       getInActiveJobs: [],
       activeTab: "active",
       selectedjobID: null,
-      hoverRow: null,
+      selectedRow: null,
       isLoading: false,
       isModalVisible: false,
       confirmMessage: "",
@@ -505,6 +505,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     confirmed(id) {
       this.isModalVisible = false;
 

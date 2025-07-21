@@ -165,8 +165,8 @@
           <tr
             v-for="(client, index) in getClientDetail"
             :key="index"
-            @mouseenter="hoverRow = index"
-            @mouseleave="hoverRow = null"
+            @click="toggleActionMenu(index)"
+            @mouseleave="selectedRow = null"
           >
             <td>
               <input
@@ -262,7 +262,7 @@
               <div class="action-wrapper">
                 <i class="bi bi-three-dots dot-icon"></i>
 
-                <div v-if="hoverRow === index" class="action-menu">
+                <div v-if="selectedRow === index" class="action-menu">
                   <button
                     type="button"
                     class="btn text-nowrap border-0"
@@ -418,7 +418,7 @@ export default {
       activated: false,
 
       isLoading: false,
-      hoverRow: null,
+      selectedRow: null,
       checkedClient: reactive({}),
       errorMessageFilter: "",
       selectedFilter: "",
@@ -501,6 +501,9 @@ export default {
     });
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     getJobName(jobId) {
       const job = this.options.find((job) => job.id === jobId);
       return job ? job.name : "";

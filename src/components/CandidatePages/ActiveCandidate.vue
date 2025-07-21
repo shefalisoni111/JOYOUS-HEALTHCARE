@@ -21,8 +21,8 @@
             <tr
               v-for="(candidate, index) in paginateCandidates"
               :key="index"
-              @mouseenter="hoverRow = index"
-              @mouseleave="hoverRow = null"
+              @click="toggleActionMenu(index)"
+              @mouseleave="selectedRow = null"
             >
               <td v-text="candidate.id"></td>
               <td>
@@ -93,7 +93,7 @@
                 <div class="action-wrapper">
                   <i class="bi bi-three-dots dot-icon"></i>
 
-                  <div v-if="hoverRow === index" class="action-menu">
+                  <div v-if="selectedRow === index" class="action-menu">
                     <button
                       type="button"
                       class="btn text-nowrap border-0"
@@ -254,7 +254,7 @@ export default {
       totalPages: 1,
       totalCount: 0,
       isLoading: false,
-      hoverRow: null,
+      selectedRow: null,
       isModalVisible: false,
       confirmMessage: "",
       confirmCallback: null,
@@ -280,6 +280,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     formatDateFORUpdate(dateString) {
       if (!dateString) return "";
 

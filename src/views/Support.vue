@@ -77,7 +77,7 @@
                       class="form-check-input"
                       type="radio"
                       :id="'help-' + i"
-                      v-model="form.helpType"
+                      v-model="form.issue_type"
                       :value="option"
                       required
                     />
@@ -94,7 +94,7 @@
                   <textarea
                     class="form-control"
                     rows="4"
-                    v-model="form.message"
+                    v-model="form.issue"
                     required
                   ></textarea>
                 </div>
@@ -127,30 +127,21 @@
                       Browse
                     </button>
                   </div>
-                  <div v-if="form.file" class="mt-2 text-success">
-                    Selected: {{ form.file.name }}
+                  <div v-if="!form.files && showErrors" class="text-danger">
+                    Please upload a file.
+                  </div>
+                  <div v-if="form.files" class="mt-2 text-success">
+                    Selected: {{ form.files.name }}
                   </div>
                 </div>
 
-                <div class="mb-3">
-                  <label class="form-label"
-                    >Are you human? <span class="text-danger">*</span></label
-                  >
-                  <div class="d-flex align-items-center gap-2">
-                    <span>{{ captcha.question }}</span>
-                    <input
-                      type="number"
-                      class="form-control w-auto"
-                      v-model.number="form.captchaAnswer"
-                      required
-                    />
-                  </div>
-                  <div v-if="captchaError" class="text-danger mt-1">
-                    Incorrect answer.
-                  </div>
-                </div>
-
-                <button type="submit" class="btn btn-dark px-4">Submit</button>
+                <button
+                  type="submit"
+                  class="btn btn-primary px-4"
+                  :disabled="!isFormValid"
+                >
+                  Submit
+                </button>
               </form>
             </div>
             <div class="col-2"></div>
@@ -171,51 +162,103 @@ export default {
       form: {
         name: "",
         email: "",
-        helpType: "General question",
-        message: "",
-        file: null,
-        captchaAnswer: null,
+        issue_type: "General question",
+        issue: "",
+        files: null,
       },
+      showErrors: false,
       helpOptions: ["General question", "Bug report", "My account", "Other"],
-      captcha: {
-        question: "15 + 3 =",
-        answer: 18,
-      },
-      captchaError: false,
     };
+  },
+  computed: {
+    isFormValid() {
+      return (
+        this.form.name.trim() !== "" &&
+        this.form.email.trim() !== "" &&
+        this.form.issue.trim() !== "" &&
+        this.form.issue_type.trim() !== "" &&
+        this.form.files !== null
+      );
+    },
   },
   components: {
     Navbar,
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
+    isSubmitting() {
+      return (
+        this.form.name.trim() &&
+        this.form.email.trim() &&
+        this.form.issue.trim() &&
+        this.form.issue_type.trim() &&
+        this.form.files
+      );
+    },
     handleFileDrop(event) {
-      this.form.file = event.dataTransfer.files[0];
+      this.form.files = event.dataTransfer.files[0];
     },
     handleFileSelect(event) {
-      this.form.file = event.target.files[0];
+      this.form.files = event.target.files[0];
     },
-    submitForm() {
-      if (this.form.captchaAnswer !== this.captcha.answer) {
-        this.captchaError = true;
+    async submitForm() {
+      if (!this.isFormValid) {
+        this.showErrors = true;
         return;
       }
+      this.showErrors = false;
+      const token = localStorage.getItem("token");
+      const formData = new FormData();
 
-      this.captchaError = false;
+      formData.append("name", this.form.name);
+      formData.append("email", this.form.email);
+      formData.append("issue_type", this.form.issue_type);
+      formData.append("issue", this.form.issue);
+      if (this.form.files) {
+        formData.append("files", this.form.files);
+      }
 
-      // Submit logic goes here
-      // console.log("Form submitted:", this.form);
-      alert("Support ticket submitted!");
-      this.resetForm();
+      try {
+        const response = await axios.post(
+          `${VITE_API_URL}/support_mail`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            validateStatus: (status) => status >= 200 && status < 300,
+          }
+        );
+
+        if (response.status === 200) {
+          Swal.fire({
+            icon: "success",
+            title: "Ticket Submitted",
+            text: "Your support request has been submitted successfully.",
+            confirmButtonText: "OK",
+          });
+          this.resetForm();
+        }
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Submission Failed",
+          text: error.response?.error || "please provide all details!",
+          confirmButtonText: "OK",
+        });
+      }
     },
     resetForm() {
       this.form = {
         name: "",
         email: "",
-        helpType: "General question",
-        message: "",
-        file: null,
-        captchaAnswer: null,
+        issue_type: "General question",
+        issue: "",
+        files: null,
       };
+      this.$refs.fileInput.value = "";
     },
   },
 };

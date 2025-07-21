@@ -100,7 +100,12 @@
             </tr>
           </thead>
           <tbody v-if="paginatedShift?.length > 0">
-            <tr v-for="data in paginatedShift" :key="data.id">
+            <tr
+              v-for="(data, index) in paginatedShift"
+              :key="index"
+              @click="toggleActionMenu(index)"
+              @mouseleave="selectedRow = null"
+            >
               <td scope="col">{{ data.id }}</td>
               <td scope="col">{{ data.ref_code }}</td>
               <td scope="col">{{ data.site_name }}</td>
@@ -115,15 +120,35 @@
               <td scope="col">{{ data.shift }}</td>
               <td scope="col">{{ data.assigned }}</td>
               <td scope="col">
-                <i
+                <!-- <i
                   class="bi bi-trash border-0 border-0 cursor-pointer btn btn-outline-danger text-nowrap"
                   v-on:click="confirmed(data.id)"
-                ></i>
+                ></i> -->
+                <div class="action-wrapper position-relative">
+                  <i class="bi bi-three-dots dot-icon"></i>
+
+                  <div
+                    v-if="selectedRow === index"
+                    class="action-menu position-absolute"
+                    style="top: 17px; left: 13px"
+                  >
+                    <button
+                      class="btn text-nowrap border-0"
+                      v-on:click="confirmed(data.id)"
+                    >
+                      <i
+                        class="bi bi-trash border-0 border-0"
+                        style="color: #f9944b"
+                      ></i>
+                      Delete
+                    </button>
+                  </div>
+                </div>
               </td>
             </tr>
           </tbody>
           <tbody v-else>
-            <tr>
+            <tr v-if="!isLoading">
               <td colspan="16" class="text-center text-danger">
                 {{ "Data Not Found!" }}
               </td>
@@ -131,6 +156,7 @@
           </tbody>
         </table>
       </div>
+      <loader :isLoading="isLoading"></loader>
     </div>
     <!-- <EditVacancy
             :vacancyId="selectedVacancyId || 0"
@@ -187,7 +213,7 @@
         Next
       </button>
     </div>
-    <loader :isLoading="isLoading"></loader>
+
     <AddClietShift @addVacancy="fetchData" />
   </div>
 </template>
@@ -211,6 +237,7 @@ export default {
       clientData: [],
       job_id: "",
       // options: [],
+      selectedRow: null,
       shiftsTime: [],
       businessUnit: [],
       selectedSiteId: null,
@@ -262,6 +289,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     resetFilters() {
       this.site_id = "";
       this.site_shift_id = "";
