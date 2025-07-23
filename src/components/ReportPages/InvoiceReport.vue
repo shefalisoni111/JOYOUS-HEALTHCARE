@@ -638,6 +638,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     async handleClientChange() {
       this.site_id = "";
       this.businessUnit = [];

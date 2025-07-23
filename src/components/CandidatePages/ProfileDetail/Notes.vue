@@ -39,7 +39,9 @@
       </div>
     </div>
     <div class="row m-4" v-else>
-      <div class="text-center text-danger" v-if="!isLoading">{{ "Data Not Found!" }}</div>
+      <div class="text-center text-danger" v-if="!isLoading">
+        {{ "Data Not Found!" }}
+      </div>
     </div>
     <ConfirmationAlert
       :show-modal="isModalVisible"
@@ -73,6 +75,9 @@ export default {
   components: { AddNotes, ConfirmationAlert, Loader },
 
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     showConfirmationModal(id) {
       this.confirmMessage = "Are you sure you want to delete this note?";
       this.isModalVisible = true;
@@ -81,7 +86,8 @@ export default {
     async notesDeleteMethod(id) {
       try {
         await axios.delete(
-          `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_notes/` + id
+          `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_notes/` +
+            id
         );
         this.isModalVisible = false;
         this.getNotesMethod();

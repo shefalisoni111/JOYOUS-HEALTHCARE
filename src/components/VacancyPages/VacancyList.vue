@@ -13,7 +13,9 @@
         </div>
         <div class="container-fluid pt-3 px-5">
           <div class="row">
-            <div class="d-flex justify-content-between">
+            <div
+              class="d-flex justify-content-between col-11 col-md-11 col-xl-12 col-xxl-12"
+            >
               <div class="py-3">
                 <ol class="breadcrumb my-2">
                   <li class="breadcrumb-item active fs-6">
@@ -43,7 +45,7 @@
             </div>
           </div>
 
-          <div class="pe-0">
+          <div class="col-11 col-md-11 col-xl-12 col-xxl-12 pe-0">
             <ul
               class="nav nav-pills mb-3 d-flex justify-content-between mb-3 px-0"
               id="pills-tab"
@@ -408,6 +410,9 @@ export default {
   },
 
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     // handleShiftAdd() {
     //   this.$refs.addShiftRef.getClientMethod();
     // },

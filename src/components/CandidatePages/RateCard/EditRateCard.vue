@@ -103,6 +103,9 @@ export default {
   },
 
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     async fetchCandidateMethod(id) {
       try {
         const response = await axios.get(`${VITE_API_URL}/rate_cards/${id}`);

@@ -236,6 +236,9 @@ export default {
     Navbar,
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     addNote() {
       if (!this.newNote.title || !this.newNote.description) {
         Swal.fire({

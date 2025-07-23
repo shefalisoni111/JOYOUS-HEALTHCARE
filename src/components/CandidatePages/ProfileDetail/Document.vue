@@ -85,7 +85,9 @@
                         {{ getCate.document_category.category_name }}
                       </button>
 
-                      <ul class="list-unstyled d-inline-flex align-items-center mb-0">
+                      <ul
+                        class="list-unstyled d-inline-flex align-items-center mb-0"
+                      >
                         <li class="p-3 fs-6">
                           <button class="btn btn-warning count-doc-btn">
                             <span>!</span></button
@@ -166,7 +168,10 @@
                                     data-bs-target="#viewDocCandidate"
                                     data-bs-whatever="@mdo"
                                     @click="
-                                      viewDocument(getDocs.candidate_document.id, $event)
+                                      viewDocument(
+                                        getDocs.candidate_document.id,
+                                        $event
+                                      )
                                     "
                                   >
                                     <i class="bi bi-eye"></i>
@@ -178,11 +183,17 @@
                                     class="d-none"
                                     v-if="getDocs.candidate_document === null"
                                   ></button>
-                                  <button class="btn border-primary-subtle" v-else>
+                                  <button
+                                    class="btn border-primary-subtle"
+                                    v-else
+                                  >
                                     <i
                                       class="bi bi-trash border-0 border-0"
                                       v-on:click="
-                                        confirmed(getDocs.candidate_document.id, $event)
+                                        confirmed(
+                                          getDocs.candidate_document.id,
+                                          $event
+                                        )
                                       "
                                     ></i>
                                   </button>
@@ -199,12 +210,17 @@
                                           >ISSUE DATE</label
                                         >
                                         <input
-                                          v-if="getDocs.candidate_document !== null"
+                                          v-if="
+                                            getDocs.candidate_document !== null
+                                          "
                                           type="date"
                                           class="form-control"
                                           id="issue"
                                           placeholder="issue date"
-                                          v-model="getDocs.candidate_document.issue_date"
+                                          v-model="
+                                            getDocs.candidate_document
+                                              .issue_date
+                                          "
                                           title="issue date"
                                           readonly
                                         />
@@ -225,12 +241,17 @@
                                           >EXPIRY DATE</label
                                         >
                                         <input
-                                          v-if="getDocs.candidate_document !== null"
+                                          v-if="
+                                            getDocs.candidate_document !== null
+                                          "
                                           type="date"
                                           class="form-control"
                                           id="expiry"
                                           placeholder="expiry date"
-                                          v-model="getDocs.candidate_document.expiry_date"
+                                          v-model="
+                                            getDocs.candidate_document
+                                              .expiry_date
+                                          "
                                           title="expiry date"
                                           readonly
                                         />
@@ -249,13 +270,19 @@
 
                                   <div class="row">
                                     <div class="mb-3">
-                                      <label class="form-label">Description</label>
+                                      <label class="form-label"
+                                        >Description</label
+                                      >
                                       <textarea
-                                        v-if="getDocs.candidate_document !== null"
+                                        v-if="
+                                          getDocs.candidate_document !== null
+                                        "
                                         class="form-control"
                                         readonly
                                         rows="3"
-                                        v-model="getDocs.candidate_document.description"
+                                        v-model="
+                                          getDocs.candidate_document.description
+                                        "
                                       ></textarea>
                                       <textarea
                                         v-else
@@ -269,7 +296,9 @@
                                         >UPLOAD DOCUMENT</label
                                       >
                                       <input
-                                        v-if="getDocs.candidate_document !== null"
+                                        v-if="
+                                          getDocs.candidate_document !== null
+                                        "
                                         class="form-control"
                                         type="file"
                                         id="formFile"
@@ -294,7 +323,9 @@
                                       class="btn btn-primary"
                                       :disabled="!isFormValid"
                                       v-on:click="
-                                        addCandidateDocument(getDocs.document.id)
+                                        addCandidateDocument(
+                                          getDocs.document.id
+                                        )
                                       "
                                     >
                                       Save
@@ -346,7 +377,11 @@
             </tbody>
             <tbody v-else>
               <tr>
-                <td colspan="5" class="text-center text-danger" v-if="!isLoading">
+                <td
+                  colspan="5"
+                  class="text-center text-danger"
+                  v-if="!isLoading"
+                >
                   {{ "Data Not Found!" }}
                 </td>
               </tr>
@@ -407,11 +442,16 @@ export default {
   components: { ViewDocuments, ConfirmationAlert, Loader, SuccessAlert },
   computed: {
     isFormValid() {
-      return this.issue_date && this.expiry_date && this.description && this.url;
+      return (
+        this.issue_date && this.expiry_date && this.description && this.url
+      );
     },
   },
 
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     isDownloadDisabled() {
       return !this.getCate.documents;
     },
@@ -435,7 +475,10 @@ export default {
         const selectedDocument = this.getDocument[0];
 
         const formData = new FormData();
-        formData.append("candidate_document[candidate_id]", this.$route.params.id);
+        formData.append(
+          "candidate_document[candidate_id]",
+          this.$route.params.id
+        );
         formData.append("candidate_document[document_id]", id);
         formData.append("candidate_document[issue_date]", this.issue_date);
         formData.append("candidate_document[expiry_date]", this.expiry_date);
@@ -496,9 +539,8 @@ export default {
         }
       });
 
-      this.getCategory[categoryIndex].documents[documentIndex].isOpen = !this.getCategory[
-        categoryIndex
-      ].documents[documentIndex].isOpen;
+      this.getCategory[categoryIndex].documents[documentIndex].isOpen =
+        !this.getCategory[categoryIndex].documents[documentIndex].isOpen;
     },
 
     onDocumentAdded() {
@@ -517,10 +559,12 @@ export default {
       this.confirmMessage = "Are you sure want to delete?";
       this.isModalVisible = true;
       this.confirmCallback = async () => {
-        axios.put(`${VITE_API_URL}/delete_candidate_document/` + id).then((response) => {
-          this.getDocCAtegories();
-          this.getDeletedDocumentListMethod();
-        });
+        axios
+          .put(`${VITE_API_URL}/delete_candidate_document/` + id)
+          .then((response) => {
+            this.getDocCAtegories();
+            this.getDeletedDocumentListMethod();
+          });
         this.isModalVisible = false;
         const message = "Successful Deleted Data";
         this.$refs.successAlert.showSuccess(message);
@@ -556,14 +600,18 @@ export default {
           const imageUrls = response.data.image_urls;
 
           for (const imageUrlObject of imageUrls) {
-            const imageUrl = `${VITE_API_URL}${imageUrlObject.image_url.split("?")[0]}`;
+            const imageUrl = `${VITE_API_URL}${
+              imageUrlObject.image_url.split("?")[0]
+            }`;
             const documentId = imageUrlObject.document_id;
             const filename = imageUrl
               .split("/")
               .pop()
               .split("?")[0]
               .replace(/[^\w\s.]/gi, "");
-            const imageResponse = await axios.get(imageUrl, { responseType: "blob" });
+            const imageResponse = await axios.get(imageUrl, {
+              responseType: "blob",
+            });
             saveAs(imageResponse.data, filename);
           }
         } catch (error) {
@@ -614,10 +662,14 @@ export default {
               description: doc.candidate_document.description || "",
             };
             if (doc.candidate_document !== null) {
-              if (doc.candidate_document.document_name === doc.document.document_name) {
+              if (
+                doc.candidate_document.document_name ===
+                doc.document.document_name
+              ) {
                 if (doc.candidate_document !== null) {
                   if (
-                    doc.candidate_document.document_name === doc.document.document_name
+                    doc.candidate_document.document_name ===
+                    doc.document.document_name
                   ) {
                   }
                 } else {

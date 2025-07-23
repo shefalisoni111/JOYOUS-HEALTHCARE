@@ -483,6 +483,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     // getTodayDate() {
     //   const today = new Date();
     //   const year = today.getFullYear();

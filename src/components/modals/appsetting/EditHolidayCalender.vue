@@ -160,6 +160,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     clearFields() {
       this.fetchHolidayCalender = {
         id: "",

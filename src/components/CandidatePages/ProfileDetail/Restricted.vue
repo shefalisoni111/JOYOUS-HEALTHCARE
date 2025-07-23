@@ -160,6 +160,9 @@ export default {
     EditStaffRestrictedLocation,
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     editRestricted(restrictedID) {
       this.selectedRestrictedId = restrictedID;
     },

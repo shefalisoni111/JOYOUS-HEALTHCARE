@@ -21,7 +21,10 @@
     </div>
     <div class="row">
       <div class="d-flex gap-3">
-        <div v-if="getRestrictedStaffData?.length > 0" class="d-flex flex-wrap gap-3">
+        <div
+          v-if="getRestrictedStaffData?.length > 0"
+          class="d-flex flex-wrap gap-3"
+        >
           <div
             class="card mb-3 p-2"
             v-for="data in getRestrictedStaffData"
@@ -113,6 +116,9 @@ export default {
     EditRestrictedSiteStaff,
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     editRestricted(restrictedID) {
       this.selectedRestrictedId = restrictedID;
     },

@@ -86,6 +86,9 @@ export default {
     };
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     async getClientsProfile() {
       if (!this.$route.params.id) {
         return;

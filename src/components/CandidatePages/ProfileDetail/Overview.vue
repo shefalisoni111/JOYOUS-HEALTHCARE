@@ -709,6 +709,9 @@ export default {
     AddStaffJobs,
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     getBgStyle(index) {
       const bgColors = [
         "#F9944B14",

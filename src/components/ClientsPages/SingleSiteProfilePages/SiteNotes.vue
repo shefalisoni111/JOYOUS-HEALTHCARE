@@ -86,6 +86,9 @@ export default {
 
   components: { AddSiteNotes, Loader, ConfirmationAlert, EditSiteNotes },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     // showConfirmationModal(id) {
     //   this.confirmMessage = "Are you sure you want to delete this note?";
     //   this.isModalVisible = true;

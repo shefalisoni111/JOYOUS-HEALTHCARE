@@ -435,6 +435,9 @@ export default {
   },
 
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     async updateProfileView() {
       try {
         const formData = new FormData();

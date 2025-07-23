@@ -359,6 +359,9 @@ export default {
   },
 
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     handleTabChange(newTabIndex) {
       this.activeTab = newTabIndex;
     },

@@ -142,6 +142,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     clearFieldsData() {
       this.clearFields();
       setTimeout(() => {

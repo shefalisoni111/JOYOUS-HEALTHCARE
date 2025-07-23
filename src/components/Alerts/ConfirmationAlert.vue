@@ -27,6 +27,9 @@ export default {
   },
   props: ["message", "showModal"],
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     confirm() {
       this.$emit("confirm");
     },

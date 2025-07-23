@@ -100,6 +100,9 @@ export default {
   },
 
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     async fetchClientsMethod(id) {
       try {
         const response = await axios.get(`${VITE_API_URL}/clients/${id}`);

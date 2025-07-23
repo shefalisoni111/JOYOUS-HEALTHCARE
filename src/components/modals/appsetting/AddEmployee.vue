@@ -104,6 +104,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     clearError(fieldName) {
       this.errors[fieldName] = null;
     },

@@ -218,6 +218,9 @@ export default {
     SuccessAlert,
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     formatTime(hour) {
       if (hour === 0) {
         return "12:00 AM";

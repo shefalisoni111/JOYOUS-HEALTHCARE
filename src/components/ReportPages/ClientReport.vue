@@ -723,6 +723,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     async handleClientChange() {
       const selectedClient = this.clientData.find(
         (client) => client.client_name === this.selectedClientName

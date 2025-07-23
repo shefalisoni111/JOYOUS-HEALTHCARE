@@ -12,7 +12,9 @@
               <p class="afterline"></p>
             </div>
             <div>
-              <ul class="list-unstyled text-capitalize generalsetting px-3"></ul>
+              <ul
+                class="list-unstyled text-capitalize generalsetting px-3"
+              ></ul>
             </div>
             <div>
               <ul class="list-unstyled text-capitalize generalsetting px-3">
@@ -63,7 +65,11 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
+  },
   mounted() {},
 };
 </script>

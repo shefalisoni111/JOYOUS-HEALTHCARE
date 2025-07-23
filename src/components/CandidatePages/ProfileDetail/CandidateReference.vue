@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="container-fluid p-0 bg-define">
-      <div class="pagetitle d-flex justify-content-between align-items-center p-2">
+      <div
+        class="pagetitle d-flex justify-content-between align-items-center p-2"
+      >
         <div class="d-flex justify-content-around gap-2"></div>
 
         <div></div>
@@ -46,7 +48,9 @@
                 </tr>
               </thead>
 
-              <tbody v-if="Array.isArray(getReferData) && getReferData.length > 0">
+              <tbody
+                v-if="Array.isArray(getReferData) && getReferData.length > 0"
+              >
                 <tr v-for="(getrate, index) in getReferData" :key="index">
                   <td scope="row" v-text="getrate.id"></td>
                   <td v-text="getrate.name"></td>
@@ -89,6 +93,9 @@ export default {
   },
   components: { Loader },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     // editRateCard(rateCardId) {
     //   this.selectedRateCardId = rateCardId;
     // },
@@ -121,7 +128,8 @@ export default {
         }
       } catch (error) {
         if (error.response && error.response.status === 404) {
-          this.noReferData = error.response.data.message || "No data available.";
+          this.noReferData =
+            error.response.data.message || "No data available.";
           this.getReferData = [];
         }
       } finally {

@@ -39,7 +39,7 @@
 
         <div class="pt-3">
           <div class="row">
-            <div class="col-12">
+            <div class="col-11 col-md-11 col-xl-12 col-xxl-12">
               <div class="">
                 <div class="d-flex justify-content-between">
                   <div

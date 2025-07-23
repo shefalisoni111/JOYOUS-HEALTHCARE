@@ -401,6 +401,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     cancelButtonClicked() {
       this.$router.push("/invoice/staff-invoice");
     },

@@ -38,8 +38,8 @@
           </div>
         </div>
 
-        <div class="pt-3">
-          <div class="d-flex justify-content-between">
+        <div class="col-11 col-md-11 col-xl-12 col-xxl-12 pt-3">
+          <div class="d-flex justify-content-between flex-wrap">
             <div class="d-flex align-items-center justify-content-between">
               <i
                 class="bi bi-caret-left-fill"

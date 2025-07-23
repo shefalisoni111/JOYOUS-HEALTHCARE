@@ -278,6 +278,9 @@ export default {
   created() {},
   computed: {},
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     concatenateIds(vacancies) {
       return vacancies.map((data) => data.id).join(", ");
     },

@@ -4,10 +4,13 @@
   </div>
 </template>
 
-<script >
+<script>
 export default {
   name: "SignOut",
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     signout() {
       if (localStorage.getItem("token")) {
         localStorage.removeItem("token");

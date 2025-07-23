@@ -132,13 +132,17 @@
                     <td>Enhanced DBS Number</td>
 
                     <td>...</td>
-                    <td>{{ getCandidatesDataInProfileTab.enhanced_dbs_number }}</td>
+                    <td>
+                      {{ getCandidatesDataInProfileTab.enhanced_dbs_number }}
+                    </td>
                   </tr>
                   <tr>
                     <td>Enhanced DBS Issues</td>
 
                     <td>...</td>
-                    <td>{{ getCandidatesDataInProfileTab.enhanced_dbs_issues }}</td>
+                    <td>
+                      {{ getCandidatesDataInProfileTab.enhanced_dbs_issues }}
+                    </td>
                   </tr>
                   <tr>
                     <td>Deby</td>
@@ -228,7 +232,9 @@
       >
         <div class="row" ref="invoiceContent">
           <div class="card-body border-0 px-3">
-            <h5 class="text-center bg-colors">RECPAL DEMO 1 EMPLOYEE PROFILE</h5>
+            <h5 class="text-center bg-colors">
+              RECPAL DEMO 1 EMPLOYEE PROFILE
+            </h5>
             <table class="table table-bordered">
               <tbody class="text-capitalize">
                 <tr class="d-flex justify-content-evenly">
@@ -316,13 +322,17 @@
                     <td>Enhanced DBS Number</td>
 
                     <td>...</td>
-                    <td>{{ getCandidatesDataInProfileTab.enhanced_dbs_number }}</td>
+                    <td>
+                      {{ getCandidatesDataInProfileTab.enhanced_dbs_number }}
+                    </td>
                   </tr>
                   <tr>
                     <td>Enhanced DBS Issues</td>
 
                     <td>...</td>
-                    <td>{{ getCandidatesDataInProfileTab.enhanced_dbs_issues }}</td>
+                    <td>
+                      {{ getCandidatesDataInProfileTab.enhanced_dbs_issues }}
+                    </td>
                   </tr>
                   <tr>
                     <td>Deby</td>
@@ -343,7 +353,9 @@
                   <tr>
                     <td>NMC/NISCC/SSSC Pin</td>
                     <td>...</td>
-                    <td>{{ getCandidatesDataInProfileTab.NMC_NISCC_SSSC_pin }}</td>
+                    <td>
+                      {{ getCandidatesDataInProfileTab.NMC_NISCC_SSSC_pin }}
+                    </td>
                   </tr>
                   <tr>
                     <td>Nationality</td>
@@ -459,6 +471,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     async downloadFile() {
       await this.$nextTick();
 
@@ -492,7 +507,9 @@ export default {
 
       if (elementOne) {
         try {
-          const sanitizedHTMLOne = DOMPurify.sanitize(elementOne.innerHTML || "");
+          const sanitizedHTMLOne = DOMPurify.sanitize(
+            elementOne.innerHTML || ""
+          );
           const canvasOne = await html2canvas(elementOne, {
             useCORS: true,
             allowTaint: false,
@@ -506,7 +523,8 @@ export default {
           const pageWidthOne = pdfOne.internal.pageSize.getWidth();
           const pageHeightOne = pdfOne.internal.pageSize.getHeight();
           const imgWidthOne = pageWidthOne;
-          const imgHeightOne = (canvasOne.height * imgWidthOne) / canvasOne.width;
+          const imgHeightOne =
+            (canvasOne.height * imgWidthOne) / canvasOne.width;
 
           pdfOne.addImage(imgDataOne, "PNG", 0, 0, imgWidthOne, imgHeightOne);
           pdfOne.save("Staff_Profile.pdf");

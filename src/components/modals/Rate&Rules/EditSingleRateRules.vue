@@ -461,6 +461,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     handleInput(field, value) {
       const filteredValue = value.replace(/[^0-9]/g, "");
 

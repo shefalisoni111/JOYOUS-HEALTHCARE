@@ -124,6 +124,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     blurActiveElement() {
       if (document.activeElement) {
         document.activeElement.blur();

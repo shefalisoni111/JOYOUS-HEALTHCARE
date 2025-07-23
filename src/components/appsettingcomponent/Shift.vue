@@ -27,7 +27,9 @@
         <form class="" v-for="shift in shifts" :key="shift.id">
           <div class="row mb-3 border-bottom pb-4 mx-1">
             <div class="col-2 p-0">
-              <label for="" class="form-label fw-medium">{{ shift.shift_name }}</label>
+              <label for="" class="form-label fw-medium">{{
+                shift.shift_name
+              }}</label>
             </div>
             <div class="col-10">
               <div class="d-flex justify-content-around">
@@ -80,6 +82,9 @@ export default {
   },
   components: { AddShift },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     handleShift() {
       this.$refs.addShift.fetchShifts();
     },
@@ -93,7 +98,9 @@ export default {
     },
     updateShiftInList(updatedShifts) {
       updatedShifts.forEach((updatedShift) => {
-        const updatedIndex = this.shifts.findIndex((s) => s.id === updatedShift.id);
+        const updatedIndex = this.shifts.findIndex(
+          (s) => s.id === updatedShift.id
+        );
 
         if (updatedIndex !== -1) {
           this.shifts[updatedIndex] = updatedShift;

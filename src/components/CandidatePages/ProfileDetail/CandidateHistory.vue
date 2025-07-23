@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="container-fluid p-0 bg-define">
-      <div class="pagetitle d-flex justify-content-between align-items-center p-2">
+      <div
+        class="pagetitle d-flex justify-content-between align-items-center p-2"
+      >
         <div class="d-flex justify-content-around gap-2"></div>
 
         <div></div>
@@ -59,10 +61,15 @@
                   <td scope="col">{{ data.site }}</td>
                   <td scope="col">{{ data.job_title }}</td>
                   <td>
-                    <span v-for="(date, index) in data.shift_dates" :key="index">
+                    <span
+                      v-for="(date, index) in data.shift_dates"
+                      :key="index"
+                    >
                       {{ date }}
 
-                      <template v-if="index !== data.shift_dates.length - 1">, </template>
+                      <template v-if="index !== data.shift_dates.length - 1"
+                        >,
+                      </template>
                     </span>
                   </td>
                   <td scope="col">{{ data.booked_by }}</td>
@@ -78,7 +85,11 @@
               </tbody>
               <tbody v-else>
                 <tr>
-                  <td colspan="14" class="text-center text-danger" v-if="!isLoading">
+                  <td
+                    colspan="14"
+                    class="text-center text-danger"
+                    v-if="!isLoading"
+                  >
                     {{ "Data Not Found!" }}
                   </td>
                 </tr>
@@ -107,6 +118,9 @@ export default {
   },
   components: { Loader },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     // editRateCard(rateCardId) {
     //   this.selectedRateCardId = rateCardId;
     // },

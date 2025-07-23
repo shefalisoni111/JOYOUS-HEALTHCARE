@@ -103,6 +103,9 @@ export default {
     ...mapGetters(["getInvoiceStaffData"]),
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     getSiteId(site_details) {
       const validCandidate = site_details.find(
         (candidate) => candidate.site_name && candidate.site_name.trim() !== ""

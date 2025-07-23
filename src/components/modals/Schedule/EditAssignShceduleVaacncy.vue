@@ -396,6 +396,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     blurActiveElement() {
       if (document.activeElement) {
         document.activeElement.blur();
@@ -456,12 +459,16 @@ export default {
             formData.append("id", this.bookingID);
             formData.append("cancelled_by", "admin");
             const token = localStorage.getItem("token");
-            const response = await axios.put(`${VITE_API_URL}/cancel_booking`, formData, {
-              headers: {
-                "Content-Type": "multipart/form-data",
-                Authorization: `Bearer ${token}`,
-              },
-            });
+            const response = await axios.put(
+              `${VITE_API_URL}/cancel_booking`,
+              formData,
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
             if (response.status === 200) {
               Swal.fire(
                 "Cancelled!",

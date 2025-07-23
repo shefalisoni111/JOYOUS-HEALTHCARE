@@ -17,7 +17,11 @@ export default {
     // Navbar,
   },
 
-  methods: {},
+  methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
+  },
 };
 </script>
 

@@ -45,6 +45,9 @@ export default {
   },
   computed: {},
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     async getAgencyDataMethod() {
       this.isLoading = true;
       await axios

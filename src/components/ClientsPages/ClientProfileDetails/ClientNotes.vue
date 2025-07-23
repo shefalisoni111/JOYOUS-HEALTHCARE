@@ -125,6 +125,9 @@ export default {
   },
   components: { SuccessAlert, Loader, EditClientNotes },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     editRestricted(ClientNotesID) {
       this.selectedClientNotesID = ClientNotesID;
     },

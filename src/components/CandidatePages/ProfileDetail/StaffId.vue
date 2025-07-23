@@ -162,6 +162,9 @@ export default {
 
   components: {},
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     async getCandidateMethods() {
       try {
         const response = await axios.get(

@@ -199,7 +199,11 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
+  },
   mounted() {},
 };
 </script>

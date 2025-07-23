@@ -1020,6 +1020,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     async onClientChange() {
       this.site_id = "";
 

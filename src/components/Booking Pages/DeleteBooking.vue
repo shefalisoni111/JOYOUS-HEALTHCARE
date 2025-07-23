@@ -32,7 +32,9 @@
               <span v-for="(date, index) in data.shift_dates" :key="index">
                 {{ date }}
 
-                <template v-if="index !== data.shift_dates.length - 1">, </template>
+                <template v-if="index !== data.shift_dates.length - 1"
+                  >,
+                </template>
               </span>
             </td>
             <td scope="col">{{ data.booked_by }}</td>
@@ -84,7 +86,9 @@
       &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="deleteBookingDataPage * itemsPerPage >= deleteBookingData.length"
+        :disabled="
+          deleteBookingDataPage * itemsPerPage >= deleteBookingData.length
+        "
         @click="deleteBookingDataPage++"
       >
         Next
@@ -98,7 +102,11 @@
       @confirm="confirmCallback"
       @cancel="canceled"
     />
-    <ShowDetailsMessage v-if="showModal" :message="alertMessage" @close="closeModal" />
+    <ShowDetailsMessage
+      v-if="showModal"
+      :message="alertMessage"
+      @close="closeModal"
+    />
   </div>
 </template>
 
@@ -208,6 +216,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     confirmed(id) {
       this.isModalVisible = false;
 
@@ -309,9 +320,12 @@ export default {
         date: formattedStartDate,
       };
       try {
-        const response = await axios.get(`${VITE_API_URL}/find_deleted_bookings`, {
-          params: requestData,
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/find_deleted_bookings`,
+          {
+            params: requestData,
+          }
+        );
 
         this.deleteBookingData = response.data.booking_data;
         if (response.status === 200) {

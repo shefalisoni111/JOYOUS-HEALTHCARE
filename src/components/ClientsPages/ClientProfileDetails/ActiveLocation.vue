@@ -147,6 +147,9 @@ export default {
   },
 
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     handleActiveClientSite() {
       if (
         this.$refs.addClientSiteRef &&

@@ -21,7 +21,9 @@
                   <div class="col-6">
                     <div class="mb-3">
                       <div class="col-12">
-                        <label for="selectClients" class="form-label">Client</label>
+                        <label for="selectClients" class="form-label"
+                          >Client</label
+                        >
                       </div>
                       <div class="col-12">
                         <select
@@ -39,7 +41,9 @@
                             {{ option.client_name }}
                           </option>
                         </select>
-                        <span v-if="!validationSelectedClient" class="text-danger"
+                        <span
+                          v-if="!validationSelectedClient"
+                          class="text-danger"
                           >Client Required</span
                         >
                       </div>
@@ -48,7 +52,9 @@
                   <div class="col-6">
                     <div class="mb-3">
                       <div class="col-12">
-                        <label class="form-label" for="selectBusinessUnit">Site</label>
+                        <label class="form-label" for="selectBusinessUnit"
+                          >Site</label
+                        >
                       </div>
                       <div class="col-12">
                         <select
@@ -131,7 +137,11 @@
                         >
                       </div>
                       <div class="col-12">
-                        <select v-model="employment_type_id" id="selectEmployee" disabled>
+                        <select
+                          v-model="employment_type_id"
+                          id="selectEmployee"
+                          disabled
+                        >
                           <option
                             v-for="option in employeeData"
                             :key="option.id"
@@ -150,7 +160,9 @@
                   <div class="col-6">
                     <div class="mb-3">
                       <div class="col-12">
-                        <label class="form-label" for="selectShifts">Shift Time</label>
+                        <label class="form-label" for="selectShifts"
+                          >Shift Time</label
+                        >
                       </div>
 
                       <div class="col-12">
@@ -290,7 +302,9 @@ export default {
     // },
 
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return this.site_id;
     },
 
@@ -309,6 +323,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     blurActiveElement() {
       if (document.activeElement) {
         document.activeElement.blur();
@@ -401,7 +418,8 @@ export default {
     },
 
     validateStaffRate() {
-      this.validationStaffRate = this.staff_rate !== "" && !isNaN(this.staff_rate);
+      this.validationStaffRate =
+        this.staff_rate !== "" && !isNaN(this.staff_rate);
     },
     onlyNumber(event) {
       const char = String.fromCharCode(event.which);
@@ -511,7 +529,9 @@ export default {
         return;
       }
       try {
-        const response = await axios.get(`${VITE_API_URL}/site_shift/${site_id}`);
+        const response = await axios.get(
+          `${VITE_API_URL}/site_shift/${site_id}`
+        );
         this.shiftsTime =
           response.data.site_shift_data.map((shift) => ({
             ...shift,

@@ -358,6 +358,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     formatDate(date) {
       const d = new Date(date);
       let day = d.getDate();

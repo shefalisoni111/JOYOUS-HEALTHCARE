@@ -9,7 +9,9 @@
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content" style="overflow-y: auto">
           <div class="modal-header">
-            <h5 class="modal-title" id="scheduleDirectAssignList">Shift List</h5>
+            <h5 class="modal-title" id="scheduleDirectAssignList">
+              Shift List
+            </h5>
             <button
               type="button"
               class="custom-close"
@@ -40,7 +42,10 @@
               </div>
             </div>
             <div class="row g-3 align-items-center" v-if="!searchQuery">
-              <table class="table candidateTable" v-if="selectedCandidateItemId">
+              <table
+                class="table candidateTable"
+                v-if="selectedCandidateItemId"
+              >
                 <!-- {{
                   columnDateMatch
                 }}
@@ -76,7 +81,10 @@
                       </td>
                     </tr>
                   </template>
-                  <tr v-for="vacancyItem in getdata.vacancies" :key="vacancyItem.id">
+                  <tr
+                    v-for="vacancyItem in getdata.vacancies"
+                    :key="vacancyItem.id"
+                  >
                     <template v-if="candidateJob === vacancyItem.job_title">
                       <td>
                         <input
@@ -100,10 +108,14 @@
                       <td v-text="vacancyItem.job_title"></td>
 
                       <td>
-                        <span v-for="(date, index) in vacancyItem.dates" :key="index">
+                        <span
+                          v-for="(date, index) in vacancyItem.dates"
+                          :key="index"
+                        >
                           {{ date }}
 
-                          <template v-if="index !== vacancyItem.dates.length - 1"
+                          <template
+                            v-if="index !== vacancyItem.dates.length - 1"
                             >,
                           </template>
                         </span>
@@ -165,7 +177,9 @@
                       <span v-for="(date, index) in getdata.dates" :key="index">
                         {{ date }}
 
-                        <template v-if="index !== getdata.dates.length - 1">, </template>
+                        <template v-if="index !== getdata.dates.length - 1"
+                          >,
+                        </template>
                       </span>
                     </td>
 
@@ -178,7 +192,9 @@
                 </tbody>
                 <tbody v-else>
                   <tr>
-                    <td colspan="8" class="text-danger text-center">No Match Found !!</td>
+                    <td colspan="8" class="text-danger text-center">
+                      No Match Found !!
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -280,11 +296,16 @@ export default {
       };
     },
     filteredVacancies() {
-      return this.vacancyList.filter((item) => item.date === this.selectedWeekDate);
+      return this.vacancyList.filter(
+        (item) => item.date === this.selectedWeekDate
+      );
     },
   },
 
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     blurActiveElement() {
       if (document.activeElement) {
         document.activeElement.blur();

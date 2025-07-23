@@ -699,6 +699,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     async filterData() {
       const params = {
         page: 1,

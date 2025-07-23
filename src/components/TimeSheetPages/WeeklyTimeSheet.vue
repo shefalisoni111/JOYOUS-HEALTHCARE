@@ -45,7 +45,7 @@
               </ol>
             </div>
           </div>
-          <div class="row p-3">
+          <div class="col-11 col-md-11 col-xl-12 col-xxl-12 p-3">
             <div class="full-page-calendar pt-1 pb-0">
               <div class="d-flex justify-content-between mb-3">
                 <div class="calendar-header align-items-center">

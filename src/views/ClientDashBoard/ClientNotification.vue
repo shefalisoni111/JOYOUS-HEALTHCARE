@@ -92,7 +92,11 @@
                           text-align: center;
                         "
                       >
-                        <img src="../../assets/bell.png" alt="icon" class="marker-icon" />
+                        <img
+                          src="../../assets/bell.png"
+                          alt="icon"
+                          class="marker-icon"
+                        />
                       </span>
 
                       <div class="notification-content">
@@ -121,7 +125,11 @@
                     :key="notification.id"
                     class="notification-item"
                   >
-                    <img src="../../assets/bell.png" alt="icon" class="marker-icon" />
+                    <img
+                      src="../../assets/bell.png"
+                      alt="icon"
+                      class="marker-icon"
+                    />
                     <div class="notification-content">
                       <h4>{{ notification.title }}</h4>
                       <p>{{ notification.message }}</p>
@@ -229,6 +237,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     formatDate(date) {
       const d = new Date(date);
       const day = String(d.getDate()).padStart(2, "0");

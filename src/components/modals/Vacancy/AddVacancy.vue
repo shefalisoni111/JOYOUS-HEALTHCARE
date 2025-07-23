@@ -690,6 +690,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     forceOpenCalendar(event) {
       event.target.showPicker?.();
     },

@@ -1,5 +1,10 @@
 <template>
-  <Doughnut ref="myChart" id="my-chart-id" :options="chartOptions" :data="chartData" />
+  <Doughnut
+    ref="myChart"
+    id="my-chart-id"
+    :options="chartOptions"
+    :data="chartData"
+  />
 </template>
 
 <script>
@@ -58,6 +63,9 @@ export default {
     };
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     fetchData() {
       axios
         .get(`${VITE_API_URL}/home_vacancy_data`)

@@ -160,6 +160,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     openFileInput() {
       this.$refs.profilePicInput.click();
     },

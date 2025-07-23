@@ -573,6 +573,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     formatMonthYear(date) {
       return new Intl.DateTimeFormat("en-US", {
         month: "long",

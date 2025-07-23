@@ -170,7 +170,10 @@ export default {
     Sidebar,
   },
 
-  methods: {},
+  methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },},
 
   mounted() {},
 };

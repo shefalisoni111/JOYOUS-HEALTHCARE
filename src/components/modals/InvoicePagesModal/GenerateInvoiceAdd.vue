@@ -205,6 +205,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     ...mapActions(["setInvoiceData"]),
     toggleAllSites() {
       if (this.isAllSitesSelected) {

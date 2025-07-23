@@ -136,6 +136,9 @@ export default {
     EditSiteCustomHoliday,
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     editSite(SiteID) {
       this.selectedSiteID = SiteID;
       this.$refs.editCustomHoliday.fetchSiteMethod(this.$route.params.id);

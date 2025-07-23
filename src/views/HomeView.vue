@@ -648,6 +648,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     navigateToDueDoc() {
       this.$router.push({ name: "DueDoc" });
     },

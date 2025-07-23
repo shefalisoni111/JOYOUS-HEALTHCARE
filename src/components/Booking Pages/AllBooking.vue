@@ -31,7 +31,9 @@
             <td>
               <span v-for="(date, index) in data.shift_dates" :key="index">
                 {{ date }}
-                <template v-if="index !== data.shift_dates.length - 1">, </template>
+                <template v-if="index !== data.shift_dates.length - 1"
+                  >,
+                </template>
               </span>
             </td>
             <td scope="col">{{ data.booked_by }}</td>
@@ -67,7 +69,9 @@
       id="get-pagination"
       style="text-align: right"
       v-if="
-        paginationBooking && currentTab === 'AllBooking' && getBookingData?.length >= 8
+        paginationBooking &&
+        currentTab === 'AllBooking' &&
+        getBookingData?.length >= 8
       "
     >
       <button class="btn btn-outline-dark btn-sm">
@@ -101,7 +105,11 @@
       @confirm="confirmCallback"
       @cancel="canceled"
     />
-    <ShowDetailsMessage v-if="showModal" :message="alertMessage" @close="closeModal" />
+    <ShowDetailsMessage
+      v-if="showModal"
+      :message="alertMessage"
+      @close="closeModal"
+    />
   </div>
 </template>
 
@@ -197,6 +205,9 @@ export default {
     },
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     confirmed(id) {
       this.isModalVisible = false;
       this.bookingDeleteMethod(id);
@@ -254,7 +265,8 @@ export default {
         this.getBookingData = response.data.booking_data;
 
         if (this.getBookingData.length === 0) {
-          this.errorMessageBooking = "No Booking found for the specified Criteria";
+          this.errorMessageBooking =
+            "No Booking found for the specified Criteria";
         } else {
           this.errorMessageBooking = "";
         }

@@ -22,7 +22,9 @@
           <div class="row mt-3">
             <div class="col-md-12 d-flex gap-5">
               <div class="col-12 mb-3 pb-2">
-                <div class="card h-100 info-card sales-card border-left-blue py-4">
+                <div
+                  class="card h-100 info-card sales-card border-left-blue py-4"
+                >
                   <h5 class="card-title fw-bold d-flex fs-6 m-2 ps-3">
                     Client Current Week Overview
                   </h5>
@@ -130,7 +132,9 @@
                     <span v-for="(date, index) in shift.dates" :key="index">
                       {{ date }}
 
-                      <template v-if="index !== shift.dates.length - 1">, </template>
+                      <template v-if="index !== shift.dates.length - 1"
+                        >,
+                      </template>
                     </span>
                   </td>
                   <td>{{ shift.site_shift }}</td>
@@ -171,15 +175,21 @@ export default {
     ClientNavbar,
   },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     async fetchData() {
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(`${VITE_API_URL}/client_dashboard_home_api`, {
-          headers: {
-            "content-type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/client_dashboard_home_api`,
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         // this.getRecords = response.data;
         if (response.data && response.data.client_name) {
           this.getRecords = response.data;

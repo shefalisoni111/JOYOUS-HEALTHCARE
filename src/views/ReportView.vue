@@ -31,7 +31,7 @@
         </div>
 
         <div class="row">
-          <div class="col-12">
+          <div class="col-11 col-xxl-12 col-xl-12">
             <div
               class="d-flex gap-2 justify-content-between bg-define position-relative"
             >
@@ -172,6 +172,9 @@ export default {
   },
 
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     setActiveTabFromRoute() {
       const currentRouteName = this.$route.name;
       const matchingTabIndex = this.tabs.findIndex(

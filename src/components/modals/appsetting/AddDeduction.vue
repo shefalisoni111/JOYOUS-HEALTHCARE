@@ -131,6 +131,9 @@ export default {
   },
   components: { SuccessAlert },
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     clearFieldsData() {
       setTimeout(() => {
         this.title = "";

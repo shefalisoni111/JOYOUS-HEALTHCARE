@@ -290,6 +290,9 @@ export default {
   },
 
   methods: {
+    toggleActionMenu(index) {
+      this.selectedRow = this.selectedRow === index ? null : index;
+    },
     // handleCandidateAdded() {
     //   this.$refs.addStaff.getPositionMethod();
     // },
