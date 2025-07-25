@@ -207,75 +207,77 @@
                   role="tabpanel"
                   aria-labelledby="pills-AllBooking-tab"
                 >
-                  <table class="table bookingTable">
-                    <thead>
-                      <tr>
-                        <th scope="col">Staff</th>
-                        <th scope="col">Site</th>
-                        <th scope="col">Job Title</th>
-                        <th scope="col" style="width: 142px">Date</th>
+                  <div class="col-12 wrapper-timeSheet">
+                    <table class="table bookingTable">
+                      <thead>
+                        <tr>
+                          <th scope="col">Staff</th>
+                          <th scope="col">Site</th>
+                          <th scope="col">Job Title</th>
+                          <th scope="col" style="width: 142px">Date</th>
 
-                        <th scope="col">Start Time</th>
-                        <th scope="col">End Time</th>
-                        <th scope="col">Break</th>
-                        <th scope="col">Total Hour</th>
-                        <th scope="col">Total Cost</th>
-                        <th scope="col">Type</th>
-                      </tr>
-                    </thead>
-                    <tbody v-if="candidateLists?.length > 0">
-                      <tr
-                        v-for="(data, index) in candidateLists"
-                        :key="index"
-                        @click="toggleActionMenu(index)"
-                        @mouseleave="selectedRow = null"
-                      >
-                        <td scope="col">{{ data.candidate_name }}</td>
-                        <td scope="col">{{ data.site_name }}</td>
-                        <td scope="col">{{ data.job }}</td>
-                        <td scope="col">
-                          <div v-for="data in data.data" :key="data.id">
-                            {{ data.date }}
-                          </div>
-                        </td>
-                        <td scope="col">
-                          <div v-for="data in data.data" :key="data.id">
-                            {{ data.start_time }}
-                          </div>
-                        </td>
-                        <td scope="col">
-                          <div v-for="data in data.data" :key="data.id">
-                            {{ data.end_time }}
-                          </div>
-                        </td>
-                        <td scope="col"></td>
-                        <td scope="col">
-                          <div v-for="data in data.data" :key="data.id">
-                            {{ data.total_hours }}
-                          </div>
-                        </td>
-                        <td scope="col">
-                          {{ data.total_week_cost }}
-                        </td>
-                        <td scope="col">
-                          <div v-for="data in data.data" :key="data.id">
-                            {{ data.sheet_type }}
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                    <tbody v-else>
-                      <tr>
-                        <td
-                          colspan="10"
-                          class="text-danger text-center"
-                          v-if="!isLoading"
+                          <th scope="col">Start Time</th>
+                          <th scope="col">End Time</th>
+                          <th scope="col">Break</th>
+                          <th scope="col">Total Hour</th>
+                          <th scope="col">Total Cost</th>
+                          <th scope="col">Type</th>
+                        </tr>
+                      </thead>
+                      <tbody v-if="candidateLists?.length > 0">
+                        <tr
+                          v-for="(data, index) in candidateLists"
+                          :key="index"
+                          @click="toggleActionMenu(index)"
+                          @mouseleave="selectedRow = null"
                         >
-                          {{ errorMessageCustom || "Data Not found!" }}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                          <td scope="col">{{ data.candidate_name }}</td>
+                          <td scope="col">{{ data.site_name }}</td>
+                          <td scope="col">{{ data.job }}</td>
+                          <td scope="col">
+                            <div v-for="data in data.data" :key="data.id">
+                              {{ data.date }}
+                            </div>
+                          </td>
+                          <td scope="col">
+                            <div v-for="data in data.data" :key="data.id">
+                              {{ data.start_time }}
+                            </div>
+                          </td>
+                          <td scope="col">
+                            <div v-for="data in data.data" :key="data.id">
+                              {{ data.end_time }}
+                            </div>
+                          </td>
+                          <td scope="col"></td>
+                          <td scope="col">
+                            <div v-for="data in data.data" :key="data.id">
+                              {{ data.total_hours }}
+                            </div>
+                          </td>
+                          <td scope="col">
+                            {{ data.total_week_cost }}
+                          </td>
+                          <td scope="col">
+                            <div v-for="data in data.data" :key="data.id">
+                              {{ data.sheet_type }}
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr>
+                          <td
+                            colspan="10"
+                            class="text-danger text-center"
+                            v-if="!isLoading"
+                          >
+                            {{ errorMessageCustom || "Data Not found!" }}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>

@@ -16,7 +16,9 @@
           <div class="py-3">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active">
-                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                <a
+                  class="nav-link d-inline fs-4 fw-bolder"
+                  style="color: #000000"
                   >Schedule</a
                 >
                 <p>
@@ -78,17 +80,33 @@
                               v-model="availability_id"
                               for="SelectAvailability"
                               class="form-select"
-                              @change="filterData($event.target.value, 'availablity')"
+                              @change="
+                                filterData($event.target.value, 'availablity')
+                              "
                             >
-                              <option value="" selected for="SelectAvailability" disabled>
+                              <option
+                                value=""
+                                selected
+                                for="SelectAvailability"
+                                disabled
+                              >
                                 All Availability
                               </option>
-                              <option id="SelectAvailability" value="Late">Late</option>
-                              <option id="SelectAvailability" value="Night">Night</option>
-                              <option id="SelectAvailability" value="Unavailable">
+                              <option id="SelectAvailability" value="Late">
+                                Late
+                              </option>
+                              <option id="SelectAvailability" value="Night">
+                                Night
+                              </option>
+                              <option
+                                id="SelectAvailability"
+                                value="Unavailable"
+                              >
                                 Unavailable
                               </option>
-                              <option id="SelectAvailability" value="Early">Early</option>
+                              <option id="SelectAvailability" value="Early">
+                                Early
+                              </option>
                             </select>
                           </div>
                         </div>
@@ -102,7 +120,9 @@
                               class="form-select"
                               @change="filterData($event.target.value, 'job')"
                             >
-                              <option value="" selected disabled>Select Jobs</option>
+                              <option value="" selected disabled>
+                                Select Jobs
+                              </option>
                               <option
                                 id="selectJobTitle"
                                 v-for="option in options"
@@ -133,7 +153,10 @@
               </div>
             </div>
             <div class="sidebar-container scheduleTable me-4">
-              <div class="sidebar-button" :class="{ 'slide-left': isOpen }"></div>
+              <div
+                class="sidebar-button"
+                :class="{ 'slide-left': isOpen }"
+              ></div>
 
               <div class="sidebar-content" :class="{ 'slide-left': isOpen }">
                 <div class="table-container">
@@ -150,14 +173,21 @@
                                 @click="moveToPrevious"
                               ></i>
                               <i class="bi bi-calendar2-check-fill"></i>
-                              <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+                              <i
+                                class="bi bi-caret-right-fill"
+                                @click="moveToNext"
+                              ></i>
                             </div>
                           </div>
                         </th>
 
                         <th>
                           <div class="calendar-grid">
-                            <div v-for="day in daysOfWeek" :key="day" class="day-header">
+                            <div
+                              v-for="day in daysOfWeek"
+                              :key="day"
+                              class="day-header"
+                            >
                               {{ day }}
                             </div>
                             <div
@@ -174,7 +204,9 @@
 
                     <tbody v-if="candidateList?.length > 0">
                       <tr class="sticky-header">
-                        <td style="border-right: 1px solid rgb(209, 208, 208)"></td>
+                        <td
+                          style="border-right: 1px solid rgb(209, 208, 208)"
+                        ></td>
                         <td>
                           <div
                             class="calendar-grid"
@@ -214,9 +246,12 @@
                                     'bg-primary': liIndex >= 3,
                                   }"
                                 >
-                                  <span class="d-flex flex-column align-items-baseline">
+                                  <span
+                                    class="d-flex flex-column align-items-baseline"
+                                  >
                                     <span class="text-capitalize"
-                                      >{{ vacancy.site }}, {{ vacancy.job_title }}</span
+                                      >{{ vacancy.site }},
+                                      {{ vacancy.job_title }}</span
                                     >
                                     <span>{{
                                       vacancy.site_shift.replace(/_/g, " ")
@@ -243,7 +278,10 @@
 
                           <span class="fs-6 text-muted fw-100"
                             ><br /><span
-                              style="background: rgb(209, 207, 207); padding: 3px"
+                              style="
+                                background: rgb(209, 207, 207);
+                                padding: 3px;
+                              "
                               >{{ staff.job }}</span
                             ></span
                           >
@@ -280,7 +318,10 @@
 
                                         <br />
                                         {{
-                                          assignStaff.site_shift_name?.replace(/_/g, " ")
+                                          assignStaff.site_shift_name?.replace(
+                                            /_/g,
+                                            " "
+                                          )
                                         }}, {{ assignStaff.job_name }} &nbsp;
 
                                         <br />
@@ -320,7 +361,11 @@
                     </tbody>
                     <tbody v-else>
                       <tr>
-                        <td colspan="7" class="text-danger text-center" v-if="!isLoading">
+                        <td
+                          colspan="7"
+                          class="text-danger text-center"
+                          v-if="!isLoading"
+                        >
                           {{ errorMessage || "Data Not found!" }}
                         </td>
                       </tr>
@@ -378,13 +423,19 @@
       </button>
       <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+            >20 Records</a
+          >
         </li>
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+            >50 Records</a
+          >
         </li>
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+            >100 Records</a
+          >
         </li>
       </ul>
       &nbsp;&nbsp;
@@ -487,7 +538,9 @@ export default {
       return Math.ceil(this.candidateList.length / this.itemsPerPage);
     },
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.site_name : "";
     },
     selectJobTitle() {
@@ -503,7 +556,9 @@ export default {
       return this.searchResults.slice(startIndex, endIndex);
     },
     selectShifts() {
-      const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
+      const shifts_id = this.shiftsTime.find(
+        (option) => option.id === this.shifts_id
+      );
       return shifts_id ? shifts_id.shift_name : "";
     },
     totalRecordsOnPage() {
@@ -564,7 +619,9 @@ export default {
       return this.formatDate(this.selectedDateRow[0]);
     },
     formattedEndDate() {
-      return this.formatDate(this.selectedDateRow[this.selectedDateRow.length - 1]);
+      return this.formatDate(
+        this.selectedDateRow[this.selectedDateRow.length - 1]
+      );
     },
     filteredAssignStaff() {
       return function (candidateId) {
@@ -660,49 +717,7 @@ export default {
         this.isLoading = false;
       }
     },
-    // filterData(value, filterType) {
-    //   this.filters[filterType] = value;
 
-    //   this.makeFilterAPICall();
-    // },
-
-    // async makeFilterAPICall() {
-    //   const requestData = {
-    //     availablity: this.filters.availablity,
-    //     job: this.filters.job,
-    //     site: this.filters.site,
-    //     shift: this.filters.shift,
-    //     status: this.filters.status,
-    //     date: this.formattedStartDate,
-    //   };
-
-    //   try {
-    //     const response = await axios.get(
-    //       `${VITE_API_URL}/candidates_availability_vacancies`,
-    //       {
-    //         params: {
-    //           currentPage: this.currentPage,
-    //           ...requestData,
-    //         },
-    //       }
-    //     );
-
-    //     this.candidateList = response.data.data;
-    //     this.searchResults = response.data.data;
-    //     this.vacancyList = response.data.vacancies;
-    //   } catch (error) {
-    //     if (error.response && error.response.status === 404) {
-    //       const errorMessages = error.response.data.error;
-    //       if (errorMessages === "No records found for the given filter") {
-    //         errorMessages === "No records found for the given filter";
-    //       } else {
-    //         errorMessages === "No records found for the given filter";
-    //       }
-    //     } else {
-    //       // console.error("An error occurred:", error);
-    //     }
-    //   }
-    // },
     async getTimeShift() {
       await axios
         .get(`${VITE_API_URL}/shifts`)
@@ -735,9 +750,13 @@ export default {
     extractTimeRange(shift) {
       if (shift && shift.includes("Holiday")) {
         if (shift && shift.includes("Day Shift")) {
-          return shift.replace("Holiday Day Shift", "Holiday Night Shift").split(" ")[3];
+          return shift
+            .replace("Holiday Day Shift", "Holiday Night Shift")
+            .split(" ")[3];
         } else if (shift && shift.includes("Night Shift")) {
-          return shift.replace("Holiday Night Shift", "Holiday Day Shift").split(" ")[3];
+          return shift
+            .replace("Holiday Night Shift", "Holiday Day Shift")
+            .split(" ")[3];
         }
       } else if (shift && shift.includes("Day Shift")) {
         return shift.split(" ")[2];
@@ -795,7 +814,9 @@ export default {
     updateDateRange() {
       if (this.currentView === "weekly") {
         const weekStart = new Date(this.startDate);
-        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
+        weekStart.setDate(
+          this.startDate.getDate() - this.startDate.getDay() + 1
+        );
         this.startDate = weekStart;
 
         const weekEnd = new Date(this.startDate);
@@ -803,8 +824,16 @@ export default {
         this.endDate = weekEnd;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
-        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        this.startDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          1
+        );
+        this.endDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          0
+        );
       }
 
       localStorage.setItem("startDate", this.startDate.toISOString());
@@ -881,57 +910,6 @@ export default {
     handleDragOver(event) {
       event.preventDefault();
     },
-    // async handleDrop(candidateId, date) {
-    //   try {
-    //     if (!this.vacancyBeingDragged || !this.vacancyBeingDragged.id) {
-    //       return;
-    //     }
-
-    //     const payload = {
-    //       vacancy_id: this.vacancyBeingDragged.id,
-    //       candidate_id: candidateId.candidate_id,
-    //       // date: date,
-    //     };
-
-    //     const response = await axios.post(
-    //       `${VITE_API_URL}/assign_vacancy_with_schedule`,
-    //       payload
-    //     );
-
-    //     if (response.status >= 200 && response.status < 300) {
-    //       const message = "Staff Assigned Shift Successfully";
-    //       this.$refs.successAlert.showSuccess(message);
-    //       this.fetchCandidateList();
-    //       // this.fetchAssignList();
-    //     }
-    //   } catch (error) {
-    //     let errorMessage;
-    //     if (
-    //       error.response &&
-    //       error.response.status === 422 &&
-    //       typeof error.response.data === "object" &&
-    //       error.response.data.error &&
-    //       error.response.data.error.base &&
-    //       Array.isArray(error.response.data.error.base) &&
-    //       error.response.data.error.base.length > 0
-    //     ) {
-    //       errorMessage = error.response.data.error.base[0];
-    //     } else {
-    //       errorMessage = error.response.data.error;
-    //     }
-    //     // alert(errorMessage);
-    //     Swal.fire({
-    //       icon: "error",
-    //       title: "Error",
-    //       text: errorMessage,
-    //     });
-    //   } finally {
-    //     this.vacancyBeingDragged = null;
-    //     this.dropCandidateId = null;
-    //     this.dropDay = null;
-    //     this.droppedContent = null;
-    //   }
-    // },
 
     formattedDate(day) {
       if (typeof day === "number") {
@@ -947,7 +925,10 @@ export default {
 
     getCandidateName() {
       if (this.selectedCandidate) {
-        if (this.selectedCandidate.first_name && this.selectedCandidate.last_name) {
+        if (
+          this.selectedCandidate.first_name &&
+          this.selectedCandidate.last_name
+        ) {
           return `${this.selectedCandidate.first_name} ${this.selectedCandidate.last_name}`;
         } else {
           return (
@@ -971,7 +952,9 @@ export default {
         return;
       }
       try {
-        const response = await axios.get(`${VITE_API_URL}/site_shift/${selectionSite}`);
+        const response = await axios.get(
+          `${VITE_API_URL}/site_shift/${selectionSite}`
+        );
 
         this.shiftsTime =
           response.data.site_shift_data.map((shift) => ({
@@ -1125,12 +1108,6 @@ export default {
   },
   async mounted() {
     await this.loadDateRangeFromLocalStorage();
-
-    // await this.fetchAssignList();
-    // await this.getBusinessUnitMethod();
-    // this.fetchAssignVacancyStaffList();
-    // await this.getJobTitleMethod();
-    // await this.getTimeShift();
 
     const currentDate = new Date();
     const dayOfWeek = currentDate.getDay();

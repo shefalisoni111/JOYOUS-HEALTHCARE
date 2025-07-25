@@ -80,7 +80,7 @@
       </div>
       &nbsp;&nbsp;
       <div class="col-12 wrapper-vacancy">
-        <table class="table vacancyTable">
+        <table class="table vacancyTable candidateTable">
           <thead>
             <tr>
               <th scope="col">ID</th>
@@ -624,5 +624,13 @@ select.form-select {
   pointer-events: none;
   font-size: 12px;
   color: rgb(153, 153, 153);
+}
+@media (max-width: 1120px) {
+  .candidateTable {
+    width: 1090px;
+  }
+  .wrapper-vacancy {
+    overflow-x: scroll;
+  }
 }
 </style>
