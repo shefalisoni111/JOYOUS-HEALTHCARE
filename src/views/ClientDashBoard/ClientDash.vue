@@ -110,47 +110,52 @@
             </div>
           </div>
           <div class="row mx-1">
-            <table class="table table-bordered">
-              <thead>
-                <tr>
-                  <th>Ref. Code</th>
-                  <th>Site</th>
-                  <th>Position</th>
-                  <th>Date</th>
-                  <th>Shift</th>
-                  <th>Staff Required</th>
-                  <th>Assigned</th>
-                  <th>Booking</th>
-                </tr>
-              </thead>
-              <tbody class="text-capitalize" v-if="CurrentWekShift?.length > 0">
-                <tr v-for="shift in CurrentWekShift" :key="shift.id">
-                  <td>{{ shift.ref_code }}</td>
-                  <td>{{ shift.site }}</td>
-                  <td>{{ shift.job_title }}</td>
-                  <td class="widthDefine">
-                    <span v-for="(date, index) in shift.dates" :key="index">
-                      {{ date }}
+            <div class="col-12 wrapper-timeSheet">
+              <table class="table table-bordered candidateTable">
+                <thead>
+                  <tr>
+                    <th>Ref. Code</th>
+                    <th>Site</th>
+                    <th>Position</th>
+                    <th>Date</th>
+                    <th>Shift</th>
+                    <th>Staff Required</th>
+                    <th>Assigned</th>
+                    <th>Booking</th>
+                  </tr>
+                </thead>
+                <tbody
+                  class="text-capitalize"
+                  v-if="CurrentWekShift?.length > 0"
+                >
+                  <tr v-for="shift in CurrentWekShift" :key="shift.id">
+                    <td>{{ shift.ref_code }}</td>
+                    <td>{{ shift.site }}</td>
+                    <td>{{ shift.job_title }}</td>
+                    <td class="widthDefine">
+                      <span v-for="(date, index) in shift.dates" :key="index">
+                        {{ date }}
 
-                      <template v-if="index !== shift.dates.length - 1"
-                        >,
-                      </template>
-                    </span>
-                  </td>
-                  <td>{{ shift.site_shift }}</td>
-                  <td>{{ shift.staff_required }}</td>
-                  <td>{{ shift.assigned }}</td>
-                  <td>{{ shift.accepted }}</td>
-                </tr>
-              </tbody>
-              <tbody v-else>
-                <tr>
-                  <td colspan="8" class="text-danger text-center">
-                    {{ "Not Shift Found in this Week." }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                        <template v-if="index !== shift.dates.length - 1"
+                          >,
+                        </template>
+                      </span>
+                    </td>
+                    <td>{{ shift.site_shift }}</td>
+                    <td>{{ shift.staff_required }}</td>
+                    <td>{{ shift.assigned }}</td>
+                    <td>{{ shift.accepted }}</td>
+                  </tr>
+                </tbody>
+                <tbody v-else>
+                  <tr>
+                    <td colspan="8" class="text-danger text-center">
+                      {{ "Not Shift Found in this Week." }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -395,5 +400,13 @@ h6 {
 }
 .card-border {
   border: 0.8px solid #ff5722;
+}
+@media (max-width: 1120px) {
+  .candidateTable {
+    width: 1090px;
+  }
+  .wrapper-timeSheet {
+    overflow-x: scroll;
+  }
 }
 </style>

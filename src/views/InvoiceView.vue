@@ -35,7 +35,7 @@ ul.generalsetting h6 {
   line-height: 37px;
   gap: 5px;
 }
-.action-wrapper {
+.action-wrapper position-relative {
   position: relative;
   display: inline-block;
 }

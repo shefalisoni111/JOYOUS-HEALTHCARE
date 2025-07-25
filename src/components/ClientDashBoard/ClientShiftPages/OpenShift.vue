@@ -124,12 +124,12 @@
                   class="bi bi-trash border-0 border-0 cursor-pointer btn btn-outline-danger text-nowrap"
                   v-on:click="confirmed(data.id)"
                 ></i> -->
-                <div class="action-wrapper position-relative">
+                <div class="action-wrapper position-relative position-relative">
                   <i class="bi bi-three-dots dot-icon"></i>
 
                   <div
                     v-if="selectedRow === index"
-                    class="action-menu position-absolute"
+                    class="action-menu position-absolute position-absolute"
                     style="top: 17px; left: 13px"
                   >
                     <button

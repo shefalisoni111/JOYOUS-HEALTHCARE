@@ -250,12 +250,12 @@
                             </button>
                           </td>
                           <td scope="col">
-                            <div class="action-wrapper">
+                            <div class="action-wrapper position-relative">
                               <i class="bi bi-three-dots dot-icon"></i>
 
                               <div
                                 v-if="selectedRow === index"
-                                class="action-menu"
+                                class="action-menu position-absolute"
                               >
                                 <button
                                   type="button"
@@ -446,12 +446,12 @@
                           </td>
                           <!-- <td scope="col"></td> -->
                           <td scope="col">
-                            <div class="action-wrapper">
+                            <div class="action-wrapper position-relative">
                               <i class="bi bi-three-dots dot-icon"></i>
 
                               <div
                                 v-if="selectedRow === index"
-                                class="action-menu"
+                                class="action-menu position-absolute"
                               >
                                 <button
                                   type="button"

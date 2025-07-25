@@ -371,10 +371,13 @@
                         </button>
                       </td>
                       <td scope="col">
-                        <div class="action-wrapper">
+                        <div class="action-wrapper position-relative">
                           <i class="bi bi-three-dots dot-icon"></i>
 
-                          <div v-if="selectedRow === index" class="action-menu">
+                          <div
+                            v-if="selectedRow === index"
+                            class="action-menu position-absolute"
+                          >
                             <button
                               type="button"
                               class="btn btn-default text-nowrap border-0 shadow-soft"
@@ -530,13 +533,16 @@
                       </td>
                       <td scope="col">
                         <div
-                          class="action-wrapper"
+                          class="action-wrapper position-relative"
                           @mouseenter="hover = true"
                           @mouseleave="hover = false"
                         >
                           <i class="bi bi-three-dots dot-icon"></i>
 
-                          <div v-if="hover" class="action-menu">
+                          <div
+                            v-if="hover"
+                            class="action-menu position-absolute"
+                          >
                             <button
                               type="button"
                               class="btn text-nowrap text-nowrap shadow-soft"
@@ -1412,7 +1418,7 @@ ul.nav-pills {
   border-bottom: 1px solid #b8b1b1;
 }
 
-.action-wrapper {
+.action-wrapper position-relative {
   position: relative;
   display: inline-block;
 }

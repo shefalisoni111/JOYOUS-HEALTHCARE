@@ -259,10 +259,13 @@
               >
             </td>
             <td class="cursor-pointer" style="width: 10%">
-              <div class="action-wrapper">
+              <div class="action-wrapper position-relative">
                 <i class="bi bi-three-dots dot-icon"></i>
 
-                <div v-if="selectedRow === index" class="action-menu">
+                <div
+                  v-if="selectedRow === index"
+                  class="action-menu position-absolute"
+                >
                   <button
                     type="button"
                     class="btn text-nowrap border-0"

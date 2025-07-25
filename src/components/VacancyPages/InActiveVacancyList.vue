@@ -65,10 +65,13 @@
             <td class="widthDefineNotes" v-text="data.notes"></td>
             <td v-text="data.status"></td>
             <td style="width: 10%">
-              <div class="action-wrapper">
+              <div class="action-wrapper position-relative">
                 <i class="bi bi-three-dots dot-icon"></i>
 
-                <div v-if="selectedRow === index" class="action-menu">
+                <div
+                  v-if="selectedRow === index"
+                  class="action-menu position-absolute"
+                >
                   <template v-if="isEditAllowed(data.dates)">
                     <button
                       type="button"

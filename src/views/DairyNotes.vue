@@ -167,7 +167,7 @@
                         <!-- Show action menu if not editing -->
                         <div
                           v-else
-                          class="action-wrapper position-relative"
+                          class="action-wrapper position-relative position-relative"
                           @mouseenter="selectedRow = note.id"
                           @mouseleave="selectedRow = null"
                         >
@@ -178,7 +178,7 @@
 
                           <div
                             v-if="selectedRow === note.id"
-                            class="action-menu position-absolute bg-white shadow rounded p-2"
+                            class="action-menu position-absolute position-absolute bg-white shadow rounded p-2"
                             style="right: 0; z-index: 100; width: 100px"
                           >
                             <button

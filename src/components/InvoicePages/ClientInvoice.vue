@@ -315,12 +315,12 @@
                               {{ data.email_status }}
                             </td>
                             <td>
-                              <div class="action-wrapper">
+                              <div class="action-wrapper position-relative">
                                 <i class="bi bi-three-dots dot-icon"></i>
 
                                 <div
                                   v-if="selectedRow === index"
-                                  class="action-menu"
+                                  class="action-menu position-absolute"
                                 >
                                   <router-link
                                     class="btn text-nowrap text-nowrap shadow-soft"
@@ -421,12 +421,12 @@
                               {{ data.email_status }}
                             </td>
                             <td>
-                              <div class="action-wrapper">
+                              <div class="action-wrapper position-relative">
                                 <i class="bi bi-three-dots dot-icon"></i>
 
                                 <div
                                   v-if="selectedRow === index"
-                                  class="action-menu"
+                                  class="action-menu position-absolute"
                                 >
                                   <router-link
                                     class="btn text-nowrap text-nowrap shadow-soft"

@@ -118,12 +118,12 @@
               <td scope="col">{{ data.shift }}</td>
               <td scope="col">{{ data.assigned }}</td>
               <td scope="col">
-                <div class="action-wrapper position-relative">
+                <div class="action-wrapper position-relative position-relative">
                   <i class="bi bi-three-dots dot-icon"></i>
 
                   <div
                     v-if="selectedRow === index"
-                    class="action-menu position-absolute"
+                    class="action-menu position-absolute position-absolute"
                     style="top: 17px; left: 13px"
                   >
                     <button

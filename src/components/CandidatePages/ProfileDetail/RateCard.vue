@@ -149,10 +149,13 @@
                   <td>{{ getrate.staff_rate || "Null" }}</td>
                   <td>{{ getrate.last_updated || "Null" }}</td>
                   <td class="cursor-pointer d-flex">
-                    <div class="action-wrapper">
+                    <div class="action-wrapper position-relative">
                       <i class="bi bi-three-dots dot-icon"></i>
 
-                      <div v-if="selectedRow === index" class="action-menu">
+                      <div
+                        v-if="selectedRow === index"
+                        class="action-menu position-absolute"
+                      >
                         <div class="d-flex">
                           <i
                             class="bi bi-trash border-0 border-03 cursor-pointer text-nowrap"
