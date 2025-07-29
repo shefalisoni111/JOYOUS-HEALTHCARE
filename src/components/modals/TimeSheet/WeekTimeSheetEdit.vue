@@ -1268,7 +1268,7 @@ export default {
         // const formData = new FormData();
         const payload = {
           ...this.fetchCustomTimeShetData,
-          status: "Approved",
+          //  status: "Approved",
         };
 
         delete payload.total_hours;

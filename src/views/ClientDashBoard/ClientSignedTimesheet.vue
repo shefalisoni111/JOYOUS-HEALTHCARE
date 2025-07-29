@@ -218,7 +218,7 @@
 
                           <th scope="col">Start Time</th>
                           <th scope="col">End Time</th>
-                          <th scope="col">Break</th>
+                          <!-- <th scope="col">Break</th> -->
                           <th scope="col">Total Hour</th>
                           <th scope="col">Total Cost</th>
                           <th scope="col">Type</th>
@@ -249,7 +249,7 @@
                               {{ data.end_time }}
                             </div>
                           </td>
-                          <td scope="col"></td>
+                          <!-- <td scope="col"></td> -->
                           <td scope="col">
                             <div v-for="data in data.data" :key="data.id">
                               {{ data.total_hours }}
@@ -268,7 +268,7 @@
                       <tbody v-else>
                         <tr>
                           <td
-                            colspan="10"
+                            colspan="9"
                             class="text-danger text-center"
                             v-if="!isLoading"
                           >
