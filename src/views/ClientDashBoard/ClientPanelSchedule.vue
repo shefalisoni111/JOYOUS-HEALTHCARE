@@ -123,11 +123,12 @@
                               <option value="" selected disabled>
                                 Select Jobs
                               </option>
+
                               <option
                                 id="selectJobTitle"
                                 v-for="option in options"
                                 :key="option.name"
-                                :value="option.name"
+                                :value="option.id"
                               >
                                 {{ option.name }}
                               </option>
@@ -673,8 +674,8 @@ export default {
 
       const requestData = {
         "vac_schedule[job_id]": this.filters.job || null,
-        "vac_schedule[site_id]": this.filters.site || null,
-        "vac_schedule[site_shift_id]": this.filters.shift || null,
+
+        availablity: this.filters.availablity || null,
       };
 
       const token = localStorage.getItem("token");
