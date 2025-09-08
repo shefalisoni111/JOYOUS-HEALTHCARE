@@ -13,7 +13,7 @@
       <div class="d-flex align-items-center">
         <button
           v-if="activeTab === 'active'"
-          class="btn btn-primary rounded-4 fw-medium text-capitalize"
+          class="btn btn-primary rounded-4 fw-medium text-capitalize btn-bg-color"
           data-bs-toggle="modal"
           data-bs-target="#myModal"
           data-bs-whatever="@mdo"
@@ -97,23 +97,17 @@
                     />
                   </th>
                   <th scope="col" class="bg-primary text-white">
-                    <div
-                      class="d-flex justify-content-center align-items-center gap-1"
-                    >
+                    <div class="d-flex justify-content-center align-items-center gap-1">
                       Job Code
                     </div>
                   </th>
                   <th scope="col" class="bg-primary text-white">
-                    <div
-                      class="d-flex justify-content-center align-items-center gap-1"
-                    >
+                    <div class="d-flex justify-content-center align-items-center gap-1">
                       No. of Clients
                     </div>
                   </th>
                   <th scope="col" class="bg-primary text-white text-center">
-                    <div
-                      class="d-flex justify-content-center align-items-center gap-1"
-                    >
+                    <div class="d-flex justify-content-center align-items-center gap-1">
                       <span>No. of Staff</span>
                       <img
                         src="../../assets/ArrowDown.png"
@@ -125,9 +119,7 @@
                     </div>
                   </th>
                   <th scope="col" class="bg-primary text-white">
-                    <div
-                      class="d-flex justify-content-center align-items-center gap-1"
-                    >
+                    <div class="d-flex justify-content-center align-items-center gap-1">
                       No. of Documents
                     </div>
                   </th>
@@ -146,10 +138,7 @@
                 <tr v-for="jobs in paginateSiteData" :key="jobs.id">
                   <td v-text="jobs.id"></td>
                   <td scope="row">
-                    <i
-                      class="bi bi-square-fill"
-                      :style="{ color: jobs.color }"
-                    ></i>
+                    <i class="bi bi-square-fill" :style="{ color: jobs.color }"></i>
                   </td>
                   <td class="text-capitalize" v-text="jobs.name"></td>
                   <td v-text="jobs.job_code"></td>
@@ -172,11 +161,7 @@
               </tbody>
               <tbody v-else>
                 <tr>
-                  <td
-                    colspan="8"
-                    class="text-center text-danger"
-                    v-if="!isLoading"
-                  >
+                  <td colspan="8" class="text-center text-danger" v-if="!isLoading">
                     {{ "Data Not Found!" }}
                   </td>
                 </tr>
@@ -231,9 +216,7 @@
                   />
                 </th>
                 <th scope="col" class="bg-primary text-white">
-                  <div
-                    class="d-flex justify-content-center align-items-center gap-1"
-                  >
+                  <div class="d-flex justify-content-center align-items-center gap-1">
                     No. of Vendor
                     <img
                       src="../../assets/ArrowDown.png"
@@ -244,9 +227,7 @@
                   </div>
                 </th>
                 <th scope="col" class="bg-primary text-white">
-                  <div
-                    class="d-flex justify-content-center align-items-center gap-1"
-                  >
+                  <div class="d-flex justify-content-center align-items-center gap-1">
                     No. of Staff
 
                     <img
@@ -258,9 +239,7 @@
                   </div>
                 </th>
                 <th scope="col" class="bg-primary text-white">
-                  <div
-                    class="d-flex justify-content-center align-items-center gap-1"
-                  >
+                  <div class="d-flex justify-content-center align-items-center gap-1">
                     No. of Documents
                     <img
                       src="../../assets/ArrowDown.png"
@@ -290,10 +269,7 @@
               >
                 <td v-text="jobs.id"></td>
                 <td scope="row">
-                  <i
-                    class="bi bi-square-fill"
-                    :style="{ color: jobs.color }"
-                  ></i>
+                  <i class="bi bi-square-fill" :style="{ color: jobs.color }"></i>
                 </td>
                 <td class="text-capitalize" v-text="jobs.name"></td>
                 <td v-text="jobs.job_code"></td>
@@ -337,10 +313,7 @@
                         data-bs-whatever="@mdo"
                         v-on:click="jobsEdit(jobs.id)"
                       >
-                        <i
-                          class="bi bi-pencil-square"
-                          style="color: #f9944b"
-                        ></i>
+                        <i class="bi bi-pencil-square" style="color: #f9944b"></i>
                         Edit
                       </button>
                       <button
@@ -360,11 +333,7 @@
             </tbody>
             <tbody v-else>
               <tr>
-                <td
-                  colspan="8"
-                  class="text-center text-danger"
-                  v-if="!isLoading"
-                >
+                <td colspan="8" class="text-center text-danger" v-if="!isLoading">
                   {{ "Data Not Found!" }}
                 </td>
               </tr>
@@ -392,14 +361,10 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
-              >20 Records</a
-            >
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
-              >50 Records</a
-            >
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
           </li>
           <li>
             <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
@@ -551,9 +516,7 @@ export default {
 
       this.confirmCallback = async () => {
         try {
-          const response = await axios.put(
-            `${VITE_API_URL}/inactivate_job/` + id
-          );
+          const response = await axios.put(`${VITE_API_URL}/inactivate_job/` + id);
           this.getJobData();
           this.getInactiveJobData();
 
@@ -583,24 +546,7 @@ export default {
     closeModal() {
       this.showModal = false;
     },
-    // jobsInActive(id) {
-    //   if (!window.confirm("Are you Sure ?")) {
-    //     return;
-    //   }
-    //   axios.put(`${VITE_API_URL}/inactivate_job/` + id).then((response) => {
-    //     this.getJobData();
-    //     this.getInactiveJobData();
-    //     if (response.data.message) {
-    //       // alert(response.data.message);
-    //       const message = response.data.message;
-    //       this.$refs.successAlert.showSuccess(message);
-    //     } else {
-    //       // alert("");
-    //       const message = "Record Inactivated  successfully";
-    //       this.$refs.successAlert.showSuccess(message);
-    //     }
-    //   });
-    // },
+
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;
@@ -629,20 +575,6 @@ export default {
         this.isLoading = false;
       }
     },
-    // async getInactiveDataMethod() {
-    //   await axios
-    //     .get(`${VITE_API_URL}/inactive_job_list`)
-    //     .then((response) => {
-    //       // this.getInactiveJobData();
-    //     })
-    //     .catch((error) => {
-    //       if (error.response) {
-    //         if (error.response.status == 404) {
-    //           // alert(error.response.data.message);
-    //         }
-    //       }
-    //     });
-    // },
   },
   beforeRouteUpdate(to, from, next) {
     this.getJobData();
@@ -657,7 +589,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 td i.bi-trash {
   border: 1px solid #9e9e9e;
   padding: 3px 15px;
@@ -670,13 +602,7 @@ td i.bi-trash {
   background: #e8e3e3;
   margin-left: 4px;
 }
-.nav-pills .nav-link.active {
-  color: #ff5722;
-  border-bottom: 2px solid #ff5722;
-  border-radius: 0;
-  background-color: transparent;
-  font-weight: bold;
-}
+
 .nav-pills {
   border-bottom: 1px solid #ddd6d6;
 }

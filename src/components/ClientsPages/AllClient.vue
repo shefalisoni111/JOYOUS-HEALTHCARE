@@ -98,51 +98,55 @@
           </li>
         </ul>
       </div>
+      <div class="dropdown">
+        <input
+          ref="fileInput"
+          id="fileAll"
+          type="file"
+          accept=".csv"
+          style="display: none"
+          @change="handleFileUpload"
+        />
+        &nbsp;
+        <button
+          class="nav-item dropdown btn btn-lg btn-outline-success text-nowrap dropdown-toggle"
+          type="button"
+          id="navbarDropdown"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Export
 
-      <input
-        ref="fileInput"
-        id="fileAll"
-        type="file"
-        accept=".csv"
-        style="display: none"
-        @change="handleFileUpload"
-      />
-      &nbsp;
-      <button
-        class="nav-item dropdown btn btn-outline-success text-nowrap dropdown-toggle"
-        type="button"
-        id="navbarDropdown"
-        role="button"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        Export
-
-        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <li>
-            <label
-              for="fileAll"
-              class="custom-file-label dropdown-item"
-              style="border-radius: 0px; cursor: pointer"
-              @click="triggerFileInput"
-            >
-              Import
-            </label>
-          </li>
-          <li><hr class="dropdown-divider" /></li>
-          <li>
-            <a class="dropdown-item" href="#" @click="exportOneFile('selected')"
-              >Export</a
-            >
-          </li>
-          <li><hr class="dropdown-divider" /></li>
-          <li>
-            <a class="dropdown-item" href="#" @click="exportOneFile('all')"
-              >Export All</a
-            >
-          </li>
-        </ul>
-      </button>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li>
+              <label
+                for="fileAll"
+                class="custom-file-label dropdown-item"
+                style="border-radius: 0px; cursor: pointer"
+                @click="triggerFileInput"
+              >
+                Import
+              </label>
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <a
+                class="dropdown-item"
+                href="#"
+                @click="exportOneFile('selected')"
+                >Export</a
+              >
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <a class="dropdown-item" href="#" @click="exportOneFile('all')"
+                >Export All</a
+              >
+            </li>
+          </ul>
+        </button>
+      </div>
     </div>
 
     <div class="table-wrapper w-100" style="margin-top: -30px">
@@ -151,14 +155,14 @@
           <tr>
             <th scope="col"></th>
             <th scope="col">#RefCode</th>
-            <th scope="col">Client Name</th>
+            <th scope="col" style="width: 10%">Client Name</th>
             <th scope="col" style="width: 10%">Jobs</th>
             <th scope="col" style="width: 10%">Address</th>
             <th scope="col">PhoneNumber</th>
             <th scope="col" style="width: 10%">Email</th>
             <th scope="col">Status</th>
             <th scope="col">Portal Access</th>
-            <th scope="col">Action</th>
+            <th scope="col" style="width: 10%">Action</th>
           </tr>
         </thead>
         <tbody v-if="getClientDetail?.length > 0">

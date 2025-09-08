@@ -88,7 +88,7 @@
               Cancel
             </button>
             <button
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              class="btn btn-primary rounded-4 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               v-on:click="addDeductionMethod()"
               :disabled="isFormInvalid"

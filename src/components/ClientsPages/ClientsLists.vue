@@ -19,9 +19,7 @@
             <div class="">
               <ol class="breadcrumb mb-1">
                 <li class="breadcrumb-item active">
-                  <a
-                    class="nav-link d-inline fs-4 fw-bolder"
-                    style="color: #000000"
+                  <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
                     >All Clients</a
                   >
                   <p>
@@ -41,8 +39,7 @@
               <button
                 v-if="activeTab === 0"
                 type="button"
-                class="btn btn-lg text-nowrap"
-                style="background: #f9944b; color: #fff"
+                class="btn btn-lg text-nowrap btn-bg-color"
                 data-bs-toggle="modal"
                 data-bs-target="#addClients"
                 data-bs-whatever="@mdo"
@@ -115,10 +112,7 @@
                           </tr>
                         </thead>
                         <tbody v-if="paginateSearchResults?.length > 0">
-                          <tr
-                            v-for="client in paginateSearchResults"
-                            :key="client.id"
-                          >
+                          <tr v-for="client in paginateSearchResults" :key="client.id">
                             <td v-text="client.id"></td>
                             <td v-text="client.ref_code"></td>
                             <td>
@@ -142,9 +136,7 @@
                               >
                                 {{ job.job_name }}
 
-                                <template
-                                  v-if="index !== client.jobs.length - 1"
-                                >
+                                <template v-if="index !== client.jobs.length - 1">
                                 </template>
                               </span>
                             </td>
@@ -155,10 +147,7 @@
                             <td v-text="client.email"></td>
 
                             <td>
-                              <label
-                                class="switch"
-                                v-if="client.activated == true"
-                              >
+                              <label class="switch" v-if="client.activated == true">
                                 <input type="checkbox" id="togBtn" checked />
                                 <div class="slider round"></div>
                               </label>
@@ -201,9 +190,7 @@
                         <tbody v-else>
                           <tr>
                             <td colspan="10" class="text-danger text-center">
-                              {{
-                                " No candidates found for the specified criteria"
-                              }}
+                              {{ " No candidates found for the specified criteria" }}
                             </td>
                           </tr>
                         </tbody>
@@ -413,9 +400,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      const matchingTabIndex = vm.tabs.findIndex(
-        (tab) => tab.routeName === to.name
-      );
+      const matchingTabIndex = vm.tabs.findIndex((tab) => tab.routeName === to.name);
 
       if (matchingTabIndex !== -1) {
         vm.activeTab = matchingTabIndex;
@@ -424,9 +409,7 @@ export default {
     });
   },
   beforeRouteUpdate(to, from, next) {
-    const matchingTabIndex = this.tabs.findIndex(
-      (tab) => tab.routeName === to.name
-    );
+    const matchingTabIndex = this.tabs.findIndex((tab) => tab.routeName === to.name);
 
     if (matchingTabIndex !== -1) {
       this.activeTab = matchingTabIndex;
@@ -474,6 +457,10 @@ ul.nav-pills .nav-item {
 .color-fonts {
   color: #ff5f30;
   font-weight: bold;
+}
+.btn-bg-color {
+  background: rgb(82 115 45);
+  color: rgb(255, 255, 255);
 }
 .badge {
   background: #ffc107;

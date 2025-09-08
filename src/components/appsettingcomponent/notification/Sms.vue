@@ -83,7 +83,7 @@
                             </div>
                           </div>
                           <router-link
-                            class="btn btn-primary rounded-1 text-capitalize fw-medium"
+                            class="btn btn-primary rounded-4 text-capitalize fw-medium"
                             type="button"
                             to="/appsetting/notificationsetting/ActivatePayment"
                           >
@@ -132,13 +132,7 @@ export default {
 .nav-pills .nav-link {
   color: #302d2c;
 }
-.nav-pills .nav-link.active {
-  color: #ff5722;
-  border-bottom: 2px solid #ff5722;
-  border-radius: 0;
-  background-color: transparent;
-  font-weight: bold;
-}
+
 .clr {
   color: #ff5722;
 }

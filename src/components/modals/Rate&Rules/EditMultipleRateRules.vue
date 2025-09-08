@@ -41,7 +41,9 @@
                   </div>
 
                   <div class="col-4">
-                    <label class="form-label" for="selectBusinessUnit">Site</label>
+                    <label class="form-label" for="selectBusinessUnit"
+                      >Site</label
+                    >
 
                     <select
                       v-model="ratesArray[0].site_id"
@@ -137,7 +139,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -189,7 +193,13 @@
                           class="form-control w-100"
                           v-model="ratesArray[0].client_rate"
                           @change="handleClientRateChange($event, 0)"
-                          @input="handleInput(`clientRate`, 0, ratesArray[0].client_rate)"
+                          @input="
+                            handleInput(
+                              `clientRate`,
+                              0,
+                              ratesArray[0].client_rate
+                            )
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -245,7 +255,11 @@
                           v-model="ratesArray[0].self_employed"
                           @change="handleClientRateChange($event, 0)"
                           @input="
-                            handleInput(`selfEmployee`, 0, ratesArray[0].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              0,
+                              ratesArray[0].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -269,7 +283,9 @@
                           class="form-control w-100"
                           v-model="ratesArray[0].umbrella"
                           @change="handleClientRateChange($event, 0)"
-                          @input="handleInput(`umbrella`, 0, ratesArray[0].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 0, ratesArray[0].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -341,7 +357,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -396,7 +414,13 @@
                           v-model="ratesArray[1].client_rate"
                           :disabled="ratesArray[1].split_rate"
                           @change="handleClientRateChange($event, 0)"
-                          @input="handleInput(`clientRate`, 1, ratesArray[1].client_rate)"
+                          @input="
+                            handleInput(
+                              `clientRate`,
+                              1,
+                              ratesArray[1].client_rate
+                            )
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -456,7 +480,11 @@
                           :disabled="ratesArray[1].split_rate"
                           @change="handleClientRateChange($event, 0)"
                           @input="
-                            handleInput(`selfEmployee`, 1, ratesArray[1].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              1,
+                              ratesArray[1].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -482,7 +510,9 @@
                           v-model="ratesArray[1].umbrella"
                           :disabled="ratesArray[1].split_rate"
                           @change="handleClientRateChange($event, 0)"
-                          @input="handleInput(`umbrella`, 1, ratesArray[1].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 1, ratesArray[1].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -556,7 +586,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -605,7 +637,13 @@
                           type="text"
                           class="form-control w-100"
                           v-model="ratesArray[2].client_rate"
-                          @input="handleInput(`clientRate`, 2, ratesArray[2].client_rate)"
+                          @input="
+                            handleInput(
+                              `clientRate`,
+                              2,
+                              ratesArray[2].client_rate
+                            )
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -657,7 +695,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[2].self_employed"
                           @input="
-                            handleInput(`selfEmployee`, 2, ratesArray[2].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              2,
+                              ratesArray[2].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -676,7 +718,9 @@
                           type="text"
                           class="form-control w-100"
                           v-model="ratesArray[2].umbrella"
-                          @input="handleInput(`umbrella`, 2, ratesArray[2].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 2, ratesArray[2].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -743,7 +787,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -795,7 +841,13 @@
                           class="form-control w-100"
                           v-model="ratesArray[3].client_rate"
                           :disabled="ratesArray[3].split_rate"
-                          @input="handleInput(`clientRate`, 3, ratesArray[3].client_rate)"
+                          @input="
+                            handleInput(
+                              `clientRate`,
+                              3,
+                              ratesArray[3].client_rate
+                            )
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -851,7 +903,11 @@
                           v-model="ratesArray[3].self_employed"
                           :disabled="ratesArray[3].split_rate"
                           @input="
-                            handleInput(`selfEmployee`, 3, ratesArray[3].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              3,
+                              ratesArray[3].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -875,7 +931,9 @@
                           class="form-control w-100"
                           v-model="ratesArray[3].umbrella"
                           :disabled="ratesArray[3].split_rate"
-                          @input="handleInput(`umbrella`, 3, ratesArray[3].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 3, ratesArray[3].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -961,7 +1019,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -1010,7 +1070,13 @@
                           type="text"
                           class="form-control w-100"
                           v-model="ratesArray[4].client_rate"
-                          @input="handleInput(`clientRate`, 4, ratesArray[4].client_rate)"
+                          @input="
+                            handleInput(
+                              `clientRate`,
+                              4,
+                              ratesArray[4].client_rate
+                            )
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -1062,7 +1128,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[4].self_employed"
                           @input="
-                            handleInput(`selfEmployee`, 4, ratesArray[4].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              4,
+                              ratesArray[4].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -1081,7 +1151,9 @@
                           type="text"
                           class="form-control w-100"
                           v-model="ratesArray[4].umbrella"
-                          @input="handleInput(`umbrella`, 4, ratesArray[4].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 4, ratesArray[4].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -1148,7 +1220,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -1200,7 +1274,13 @@
                           class="form-control w-100"
                           v-model="ratesArray[5].client_rate"
                           :disabled="ratesArray[5].split_rate"
-                          @input="handleInput(`clientRate`, 5, ratesArray[5].client_rate)"
+                          @input="
+                            handleInput(
+                              `clientRate`,
+                              5,
+                              ratesArray[5].client_rate
+                            )
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -1256,7 +1336,11 @@
                           v-model="ratesArray[5].self_employed"
                           :disabled="ratesArray[5].split_rate"
                           @input="
-                            handleInput(`selfEmployee`, 5, ratesArray[5].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              5,
+                              ratesArray[5].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -1280,7 +1364,9 @@
                           class="form-control w-100"
                           v-model="ratesArray[5].umbrella"
                           :disabled="ratesArray[5].split_rate"
-                          @input="handleInput(`umbrella`, 5, ratesArray[5].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 5, ratesArray[5].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -1352,7 +1438,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -1401,7 +1489,13 @@
                           type="text"
                           class="form-control w-100"
                           v-model="ratesArray[6].client_rate"
-                          @input="handleInput(`clientRate`, 6, ratesArray[6].client_rate)"
+                          @input="
+                            handleInput(
+                              `clientRate`,
+                              6,
+                              ratesArray[6].client_rate
+                            )
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -1453,7 +1547,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[6].self_employed"
                           @input="
-                            handleInput(`selfEmployee`, 6, ratesArray[6].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              6,
+                              ratesArray[6].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -1472,7 +1570,9 @@
                           type="text"
                           class="form-control w-100"
                           v-model="ratesArray[6].umbrella"
-                          @input="handleInput(`umbrella`, 6, ratesArray[6].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 6, ratesArray[6].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -1539,7 +1639,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -1591,7 +1693,13 @@
                           class="form-control w-100"
                           v-model="ratesArray[7].client_rate"
                           :disabled="ratesArray[7].split_rate"
-                          @input="handleInput(`clientRate`, 7, ratesArray[7].client_rate)"
+                          @input="
+                            handleInput(
+                              `clientRate`,
+                              7,
+                              ratesArray[7].client_rate
+                            )
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -1646,7 +1754,11 @@
                           v-model="ratesArray[7].self_employed"
                           :disabled="ratesArray[7].split_rate"
                           @input="
-                            handleInput(`selfEmployee`, 7, ratesArray[7].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              7,
+                              ratesArray[7].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -1670,7 +1782,9 @@
                           class="form-control w-100"
                           v-model="ratesArray[7].umbrella"
                           :disabled="ratesArray[7].split_rate"
-                          @input="handleInput(`umbrella`, 7, ratesArray[7].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 7, ratesArray[7].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -1756,7 +1870,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -1795,7 +1911,13 @@
                           type="text"
                           class="form-control w-100"
                           v-model="ratesArray[8].client_rate"
-                          @input="handleInput(`clientRate`, 8, ratesArray[8].client_rate)"
+                          @input="
+                            handleInput(
+                              `clientRate`,
+                              8,
+                              ratesArray[8].client_rate
+                            )
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -1827,7 +1949,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[8].self_employed"
                           @input="
-                            handleInput(`selfEmployee`, 8, ratesArray[8].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              8,
+                              ratesArray[8].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -1839,7 +1965,9 @@
                           type="text"
                           class="form-control w-100"
                           v-model="ratesArray[8].umbrella"
-                          @input="handleInput(`umbrella`, 8, ratesArray[8].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 8, ratesArray[8].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -1899,7 +2027,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -1940,7 +2070,13 @@
                           class="form-control w-100"
                           v-model="ratesArray[9].client_rate"
                           :disabled="ratesArray[9].split_rate"
-                          @input="handleInput(`clientRate`, 9, ratesArray[9].client_rate)"
+                          @input="
+                            handleInput(
+                              `clientRate`,
+                              9,
+                              ratesArray[9].client_rate
+                            )
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -1985,7 +2121,11 @@
                           v-model="ratesArray[9].self_employed"
                           :disabled="ratesArray[9].split_rate"
                           @input="
-                            handleInput(`selfEmployee`, 9, ratesArray[9].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              9,
+                              ratesArray[9].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -2009,7 +2149,9 @@
                           class="form-control w-100"
                           v-model="ratesArray[9].umbrella"
                           :disabled="ratesArray[9].split_rate"
-                          @input="handleInput(`umbrella`, 9, ratesArray[9].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 9, ratesArray[9].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -2081,7 +2223,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -2121,7 +2265,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[10].client_rate"
                           @input="
-                            handleInput(`clientRate`, 10, ratesArray[10].client_rate)
+                            handleInput(
+                              `clientRate`,
+                              10,
+                              ratesArray[10].client_rate
+                            )
                           "
                           maxlength="3"
                         />
@@ -2154,7 +2302,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[10].self_employed"
                           @input="
-                            handleInput(`selfEmployee`, 10, ratesArray[10].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              10,
+                              ratesArray[10].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -2166,7 +2318,9 @@
                           type="text"
                           class="form-control w-100"
                           v-model="ratesArray[10].umbrella"
-                          @input="handleInput(`umbrella`, 10, ratesArray[10].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 10, ratesArray[10].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -2226,7 +2380,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -2279,7 +2435,11 @@
                           v-model="ratesArray[11].client_rate"
                           :disabled="ratesArray[11].holiday_split_rate"
                           @input="
-                            handleInput(`clientRate`, 11, ratesArray[11].client_rate)
+                            handleInput(
+                              `clientRate`,
+                              11,
+                              ratesArray[11].client_rate
+                            )
                           "
                           maxlength="3"
                         />
@@ -2336,7 +2496,11 @@
                           v-model="ratesArray[11].self_employed"
                           :disabled="ratesArray[11].holiday_split_rate"
                           @input="
-                            handleInput(`selfEmployee`, 11, ratesArray[11].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              11,
+                              ratesArray[11].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -2360,7 +2524,9 @@
                           class="form-control w-100"
                           v-model="ratesArray[11].umbrella"
                           :disabled="ratesArray[11].holiday_split_rate"
-                          @input="handleInput(`umbrella`, 11, ratesArray[11].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 11, ratesArray[11].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -2446,7 +2612,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -2486,7 +2654,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[12].client_rate"
                           @input="
-                            handleInput(`clientRate`, 12, ratesArray[12].client_rate)
+                            handleInput(
+                              `clientRate`,
+                              12,
+                              ratesArray[12].client_rate
+                            )
                           "
                           maxlength="3"
                         />
@@ -2519,7 +2691,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[12].self_employed"
                           @input="
-                            handleInput(`selfEmployee`, 12, ratesArray[12].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              12,
+                              ratesArray[12].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -2531,7 +2707,9 @@
                           type="text"
                           class="form-control w-100"
                           v-model="ratesArray[12].umbrella"
-                          @input="handleInput(`umbrella`, 12, ratesArray[12].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 12, ratesArray[12].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -2591,7 +2769,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -2644,7 +2824,11 @@
                           v-model="ratesArray[13].client_rate"
                           :disabled="ratesArray[13].holiday_split_rate"
                           @input="
-                            handleInput(`clientRate`, 13, ratesArray[13].client_rate)
+                            handleInput(
+                              `clientRate`,
+                              13,
+                              ratesArray[13].client_rate
+                            )
                           "
                           maxlength="3"
                         />
@@ -2701,7 +2885,11 @@
                           v-model="ratesArray[13].self_employed"
                           :disabled="ratesArray[13].holiday_split_rate"
                           @input="
-                            handleInput(`selfEmployee`, 13, ratesArray[13].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              13,
+                              ratesArray[13].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -2725,7 +2913,9 @@
                           class="form-control w-100"
                           v-model="ratesArray[13].umbrella"
                           :disabled="ratesArray[13].holiday_split_rate"
-                          @input="handleInput(`umbrella`, 13, ratesArray[13].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 13, ratesArray[13].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -2797,7 +2987,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -2850,7 +3042,11 @@
                           v-model="ratesArray[14].client_rate"
                           :disabled="ratesArray[14].holiday_split_rate"
                           @input="
-                            handleInput(`clientRate`, 14, ratesArray[14].client_rate)
+                            handleInput(
+                              `clientRate`,
+                              14,
+                              ratesArray[14].client_rate
+                            )
                           "
                           maxlength="3"
                         />
@@ -2907,7 +3103,11 @@
                           v-model="ratesArray[14].self_employed"
                           :disabled="ratesArray[14].holiday_split_rate"
                           @input="
-                            handleInput(`selfEmployee`, 14, ratesArray[14].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              14,
+                              ratesArray[14].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -2931,7 +3131,9 @@
                           class="form-control w-100"
                           v-model="ratesArray[14].umbrella"
                           :disabled="ratesArray[14].holiday_split_rate"
-                          @input="handleInput(`umbrella`, 14, ratesArray[14].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 14, ratesArray[14].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -3003,7 +3205,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -3056,7 +3260,11 @@
                           v-model="ratesArray[15].client_rate"
                           :disabled="ratesArray[15].holiday_split_rate"
                           @input="
-                            handleInput(`clientRate`, 15, ratesArray[15].client_rate)
+                            handleInput(
+                              `clientRate`,
+                              15,
+                              ratesArray[15].client_rate
+                            )
                           "
                           maxlength="3"
                         />
@@ -3113,7 +3321,11 @@
                           v-model="ratesArray[15].self_employed"
                           :disabled="ratesArray[15].holiday_split_rate"
                           @input="
-                            handleInput(`selfEmployee`, 15, ratesArray[15].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              15,
+                              ratesArray[15].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -3137,7 +3349,9 @@
                           class="form-control w-100"
                           v-model="ratesArray[15].umbrella"
                           :disabled="ratesArray[15].holiday_split_rate"
-                          @input="handleInput(`umbrella`, 15, ratesArray[15].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 15, ratesArray[15].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -3222,7 +3436,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -3262,7 +3478,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[16].client_rate"
                           @input="
-                            handleInput(`clientRate`, 12, ratesArray[16].client_rate)
+                            handleInput(
+                              `clientRate`,
+                              12,
+                              ratesArray[16].client_rate
+                            )
                           "
                           maxlength="3"
                         />
@@ -3295,7 +3515,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[16].self_employed"
                           @input="
-                            handleInput(`selfEmployee`, 16, ratesArray[16].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              16,
+                              ratesArray[16].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -3307,7 +3531,9 @@
                           type="text"
                           class="form-control w-100"
                           v-model="ratesArray[16].umbrella"
-                          @input="handleInput(`umbrella`, 16, ratesArray[16].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 16, ratesArray[16].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -3367,7 +3593,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -3407,7 +3635,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[17].client_rate"
                           @input="
-                            handleInput(`clientRate`, 17, ratesArray[17].client_rate)
+                            handleInput(
+                              `clientRate`,
+                              17,
+                              ratesArray[17].client_rate
+                            )
                           "
                           maxlength="3"
                         />
@@ -3440,7 +3672,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[17].self_employed"
                           @input="
-                            handleInput(`selfEmployee`, 17, ratesArray[17].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              17,
+                              ratesArray[17].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -3452,7 +3688,9 @@
                           type="text"
                           class="form-control w-100"
                           v-model="ratesArray[17].umbrella"
-                          @input="handleInput(`umbrella`, 17, ratesArray[17].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 17, ratesArray[17].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -3512,7 +3750,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -3552,7 +3792,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[18].client_rate"
                           @input="
-                            handleInput(`clientRate`, 18, ratesArray[18].client_rate)
+                            handleInput(
+                              `clientRate`,
+                              18,
+                              ratesArray[18].client_rate
+                            )
                           "
                           maxlength="3"
                         />
@@ -3585,7 +3829,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[18].self_employed"
                           @input="
-                            handleInput(`selfEmployee`, 18, ratesArray[18].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              18,
+                              ratesArray[18].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -3597,7 +3845,9 @@
                           type="text"
                           class="form-control w-100"
                           v-model="ratesArray[18].umbrella"
-                          @input="handleInput(`umbrella`, 18, ratesArray[18].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 18, ratesArray[18].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -3657,7 +3907,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -3697,7 +3949,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[19].client_rate"
                           @input="
-                            handleInput(`clientRate`, 19, ratesArray[19].client_rate)
+                            handleInput(
+                              `clientRate`,
+                              19,
+                              ratesArray[19].client_rate
+                            )
                           "
                           maxlength="3"
                         />
@@ -3730,7 +3986,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[19].self_employed"
                           @input="
-                            handleInput(`selfEmployee`, 19, ratesArray[19].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              19,
+                              ratesArray[19].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -3742,7 +4002,9 @@
                           type="text"
                           class="form-control w-100"
                           v-model="ratesArray[19].umbrella"
-                          @input="handleInput(`umbrella`, 19, ratesArray[19].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 19, ratesArray[19].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -3815,7 +4077,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -3855,7 +4119,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[20].client_rate"
                           @input="
-                            handleInput(`clientRate`, 20, ratesArray[20].client_rate)
+                            handleInput(
+                              `clientRate`,
+                              20,
+                              ratesArray[20].client_rate
+                            )
                           "
                           maxlength="3"
                         />
@@ -3888,7 +4156,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[20].self_employed"
                           @input="
-                            handleInput(`selfEmployee`, 20, ratesArray[20].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              20,
+                              ratesArray[20].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -3900,7 +4172,9 @@
                           type="text"
                           class="form-control w-100"
                           v-model="ratesArray[20].umbrella"
-                          @input="handleInput(`umbrella`, 20, ratesArray[20].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 20, ratesArray[20].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -3960,7 +4234,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -4000,7 +4276,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[21].client_rate"
                           @input="
-                            handleInput(`clientRate`, 21, ratesArray[21].client_rate)
+                            handleInput(
+                              `clientRate`,
+                              21,
+                              ratesArray[21].client_rate
+                            )
                           "
                           maxlength="3"
                         />
@@ -4033,7 +4313,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[21].self_employed"
                           @input="
-                            handleInput(`selfEmployee`, 21, ratesArray[21].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              21,
+                              ratesArray[21].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -4045,7 +4329,9 @@
                           type="text"
                           class="form-control w-100"
                           v-model="ratesArray[21].umbrella"
-                          @input="handleInput(`umbrella`, 21, ratesArray[21].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 21, ratesArray[21].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -4105,7 +4391,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -4145,7 +4433,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[22].client_rate"
                           @input="
-                            handleInput(`clientRate`, 22, ratesArray[22].client_rate)
+                            handleInput(
+                              `clientRate`,
+                              22,
+                              ratesArray[22].client_rate
+                            )
                           "
                           maxlength="3"
                         />
@@ -4178,7 +4470,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[22].self_employed"
                           @input="
-                            handleInput(`selfEmployee`, 22, ratesArray[22].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              22,
+                              ratesArray[22].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -4190,7 +4486,9 @@
                           type="text"
                           class="form-control w-100"
                           v-model="ratesArray[22].umbrella"
-                          @input="handleInput(`umbrella`, 22, ratesArray[22].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 22, ratesArray[22].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -4250,7 +4548,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -4290,7 +4590,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[23].client_rate"
                           @input="
-                            handleInput(`clientRate`, 23, ratesArray[23].client_rate)
+                            handleInput(
+                              `clientRate`,
+                              23,
+                              ratesArray[23].client_rate
+                            )
                           "
                           maxlength="3"
                         />
@@ -4323,7 +4627,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[23].self_employed"
                           @input="
-                            handleInput(`selfEmployee`, 23, ratesArray[23].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              23,
+                              ratesArray[23].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -4335,7 +4643,9 @@
                           type="text"
                           class="form-control w-100"
                           v-model="ratesArray[23].umbrella"
-                          @input="handleInput(`umbrella`, 23, ratesArray[23].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 23, ratesArray[23].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -4408,7 +4718,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -4448,7 +4760,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[24].client_rate"
                           @input="
-                            handleInput(`clientRate`, 24, ratesArray[24].client_rate)
+                            handleInput(
+                              `clientRate`,
+                              24,
+                              ratesArray[24].client_rate
+                            )
                           "
                           maxlength="3"
                         />
@@ -4481,7 +4797,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[24].self_employed"
                           @input="
-                            handleInput(`selfEmployee`, 24, ratesArray[24].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              24,
+                              ratesArray[24].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -4493,7 +4813,9 @@
                           type="text"
                           class="form-control w-100"
                           v-model="ratesArray[24].umbrella"
-                          @input="handleInput(`umbrella`, 24, ratesArray[24].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 24, ratesArray[24].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -4553,7 +4875,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -4593,7 +4917,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[25].client_rate"
                           @input="
-                            handleInput(`clientRate`, 25, ratesArray[25].client_rate)
+                            handleInput(
+                              `clientRate`,
+                              25,
+                              ratesArray[25].client_rate
+                            )
                           "
                           maxlength="3"
                         />
@@ -4626,7 +4954,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[25].self_employed"
                           @input="
-                            handleInput(`selfEmployee`, 25, ratesArray[25].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              25,
+                              ratesArray[25].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -4638,7 +4970,9 @@
                           type="text"
                           class="form-control w-100"
                           v-model="ratesArray[25].umbrella"
-                          @input="handleInput(`umbrella`, 25, ratesArray[25].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 25, ratesArray[25].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -4698,7 +5032,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -4738,7 +5074,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[26].client_rate"
                           @input="
-                            handleInput(`clientRate`, 26, ratesArray[26].client_rate)
+                            handleInput(
+                              `clientRate`,
+                              26,
+                              ratesArray[26].client_rate
+                            )
                           "
                           maxlength="3"
                         />
@@ -4771,7 +5111,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[26].self_employed"
                           @input="
-                            handleInput(`selfEmployee`, 26, ratesArray[26].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              26,
+                              ratesArray[26].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -4783,7 +5127,9 @@
                           type="text"
                           class="form-control w-100"
                           v-model="ratesArray[26].umbrella"
-                          @input="handleInput(`umbrella`, 26, ratesArray[26].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 26, ratesArray[26].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -4843,7 +5189,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -4883,7 +5231,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[27].client_rate"
                           @input="
-                            handleInput(`clientRate`, 27, ratesArray[27].client_rate)
+                            handleInput(
+                              `clientRate`,
+                              27,
+                              ratesArray[27].client_rate
+                            )
                           "
                           maxlength="3"
                         />
@@ -4916,7 +5268,11 @@
                           class="form-control w-100"
                           v-model="ratesArray[27].self_employed"
                           @input="
-                            handleInput(`selfEmployee`, 27, ratesArray[27].self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              27,
+                              ratesArray[27].self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -4928,7 +5284,9 @@
                           type="text"
                           class="form-control w-100"
                           v-model="ratesArray[27].umbrella"
-                          @input="handleInput(`umbrella`, 27, ratesArray[27].umbrella)"
+                          @input="
+                            handleInput(`umbrella`, 27, ratesArray[27].umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -4959,7 +5317,7 @@
               Cancel
             </button>
             <button
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              class="btn btn-primary rounded-4 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="updateSingleRate()"
             >
@@ -5273,7 +5631,9 @@ export default {
         return;
       }
       try {
-        const response = await axios.get(`${VITE_API_URL}/site_shift/${SiteID}`);
+        const response = await axios.get(
+          `${VITE_API_URL}/site_shift/${SiteID}`
+        );
 
         this.shiftsTime =
           response.data.site_shift_data.map((shift) => ({

@@ -12,7 +12,7 @@
       <!-- End Page Title -->
       <div class="d-flex align-items-center">
         <button
-          class="btn btn-primary rounded-1 text-capitalize fw-medium"
+          class="btn btn-primary rounded-4 text-capitalize fw-medium btn-bg-color"
           data-bs-toggle="modal"
           data-bs-target="#addDeduct"
           data-bs-whatever="@mdo"
@@ -365,13 +365,7 @@ table th {
   background: none;
   margin-left: 4px;
 }
-.nav-pills .nav-link.active {
-  color: #ff5722;
-  border-bottom: 2px solid #ff5722;
-  border-radius: 0;
-  background-color: transparent;
-  font-weight: bold;
-}
+
 .nav-pills {
   border-bottom: 1px solid #ddd6d6;
 }

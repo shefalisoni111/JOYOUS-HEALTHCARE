@@ -223,7 +223,7 @@
             </button>
             <button
               :class="{
-                'btn btn-primary rounded-1 text-capitalize fw-medium': true,
+                'btn btn-primary rounded-4 text-capitalize fw-medium': true,
               }"
               data-bs-dismiss="modal"
               v-on:click="sendRateCardData()"

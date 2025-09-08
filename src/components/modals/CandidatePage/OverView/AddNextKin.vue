@@ -218,7 +218,7 @@
               Cancel
             </button>
             <button
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              class="btn btn-primary rounded-4 text-capitalize fw-medium"
               :disabled="isSubmitDisabled"
               data-bs-toggle="modal"
               @click.prevent="fetchNextToKinMethod()"

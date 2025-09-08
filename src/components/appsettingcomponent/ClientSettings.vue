@@ -240,13 +240,7 @@ ul.generalsetting h6 {
   background: #e8e3e3;
   margin-left: 4px;
 }
-.nav-pills .nav-link.active {
-  color: #ff5722;
-  border-bottom: 2px solid #ff5722;
-  border-radius: 0;
-  background-color: transparent;
-  font-weight: bold;
-}
+
 .btn-primary {
   border: none;
 }

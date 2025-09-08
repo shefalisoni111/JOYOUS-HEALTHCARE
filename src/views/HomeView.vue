@@ -500,8 +500,8 @@
           <section class="section dashboard mt-4 mb-4">
             <div class="row gx-2 mx-4 align-items-stretch">
               <!-- Left side columns -->
-              <div class="col-sm-12 col-lg-8 h-100">
-                <div class="h-100">
+              <div class="col-sm-12 col-lg-8 d-flex">
+                <div class="w-100 h-100">
                   <TimeSheet />
                 </div>
               </div>
@@ -509,8 +509,11 @@
               <!-- Left side columns end -->
 
               <!-- right side columns -->
-              <div class="col-sm-12 col-lg-4 px-3 h-100">
-                <div class="card h-100 card-border" style="border-radius: 20px">
+              <div class="col-sm-12 col-lg-4 px-3 d-flex">
+                <div
+                  class="card w-100 h-100 card-border"
+                  style="border-radius: 20px"
+                >
                   <div class="col-8 p-3">
                     <h5 class="fs-6 p-2 mb-0 fw-bold">Shifts</h5>
                   </div>

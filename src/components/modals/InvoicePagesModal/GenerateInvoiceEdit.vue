@@ -96,7 +96,7 @@
               Cancel
             </button>
             <button
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              class="btn btn-primary rounded-4 text-capitalize fw-medium"
               v-on:click="updateCustomTimeSheetMethod()"
               :disabled="isSaveDisabled"
               data-bs-dismiss="modal"

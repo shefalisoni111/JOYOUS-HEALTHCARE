@@ -10,10 +10,7 @@
       >
         <Navbar />
       </div>
-      <div
-        class="container-fluid px-5 pt-4"
-        style="background: rgb(82 74 74 / 6%)"
-      >
+      <div class="container-fluid px-5 pt-4">
         <div class="p-0">
           <div class="">
             <ol class="breadcrumb my-2">
@@ -137,7 +134,7 @@
 
                 <button
                   type="submit"
-                  class="btn btn-primary px-4"
+                  class="btn btn-primary px-4 btn-bg-color"
                   :disabled="!isFormValid"
                 >
                   Submit
@@ -266,10 +263,10 @@ export default {
 
 <style scoped>
 .support-form .header {
-  background-color: #f9944b;
+  background-color: #52732d;
 }
 .file-dropzone {
-  border: 2px dashed #f9944b;
+  border: 2px dashed #52732d;
   background: #fff8f3;
   cursor: pointer;
 }

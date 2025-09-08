@@ -1382,7 +1382,7 @@
             <button
               v-if="this.splitRate"
               :disabled="!isFormValid()"
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              class="btn btn-primary rounded-4 text-capitalize fw-medium"
               v-bind:data-bs-dismiss="isFormValid() ? 'modal' : null"
               v-on:click="addVacancyMethod()"
             >
@@ -1392,14 +1392,14 @@
             <button
               v-else
               :disabled="!isFormValidTrue()"
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              class="btn btn-primary rounded-4 text-capitalize fw-medium"
               v-bind:data-bs-dismiss="isFormValidTrue() ? 'modal' : null"
               v-on:click="addVacancyMethod()"
             >
               Add Rate
             </button>
             <!-- <button
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              class="btn btn-primary rounded-4 text-capitalize fw-medium"
               v-on:click="addVacancyMethod()"
             >
               Add Rate

@@ -270,7 +270,7 @@
               Cancel
             </button>
             <button
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              class="btn btn-primary rounded-4 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="updateCandidateMethod()"
               :disabled="isDateBeforeToday(columnDateMatch)"
@@ -279,7 +279,7 @@
             </button>
             <button
               v-if="status === 'Booked' && isFutureDate"
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              class="btn btn-primary rounded-4 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="handleBookingClick()"
             >
@@ -287,7 +287,7 @@
             </button>
 
             <!-- <button
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              class="btn btn-primary rounded-4 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="assignVacancyToCandidateDirectMethodPublish()"
             >

@@ -63,7 +63,7 @@
                 </div>
                 <div class="d-flex justify-content-center">
                   <button
-                    class="btn btn-primary rounded-1 text-capitalize fw-medium"
+                    class="btn btn-primary rounded-4 text-capitalize fw-medium"
                     data-bs-dismiss="modal"
                     @click.prevent="updateCandidateMethod()"
                   >

@@ -2,7 +2,7 @@
   <div>
     <div id="main" class="main d-flex flex-column flex-lg-row">
       <!-- Sidebar section -->
-      <div class="bg-white p-3" style="border-radius: 20px; min-width: 250px">
+      <div class="bg-white" style="border-radius: 20px">
         <Navbar />
       </div>
 

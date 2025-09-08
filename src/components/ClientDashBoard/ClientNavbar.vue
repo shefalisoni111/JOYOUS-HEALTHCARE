@@ -554,8 +554,8 @@ ul.components li a.active,
 ul.dropdown li a:hover,
 .nav-link:hover,
 .nav-link:focus {
-  background: #1b59f81a;
-  color: #1b59f8;
+  background: #bbd10d78;
+    color: #52732d;
   width: auto;
 
   border-radius: 10px;

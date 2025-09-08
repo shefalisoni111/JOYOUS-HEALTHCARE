@@ -73,8 +73,8 @@
                     <div class="bg-white py-4">
                       <div>
                         <h6>
-                          <b>Client:</b> Pages displayed in the Clientdashboard can be
-                          enabled or disabled from here.
+                          <b>Client:</b> Pages displayed in the Clientdashboard
+                          can be enabled or disabled from here.
                         </h6>
                         <ul class="list-unstyled list-inline">
                           <li>
@@ -124,8 +124,8 @@
                       </div>
                       <div class="mt-5">
                         <h6>
-                          <b>Site :</b> Pages displayed in the Site dashboard can be
-                          enabled or disabled from here..
+                          <b>Site :</b> Pages displayed in the Site dashboard
+                          can be enabled or disabled from here..
                         </h6>
                         <ul class="list-unstyled list-inline">
                           <li>
@@ -184,9 +184,10 @@
                 aria-labelledby="Permission"
                 tabindex="0"
               >
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus, quis! Quod
-                a ea laudantium? Sed, doloribus incidunt? Delectus odio recusandae, non
-                incidunt minima ullam sint fugit quas possimus consectetur asperiores?
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus,
+                quis! Quod a ea laudantium? Sed, doloribus incidunt? Delectus
+                odio recusandae, non incidunt minima ullam sint fugit quas
+                possimus consectetur asperiores?
               </div>
               <div
                 class="tab-pane fade"
@@ -195,10 +196,10 @@
                 aria-labelledby="CandidateProfile"
                 tabindex="0"
               >
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam placeat
-                rerum sed sit provident ab. Ducimus perspiciatis rem est vitae, maiores
-                voluptatum ipsum, excepturi consequatur nesciunt eum dignissimos placeat
-                magnam.
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam
+                placeat rerum sed sit provident ab. Ducimus perspiciatis rem est
+                vitae, maiores voluptatum ipsum, excepturi consequatur nesciunt
+                eum dignissimos placeat magnam.
               </div>
             </div>
           </div>
@@ -369,13 +370,7 @@ ul.generalsetting h6 {
   background: #e8e3e3;
   margin-left: 4px;
 }
-.nav-pills .nav-link.active {
-  color: #ff5722;
-  border-bottom: 2px solid #ff5722;
-  border-radius: 0;
-  background-color: transparent;
-  font-weight: bold;
-}
+
 .btn-primary {
   border: none;
 }

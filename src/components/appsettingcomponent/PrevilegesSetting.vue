@@ -743,13 +743,6 @@ a.router-link-active {
   color: #ff5722;
 }
 
-.nav-pills .nav-link.active {
-  color: #ff5722;
-  border-bottom: 2px solid #ff5722;
-  border-radius: 0;
-  background-color: transparent;
-  font-weight: bold;
-}
 .nav-pills {
   border-bottom: 1px solid grey;
 }

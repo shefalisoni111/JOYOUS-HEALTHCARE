@@ -746,13 +746,7 @@ ul.generalsetting li i.rounded-circle a.router-link-active:active {
   margin-left: 4px;
   color: #ff5722;
 }
-.nav-pills .nav-link.active {
-  color: #ff5722;
-  border-bottom: 2px solid #ff5722;
-  border-radius: 0;
-  background-color: transparent;
-  font-weight: bold;
-}
+
 .btn-primary {
   border: none;
 }

@@ -28,9 +28,7 @@
               </ol> -->
               <ol class="breadcrumb mb-1">
                 <li class="breadcrumb-item active">
-                  <a
-                    class="nav-link d-inline fs-4 fw-bolder"
-                    style="color: #000000"
+                  <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
                     >All Clients</a
                   >
                   <p>
@@ -51,8 +49,7 @@
               <button
                 v-if="activeTab === 0"
                 type="button"
-                class="btn btn-lg text-nowrap"
-                style="background: #f9944b; color: #fff"
+                class="btn btn-lg text-nowrap btn-bg-color"
                 data-bs-toggle="modal"
                 data-bs-target="#addSite"
                 data-bs-whatever="@mdo"
@@ -70,10 +67,7 @@
               role="tablist"
             >
               <div class="d-flex">
-                <li
-                  class="nav-item d-flex align-items-center gap-2"
-                  role="presentation"
-                >
+                <li class="nav-item d-flex align-items-center gap-2" role="presentation">
                   <button
                     a
                     class="nav-link"
@@ -185,11 +179,7 @@
           </div>
         </div>
       </div>
-      <div
-        class="mx-3"
-        style="text-align: right"
-        v-if="ddddddddResults.length >= 9"
-      >
+      <div class="mx-3" style="text-align: right" v-if="ddddddddResults.length >= 9">
         <button class="btn btn-outline-dark btn-sm">
           {{ totalRecordsOnPage }} Records Per Page
         </button>
@@ -280,15 +270,11 @@ export default {
       return this.paginatedResults.length;
     },
     selectSite() {
-      const site_id = this.businessUnit.find(
-        (option) => option.id === this.site_id
-      );
+      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
       return site_id ? site_id.site_name : "";
     },
     selectSitesAddress() {
-      const site_id = this.businessUnit.find(
-        (option) => option.id === this.site_id
-      );
+      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
       return site_id ? site_id.address : "";
     },
   },
@@ -348,9 +334,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      const matchingTabIndex = vm.tabs.findIndex(
-        (tab) => tab.routeName === to.name
-      );
+      const matchingTabIndex = vm.tabs.findIndex((tab) => tab.routeName === to.name);
 
       if (matchingTabIndex !== -1) {
         vm.activeTab = matchingTabIndex;
@@ -359,9 +343,7 @@ export default {
     });
   },
   beforeRouteUpdate(to, from, next) {
-    const matchingTabIndex = this.tabs.findIndex(
-      (tab) => tab.routeName === to.name
-    );
+    const matchingTabIndex = this.tabs.findIndex((tab) => tab.routeName === to.name);
 
     if (matchingTabIndex !== -1) {
       this.activeTab = matchingTabIndex;
@@ -481,7 +463,10 @@ a {
   color: black;
   text-decoration: none;
 }
-
+.btn-bg-color {
+  background: rgb(82 115 45);
+  color: rgb(255, 255, 255);
+}
 .switch input {
   display: none;
 }

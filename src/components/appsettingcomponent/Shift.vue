@@ -12,7 +12,7 @@
         <!-- End Page Title -->
         <div class="d-flex align-items-center">
           <button
-            class="btn btn-primary rounded-1 text-uppercase fw-medium"
+            class="btn btn-primary rounded-4 text-uppercase fw-medium btn-bg-color"
             data-bs-toggle="modal"
             data-bs-target="#addShift"
             data-bs-whatever="@mdo"

@@ -3,69 +3,13 @@
     <table class="table candidateTable">
       <thead>
         <tr>
-          <th scope="col">
-            ID
-            <img
-              src="../../assets/ArrowDown.png"
-              class="img-fluid pe-2"
-              alt="RecPal"
-              loading="eager"
-            />
-          </th>
-          <th scope="col" class="widthSet">
-            Name
-            <img
-              src="../../assets/ArrowDown.png"
-              class="img-fluid pe-2"
-              alt="RecPal"
-              loading="eager"
-            />
-          </th>
-          <th scope="col">
-            Positions
-            <img
-              src="../../assets/ArrowDown.png"
-              class="img-fluid pe-2"
-              alt="RecPal"
-              loading="eager"
-            />
-          </th>
-          <th scope="col" class="widthSet">
-            Email
-            <img
-              src="../../assets/ArrowDown.png"
-              class="img-fluid pe-2"
-              alt="RecPal"
-              loading="eager"
-            />
-          </th>
-          <th scope="col">
-            Phone
-            <img
-              src="../../assets/ArrowDown.png"
-              class="img-fluid pe-2"
-              alt="RecPal"
-              loading="eager"
-            />
-          </th>
-          <th scope="col">
-            Status
-            <img
-              src="../../assets/ArrowDown.png"
-              class="img-fluid pe-2"
-              alt="RecPal"
-              loading="eager"
-            />
-          </th>
-          <th scope="col">
-            Action
-            <img
-              src="../../assets/ArrowDown.png"
-              class="img-fluid pe-2"
-              alt="RecPal"
-              loading="eager"
-            />
-          </th>
+          <th scope="col">ID</th>
+          <th scope="col" class="widthSet">Name</th>
+          <th scope="col">Positions</th>
+          <th scope="col" class="widthSet">Email</th>
+          <th scope="col">Phone</th>
+          <th scope="col">Status</th>
+          <th scope="col">Action</th>
         </tr>
       </thead>
       <tbody v-if="paginateCandidates?.length > 0">

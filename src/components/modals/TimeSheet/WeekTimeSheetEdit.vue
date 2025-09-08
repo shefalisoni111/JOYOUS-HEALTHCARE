@@ -719,7 +719,7 @@
 
             <button
               v-if="fetchCustomTimeShetData.status === 'Approved'"
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              class="btn btn-primary rounded-4 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="approved_TimesheetRevertMethod()"
               disabled
@@ -729,7 +729,7 @@
 
             <button
               v-else-if="fetchCustomTimeShetData.status === 'Pending'"
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              class="btn btn-primary rounded-4 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="approved_TimesheetRevertMethod()"
             >
@@ -738,7 +738,7 @@
 
             <button
               v-if="isModified"
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              class="btn btn-primary rounded-4 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="handleApproveAndSave()"
             >

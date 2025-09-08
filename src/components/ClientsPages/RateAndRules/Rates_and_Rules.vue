@@ -42,8 +42,7 @@
               <div class="d-flex align-items-center pe-3">
                 <button
                   type="button"
-                  class="btn text-nowrap"
-                  style="background: #f9944b; color: #fff"
+                  class="btn btn-lg text-nowrap btn-bg-color"
                   data-bs-toggle="modal"
                   data-bs-target="#addRateRules"
                   data-bs-whatever="@mdo"
@@ -165,50 +164,51 @@
                             </li>
                           </ul>
                         </div>
+                        <div class="dropdown">
+                          <input
+                            ref="fileInput"
+                            id="fileAll"
+                            type="file"
+                            accept=".csv"
+                            style="display: none"
+                            @change="handleFileUpload"
+                          />
 
-                        <input
-                          ref="fileInput"
-                          id="fileAll"
-                          type="file"
-                          accept=".csv"
-                          style="display: none"
-                          @change="handleFileUpload"
-                        />
-
-                        <button
-                          class="nav-item dropdown btn btn-lg text-nowrap dropdown-toggle"
-                          type="button"
-                          style="background: #f9944b; color: #fff"
-                          id="navbarDropdown"
-                          role="button"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          Export
-
-                          <ul
-                            class="dropdown-menu"
-                            aria-labelledby="navbarDropdown"
+                          <button
+                            class="nav-item dropdown btn btn-lg text-nowrap dropdown-toggle"
+                            type="button"
+                            style="background: #f9944b; color: #fff"
+                            id="navbarDropdown"
+                            role="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
                           >
-                            <li>
-                              <a
-                                class="dropdown-item"
-                                href="#"
-                                @click="exportOneFile('selected')"
-                                >Export</a
-                              >
-                            </li>
-                            <li><hr class="dropdown-divider" /></li>
-                            <li>
-                              <a
-                                class="dropdown-item"
-                                href="#"
-                                @click="exportOneFile('all')"
-                                >Export All</a
-                              >
-                            </li>
-                          </ul>
-                        </button>
+                            Export
+
+                            <ul
+                              class="dropdown-menu"
+                              aria-labelledby="navbarDropdown"
+                            >
+                              <li>
+                                <a
+                                  class="dropdown-item"
+                                  href="#"
+                                  @click="exportOneFile('selected')"
+                                  >Export</a
+                                >
+                              </li>
+                              <li><hr class="dropdown-divider" /></li>
+                              <li>
+                                <a
+                                  class="dropdown-item"
+                                  href="#"
+                                  @click="exportOneFile('all')"
+                                  >Export All</a
+                                >
+                              </li>
+                            </ul>
+                          </button>
+                        </div>
                         <div class="row p-0 float-end">
                           <form
                             @submit.prevent="search"
@@ -1521,6 +1521,10 @@ export default {
 </script>
 
 <style scoped>
+.btn-bg-color {
+  background: rgb(82 115 45);
+  color: rgb(255, 255, 255);
+}
 select,
 input.form-control,
 input.form-control:focus {

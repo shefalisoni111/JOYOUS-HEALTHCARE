@@ -292,14 +292,6 @@
                 class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"
                 style="width: 220px"
               >
-                <!-- <li>
-                  <a class="dropdown-item text-capitalize">
-                    <h5 class="d-block mb-0 fw-bold">
-                      {{ getAdminData.first_name }}
-                    </h5>
-                
-                  </a>
-                </li> -->
                 <li>
                   <router-link
                     class="dropdown-item d-flex align-items-center"
@@ -309,18 +301,6 @@
                     <i class="bi bi-gear pe-2"></i><span>App Settings</span>
                   </router-link>
                 </li>
-                <!-- 
-              <li class="cursor-pointer my-1">
-                <a class="dropdown-item d-flex align-items-center">
-                  <i class="bi bi-asterisk pe-2"></i><span>Activity Log</span></a
-                >
-              </li> -->
-
-                <!-- <li class="cursor-pointer my-1">
-                <router-link class="dropdown-item d-flex align-items-center" to="/recruitment"
-                  ><i class="bi bi-ban-fill pe-2"></i><span>Recruitment</span></router-link
-                >
-              </li> -->
 
                 <li class="cursor-pointer my-1">
                   <router-link
@@ -330,14 +310,6 @@
                     ><span>Diary Notes</span></router-link
                   >
                 </li>
-                <!-- 
-              <li class="cursor-pointer my-1">
-                <router-link
-                  class="dropdown-item text-capitalize d-flex align-items-center"
-            :to="adminLink"
-                  ><i class="bi bi-gear-wide pe-2"></i><span>Personal Settings</span>
-                </router-link>
-              </li> -->
 
                 <li class="cursor-pointer my-1">
                   <router-link
@@ -361,12 +333,6 @@
                     <span>Sign Out</span>
                   </a>
                 </li>
-                <!-- <li class="cursor-pointer">
-                <a class="dropdown-item d-flex align-items-center" >
-                  <i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp;
-                  <span>Sign Out</span>
-                </a>
-              </li> -->
               </ul>
               <!-- End Profile Dropdown Items -->
             </li>
@@ -1079,8 +1045,8 @@ ul.components li a img:hover ul.components li.active > a,
 ul.components li.router-link-active,
 ul.components li a.router-link-active,
 ul.components li a.active {
-  background: #1b59f81a;
-  color: #1b59f8;
+  background: #bbd10d78;
+  color: #52732d;
   width: 193px;
   height: 38px;
   padding-left: 5px;

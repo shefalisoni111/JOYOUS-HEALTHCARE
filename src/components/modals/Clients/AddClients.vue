@@ -224,7 +224,7 @@
             <button
               :disabled="!isFormFilledAndValid || !isJobsSelected || emailInUse"
               :class="{ disabled: !isFormFilledAndValid || !isJobsSelected }"
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              class="btn btn-primary rounded-4 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               v-on:click="addClients()"
             >

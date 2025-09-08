@@ -545,7 +545,7 @@
             <button
               v-if="(status || '').trim().toLowerCase() === 'approved'"
               :key="status"
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              class="btn btn-primary rounded-4 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="updateCustomTimeSheetMethod()"
             >
@@ -554,7 +554,7 @@
             <button
               v-else
               :key="status"
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              class="btn btn-primary rounded-4 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="updateCustomTimeSheetMethod()"
             >

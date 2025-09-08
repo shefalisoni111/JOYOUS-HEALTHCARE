@@ -11,9 +11,7 @@
           <div class="col-md-6">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active">
-                <a
-                  class="nav-link d-inline fs-4 fw-bolder"
-                  style="color: #000000"
+                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
                   >All Staff</a
                 >
                 <p>
@@ -33,8 +31,7 @@
             <button
               v-if="activeTab === 0"
               type="button"
-              class="btn btn-lg text-white"
-              style="background-color: #f9944b"
+              class="btn btn-lg text-white btn-bg-color"
               data-bs-toggle="modal"
               data-bs-target="#addCandidate"
               @click="handleCandidateAdded"
@@ -84,11 +81,7 @@
               class="position-absolute"
               style="right: 10px; top: 50%; transform: translateY(-50%)"
             >
-              <img
-                src="../../assets/Search.png"
-                class="img-fluid pe-2"
-                alt="Search"
-              />
+              <img src="../../assets/Search.png" class="img-fluid pe-2" alt="Search" />
             </span>
           </form>
         </div>
@@ -456,14 +449,11 @@ export default {
       try {
         this.searchResults = [];
 
-        const response = await axiosInstance.get(
-          `${VITE_API_URL}/search_candidate`,
-          {
-            params: {
-              candidate_query: this.searchQuery,
-            },
-          }
-        );
+        const response = await axiosInstance.get(`${VITE_API_URL}/search_candidate`, {
+          params: {
+            candidate_query: this.searchQuery,
+          },
+        });
 
         if (
           response.status === 200 &&
@@ -478,11 +468,7 @@ export default {
           this.errorMessage = "";
         }
       } catch (error) {
-        if (
-          error.response &&
-          error.response.data &&
-          error.response.data.message
-        ) {
+        if (error.response && error.response.data && error.response.data.message) {
           this.errorMessage = error.response.data.message;
         } else {
           this.errorMessage = "No Staff found for the specified criteria";
@@ -578,9 +564,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      const matchingTabIndex = vm.tabs.findIndex(
-        (tab) => tab.routeName === to.name
-      );
+      const matchingTabIndex = vm.tabs.findIndex((tab) => tab.routeName === to.name);
       if (matchingTabIndex !== -1) {
         vm.activeTab = matchingTabIndex;
         vm.activeTabName = vm.tabs[matchingTabIndex].name;
@@ -588,9 +572,7 @@ export default {
     });
   },
   beforeRouteUpdate(to, from, next) {
-    const matchingTabIndex = this.tabs.findIndex(
-      (tab) => tab.routeName === to.name
-    );
+    const matchingTabIndex = this.tabs.findIndex((tab) => tab.routeName === to.name);
     if (matchingTabIndex !== -1) {
       this.activeTab = matchingTabIndex;
       this.activeTabName = this.tabs[matchingTabIndex].name;
@@ -607,7 +589,10 @@ export default {
 .main-content {
   transition: all 0.3s;
 }
-
+.btn-bg-color {
+  background: rgb(82 115 45);
+  color: rgb(255, 255, 255);
+}
 .color-fonts {
   color: #ff5f30;
   font-weight: bold;

@@ -19,7 +19,7 @@
       </div>
       <div class="">
         <button
-          class="btn btn-primary rounded-1 text-capitalize fw-bold"
+          class="btn btn-primary rounded-4 text-capitalize fw-bold btn-bg-color"
           data-bs-toggle="modal"
           data-bs-target="#addCategories"
           data-bs-whatever="@mdo"

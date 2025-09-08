@@ -6,13 +6,13 @@
           <thead>
             <tr>
               <th scope="col">ID</th>
-              <th scope="col" class="widthSet">Name</th>
-              <th scope="col">Positions</th>
-              <th scope="col" class="widthSet">Email</th>
-              <th scope="col">Phone</th>
-              <th scope="col">Status</th>
-              <th scope="col">Assign</th>
-              <th scope="col">Last Login</th>
+              <th scope="col" style="width: 10%">Name</th>
+              <th scope="col" style="width: 10%">Positions</th>
+              <th scope="col" style="width: 10%">Email</th>
+              <th scope="col" style="width: 10%">Phone</th>
+              <th scope="col" style="width: 10%">Status</th>
+              <th scope="col" style="width: 10%">Assign</th>
+              <th scope="col" style="width: 10%">Last Login</th>
               <th scope="col">Action</th>
             </tr>
           </thead>

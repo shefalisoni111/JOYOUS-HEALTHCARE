@@ -1,10 +1,17 @@
 <template>
-  <Doughnut
-    ref="myChart"
-    id="my-chart-id"
-    :options="chartOptions"
-    :data="chartData"
-  />
+  <div class="chart-container">
+    <div v-if="allZero">
+      <p class="text-danger">No data available</p>
+    </div>
+    <div v-else>
+      <Doughnut
+        ref="myChart"
+        id="my-chart-id"
+        :options="chartOptions"
+        :data="chartData"
+      />
+    </div>
+  </div>
 </template>
 
 <script>
@@ -29,11 +36,11 @@ export default {
         ],
         datasets: [
           {
-            backgroundColor: ["#4a3aff", "#e0c6fd", "#c6d2fd", "#f5aaac"], // Match colors from the image
-            borderWidth: 2, // Remove borders
-            borderRadius: 15, // Makes the segments rounded
-            hoverOffset: 10, // Adds a hover effect
-            data: [9, 5, 9, 3], // Example Data
+            backgroundColor: ["#4a3aff", "#e0c6fd", "#c6d2fd", "#f5aaac"],
+            borderWidth: 2,
+            borderRadius: 15,
+            hoverOffset: 10,
+            data: [0, 0, 0, 0],
           },
         ],
       },
@@ -84,6 +91,11 @@ export default {
         .catch((error) => {
           console.error("Error fetching data:", error);
         });
+    },
+  },
+  computed: {
+    allZero() {
+      return this.chartData.datasets[0].data.every((val) => val === 0);
     },
   },
   async mounted() {

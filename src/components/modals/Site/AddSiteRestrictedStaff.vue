@@ -112,7 +112,7 @@
               <button
                 :disabled="!isFormValid"
                 :class="{ disabled: !isFormValid }"
-                class="btn btn-primary rounded-1 text-capitalize fw-medium"
+                class="btn btn-primary rounded-4 text-capitalize fw-medium"
                 :data-bs-dismiss="isFormValid ? 'modal' : null"
                 @click="submitForm"
               >
