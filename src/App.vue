@@ -1,6 +1,6 @@
 <script>
 import "./assets/main.css";
-
+import { mapGetters } from "vuex";
 import "bootstrap/dist/js/bootstrap.bundle.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Navbar from "./components/Navbar.vue";
@@ -14,6 +14,21 @@ export default {
     return {};
   },
   components: { Navbar },
+
+  methods: {},
+  computed: {
+    ...mapGetters(["getFavicon"]),
+  },
+  watch: {
+    getFavicon(newVal) {
+      if (newVal) {
+        const link = document.getElementById("dynamic-favicon");
+        if (link) {
+          link.href = newVal;
+        }
+      }
+    },
+  },
   mounted() {
     // this.$store.dispatch("fetchAgencyLogo");
   },

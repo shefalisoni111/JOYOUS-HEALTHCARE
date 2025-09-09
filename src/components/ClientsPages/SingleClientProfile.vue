@@ -41,9 +41,7 @@
                 </ol> -->
                 <ol class="breadcrumb mb-1">
                   <li class="breadcrumb-item active">
-                    <a
-                      class="nav-link d-inline fs-4 fw-bolder"
-                      style="color: #000000"
+                    <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
                       >All Clients</a
                     >
                     <p>
@@ -101,10 +99,7 @@
             <div class="row px-5">
               <div class="d-flex gap-4 justify-content-between">
                 <div class="col-md-7" style="border-radius: 12px">
-                  <div
-                    class="card profile position-relative"
-                    style="border-radius: 20px"
-                  >
+                  <div class="card profile position-relative" style="border-radius: 20px">
                     <h6
                       class="position-absolute p-2 z-1 text-white text-capitalize tag"
                       style="background: #68a325; margin-left: -7px"
@@ -123,9 +118,7 @@
                     <div>
                       <div class="">
                         <div class="col-12 p-3">
-                          <h4
-                            class="card-title text-nowrap fw-bold text-capitalize"
-                          >
+                          <h4 class="card-title text-nowrap fw-bold text-capitalize">
                             {{ getClientDatas?.client_name }}
                           </h4>
                           <span>
@@ -141,15 +134,8 @@
                       </div>
                     </div>
 
-                    <ul
-                      class="nav nav-pills ps-3"
-                      id="pills-tab"
-                      role="tablist"
-                    >
-                      <li
-                        class="nav-item d-inline-flex gap-3"
-                        role="presentation"
-                      >
+                    <ul class="nav nav-pills ps-3" id="pills-tab" role="tablist">
+                      <li class="nav-item d-inline-flex gap-3" role="presentation">
                         <button
                           class="nav-link px-0"
                           :class="{ active: activeTab === index }"
@@ -247,10 +233,7 @@
                 style="height: 100vh; border-radius: 12px"
               >
                 <div class="tab-content">
-                  <component
-                    :is="activeComponent"
-                    :options="options"
-                  ></component>
+                  <component :is="activeComponent" :options="options"></component>
                 </div>
               </div>
             </div>
@@ -290,10 +273,10 @@ import EditSingleClientEmail from "../modals/Clients/EditSingleClientEmail.vue";
 import EditSingleClientContact from "../modals/Clients/EditSingleClientContact.vue";
 import EditSingleClientName from "../../components/modals/Clients/EditSingleClientName.vue";
 import Navbar from "../Navbar.vue";
-import activeLocations from "../../assets/activelocation.png";
-import jobs from "../../assets/jobs.png";
-import notes from "../../assets/notes.png";
-import settings from "../../assets/setting.png";
+// import activeLocations from "../../assets/activelocation.png";
+// import jobs from "../../assets/jobs.png";
+// import notes from "../../assets/notes.png";
+// import settings from "../../assets/setting.png";
 
 export default {
   name: "SingleClientProfile",
@@ -305,29 +288,29 @@ export default {
         {
           name: "Active Location ",
           component: "ActiveLocation",
-          image: activeLocations,
+          // image: activeLocations,
         },
         // { name: "Passive Location ", component: "PassiveLocation" },
         {
           name: "Jobs ",
           component: "ClientJobs",
-          image: jobs,
+          // image: jobs,
         },
         // { name: "WTR", component: "ClientWTR" },
         {
           name: "Notes",
           component: "ClientNotes",
-          image: notes,
+          // image: notes,
         },
-        {
-          name: "Setting",
-          component: "ClientSetting",
-          image: settings,
-        },
+        // {
+        //   name: "Setting",
+        //   component: "ClientSetting",
+        //   image: settings,
+        // },
         {
           name: "User",
           component: "ClientUser",
-          image: activeLocations,
+          // image: activeLocations,
         },
       ],
       activeTab: 0,
@@ -336,7 +319,7 @@ export default {
   },
   components: {
     ActiveLocation,
-    activeLocations,
+    // activeLocations,
     PassiveLocation,
     EditSingleClientName,
     ClientJobs,

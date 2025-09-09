@@ -6,9 +6,7 @@
           <div class="">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active">
-                <a
-                  class="nav-link d-inline fs-4 fw-bolder"
-                  style="color: #000000"
+                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
                   >All Staff</a
                 >
                 <p>
@@ -35,39 +33,10 @@
             ><i class="bi bi-arrow-left"></i> Back to list</router-link
           >
         </div>
-        <!-- <div class="row">
-            <div class="col-12 borderbottom pb-3 pt-1">
-              <div class="float-start">
-                <button
-                  type="button"
-                  class="btn btn-outline-success"
-                  @click.prevent="previousTab"
-                  v-show="hasPreviousTab"
-                >
-                  <i class="bi bi-caret-left-fill"></i>Previous
-                </button>
-              </div>
-              <div class="float-end">
-                <button
-                  type="button"
-                  class="btn btn-outline-success"
-                  @click.prevent="handleNextTabClick"
-                  v-show="hasNextTab"
-                >
-                  Next <i class="bi bi-caret-right-fill"></i>
-                </button>
-              </div>
-            </div>
-          </div> -->
+
         <div class="row mb-3">
           <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-            <li
-              class="nav-item d-lg-inline-flex gap-4 d-in"
-              role="presentation"
-              :style="{
-                borderBottom: activeTab === index ? 'none' : '1px solid #ddd',
-              }"
-            >
+            <li class="nav-item d-lg-inline-flex gap-4 d-in" role="presentation">
               <button
                 class="nav-link px-0 btn-css"
                 :to="`/${tab.routeName}`"
@@ -88,27 +57,6 @@
                   {{ tab.name }}
                 </router-link>
               </button>
-              <!-- <button
-                class="btn-css"
-                :to="`/${tab.routeName}`"
-                aria-selected="true"
-                type="button"
-                role="tab"
-                data-bs-toggle="pill"
-                v-for="(tab, index) in tabs"
-                :key="index"
-                @click="selectTab(index)"
-              >
-                <router-link
-                  class="nav-link"
-                  :class="{ active: activeTab === index }"
-                  :to="getTabLink(tab)"
-                >
-               
-                  <span class="badge bg-success"></span>
-                  {{ tab.name }}</router-link
-                >
-              </button> -->
             </li>
           </ul>
         </div>
@@ -130,9 +78,7 @@
                 }"
               >
                 {{
-                  getCandidates.status === "approved"
-                    ? "Active"
-                    : getCandidates.status
+                  getCandidates.status === "approved" ? "Active" : getCandidates.status
                 }}
               </h6>
               <img
@@ -160,17 +106,13 @@
               <!-- <div class="ribbon"><span>Active</span></div> -->
 
               <div class="card-body">
-                <div
-                  class="mt-3 d-flex justify-content-between align-items-center"
-                >
+                <div class="mt-3 d-flex justify-content-between align-items-center">
                   <div class="col-12 mt-4">
                     <div class="d-flex justify-content-between">
                       <h6
                         class="card-title text-nowrap fw-bold text-capitalize mb-0 my-2"
                       >
-                        {{ getCandidates.first_name }}&nbsp;{{
-                          getCandidates.last_name
-                        }}
+                        {{ getCandidates.first_name }}&nbsp;{{ getCandidates.last_name }}
                       </h6>
                       <div class="">
                         <button
@@ -187,19 +129,13 @@
                     </div>
 
                     <span class="text-lowercase">
-                      <i
-                        class="bi bi-envelope-fill"
-                        style="color: rgb(249 148 75)"
-                      ></i>
+                      <i class="bi bi-envelope-fill" style="color: rgb(249 148 75)"></i>
                       &nbsp; {{ getCandidates.email }}</span
                     >
                     &nbsp; |&nbsp;
 
                     <span
-                      ><i
-                        class="bi bi-telephone-fill"
-                        style="color: rgb(249 148 75)"
-                      ></i>
+                      ><i class="bi bi-telephone-fill" style="color: rgb(249 148 75)"></i>
                       &nbsp; {{ getCandidates.phone_number }}</span
                     >
                   </div>
@@ -222,9 +158,7 @@
                     </div> -->
 
                     <div class="d-flex justify-content-between mt-2">
-                      <h6 class="fs-smaller text-nowrap fw-bold">
-                        Profile View
-                      </h6>
+                      <h6 class="fs-smaller text-nowrap fw-bold">Profile View</h6>
                       <!-- <label class="switch">
                           <input type="checkbox" id="togBtn" title="check" checked />
                           <div class="slider round"></div>
@@ -245,34 +179,6 @@
             </div>
           </div>
           <div class="col-12 bg-white">
-            <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                <li
-                  class="nav-item d-lg-inline-flex gap-2 d-in"
-                  role="presentation"
-                >
-                  <button
-                    class="btn-css"
-                    :to="`/${tab.routeName}`"
-                    aria-selected="true"
-                    type="button"
-                    role="tab"
-                    data-bs-toggle="pill"
-                    v-for="(tab, index) in tabs"
-                    :key="index"
-                    @click="selectTab(index)"
-                  >
-                    <router-link
-                      class="nav-link"
-                      :class="{ active: activeTab === index }"
-                      :to="getTabLink(tab)"
-                    >
-                      
-                      <span class="badge bg-success"></span>
-                      {{ tab.name }}</router-link
-                    >
-                  </button>
-                </li>
-              </ul> -->
             <div class="tab-content">
               <component :is="activeComponent"></component>
             </div>
@@ -303,9 +209,9 @@ import StaffId from "../CandidatePages/ProfileDetail/StaffId.vue";
 import CandidateHistory from "../CandidatePages/ProfileDetail/CandidateHistory.vue";
 import CandidateReference from "./ProfileDetail/CandidateReference.vue";
 import AddNotes from "../modals/CandidatePage/AddNotes.vue";
-import activeLocations from "../../assets/activelocation.png";
-import settings from "../../assets/setting.png";
-import jobs from "../../assets/jobs.png";
+// import activeLocations from "../../assets/activelocation.png";
+// import settings from "../../assets/setting.png";
+// import jobs from "../../assets/jobs.png";
 import EditProfileContact from "../modals/CandidatePage/EditProfileContact.vue";
 
 export default {
@@ -325,55 +231,48 @@ export default {
           name: "Overview ",
           component: "Overview",
           routeName: "Overview",
-          image: activeLocations,
         },
         {
           name: "Documents ",
           component: "Document",
           routeName: "Document",
-          image: jobs,
+          // image: jobs,
         },
         {
           name: "Profile ",
           component: "ProfileTabs",
           routeName: "ProfileTabs",
-          image: activeLocations,
         },
         {
           name: "Restricted",
           component: "Restricted",
           routeName: "Restricted",
-          image: settings,
+          // image: settings,
         },
         {
           name: "Rate Card",
           component: "RateCard",
           routeName: "RateCard",
-          image: activeLocations,
         },
         {
           name: "Notes",
           component: "Notes",
           routeName: "Notes",
-          image: activeLocations,
         },
         {
           name: "Staff ID",
           component: "StaffId",
           routeName: "StaffId",
-          image: activeLocations,
         },
         {
           name: "Staff History",
           component: "CandidateHistory",
           routeName: "CandidateHistory",
-          image: activeLocations,
         },
         {
           name: "Referrals",
           component: "CandidateReference",
           routeName: "CandidateReference",
-          image: activeLocations,
         },
       ],
       activeTab: 0,

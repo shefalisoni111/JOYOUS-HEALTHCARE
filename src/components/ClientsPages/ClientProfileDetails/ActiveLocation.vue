@@ -15,30 +15,21 @@
             + Add Site
           </button>
         </div>
-        <div v-if="paginateCandidates?.length > 0" class="col-3">
-          <div
-            class="card mt-2 mx-3"
-            v-for="data in paginateCandidates"
-            :key="data.id"
-          >
-            <div
-              class="card-body d-flex align-items-start justify-content-evenly"
-            >
+        <div v-if="paginateCandidates?.length > 0" class="d-flex">
+          <div class="card mt-2 mx-3" v-for="data in paginateCandidates" :key="data.id">
+            <div class="card-body d-flex align-items-start justify-content-evenly">
               <div class="card-text d-flex gap-3">
                 <div class="mt-3">
                   <router-link
                     :to="{ name: 'SingleSiteprofile', params: { id: data.id } }"
                   >
-                    <span
-                      class="rounded-circle p-3 text-decoration-none text-black"
-                      >{{ getFirstCharAndNumber(data.site_name) }}</span
-                    ></router-link
+                    <span class="rounded-circle p-3 text-decoration-none text-black">{{
+                      getFirstCharAndNumber(data.site_name)
+                    }}</span></router-link
                   >
                 </div>
                 <div class="">
-                  <span class="fw-bold text-capitalize">{{
-                    data.site_name
-                  }}</span
+                  <span class="fw-bold text-capitalize">{{ data.site_name }}</span
                   ><br />
                   <span>{{ data.email }}</span
                   ><br />
@@ -68,32 +59,7 @@
         </div>
       </div>
     </div>
-    <div
-      class="mx-3 mt-3"
-      style="text-align: right"
-      v-if="getClientDatas?.length >= 3"
-    >
-      <button class="btn btn-outline-dark btn-sm">
-        {{ itemsPerPage }} Records Per Page
-      </button>
 
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="currentPage--"
-      >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getClientDatas?.length"
-        @click="currentPage++"
-      >
-        Next
-      </button>
-    </div>
     <AddClientSite
       :id="$route.params.id"
       @addSite="getClientMethod"

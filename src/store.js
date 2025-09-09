@@ -5,6 +5,7 @@ export default createStore({
   state: {
     channelSid: null,
     agencyLogo: null,
+    favicon: null,
     selectedAppliedItemId: null,
     selectedCandidateItemId: null,
     selectedAssignedItemId: null,
@@ -30,6 +31,9 @@ export default createStore({
   mutations: {
     setAgencyLogo(state, logoUrl) {
       state.agencyLogo = logoUrl;
+    },
+    setFavicon(state, faviconUrl) {
+      state.favicon = faviconUrl;
     },
     setUser(state, user) {
       state.role = user.role;
@@ -124,6 +128,9 @@ export default createStore({
   actions: {
     updateAgencyLogo({ commit }, logoUrl) {
       commit("setAgencyLogo", logoUrl);
+    },
+    updateFavicon({ commit }, faviconUrl) {
+      commit("setFavicon", faviconUrl);
     },
     // setUser({ commit }, userData) {
     //   commit("setUser", userData);
@@ -224,6 +231,7 @@ export default createStore({
     // clientId: (state) => state.client_id,
     getInvoiceData: (state) => state.invoiceData,
     getAgencyLogo: (state) => state.agencyLogo,
+    getFavicon: (state) => state.favicon,
     getInvoiceStaffData: (state) => state.invoiceStaffData,
     getSelectedTemplate: (state) => state.selectedTemplate,
     getChannelSid: (state) => state.channelSid,

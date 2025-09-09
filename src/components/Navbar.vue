@@ -51,10 +51,7 @@
               :aria-expanded="isClientActive"
               class="d-flex justify-content-between"
             >
-              <span
-                ><i class="bi bi-people"></i>
-                <span class="ms-2">Client</span></span
-              >
+              <span><i class="bi bi-people"></i> <span class="ms-2">Client</span></span>
               <img
                 src="../assets/ArrowDown.png"
                 class="img-fluid pe-2"
@@ -90,9 +87,7 @@
               :aria-expanded="isStaffMenuActive"
               class="d-flex justify-content-between"
             >
-              <span>
-                <i class="bi bi-person"></i> <span class="ms-2">Staff</span>
-              </span>
+              <span> <i class="bi bi-person"></i> <span class="ms-2">Staff</span> </span>
               <img
                 src="../assets/ArrowDown.png"
                 class="img-fluid pe-2"
@@ -138,8 +133,7 @@
               class="d-flex justify-content-between"
             >
               <span>
-                <i class="bi bi-file-earmark-text"></i
-                ><span class="ms-2">Timesheet</span>
+                <i class="bi bi-file-earmark-text"></i><span class="ms-2">Timesheet</span>
               </span>
 
               <img
@@ -180,9 +174,7 @@
               :aria-expanded="isInvoiceMenuActive"
               class="d-flex justify-content-between"
             >
-              <span
-                ><i class="bi bi-receipt"></i><span class="ms-2">Invoice</span>
-              </span>
+              <span><i class="bi bi-receipt"></i><span class="ms-2">Invoice</span> </span>
 
               <img
                 src="../assets/ArrowDown.png"
@@ -225,15 +217,9 @@
             </li>
 
             <li class="nav-item dropdown">
-              <router-link
-                to="/notification"
-                @click.prevent="handleNotificationClick"
-              >
+              <router-link to="/notification" @click.prevent="handleNotificationClick">
                 <i class="bi bi-bell"></i>
-                <span
-                  v-if="unread_count > 0"
-                  class="badge bg-primary badge-number"
-                >
+                <span v-if="unread_count > 0" class="badge bg-primary badge-number">
                   {{ unread_count }}
                 </span>
                 Notification
@@ -315,8 +301,7 @@
                   <router-link
                     class="dropdown-item text-capitalize d-flex align-items-center"
                     :to="adminLink"
-                    ><i class="bi bi-gear-wide pe-2"></i
-                    ><span>Personal Settings</span>
+                    ><i class="bi bi-gear-wide pe-2"></i><span>Personal Settings</span>
                   </router-link>
                 </li>
 
@@ -424,11 +409,9 @@ export default {
       return ["/staff-list", "/availability"].includes(this.$route.path);
     },
     isTimesheetMenuActive() {
-      return [
-        "/timesheet/weekly",
-        "/timesheet/custom",
-        "/timesheet/signed",
-      ].includes(this.$route.path);
+      return ["/timesheet/weekly", "/timesheet/custom", "/timesheet/signed"].includes(
+        this.$route.path
+      );
     },
     isInvoiceMenuActive() {
       return ["/invoice/client-invoice", "/invoice/staff-payroll"].includes(
@@ -548,15 +531,12 @@ export default {
       const token = localStorage.getItem("token");
       const merchantId = localStorage.getItem("merchant_id");
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/merchants/${merchantId}`,
-          {
-            headers: {
-              "content-type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${VITE_API_URL}/merchants/${merchantId}`, {
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const imagePath = response.data.data.profile_photo;
         this.localProfileImage = `${VITE_API_URL}${imagePath}`;
         // console.log(this.localProfileImage)
@@ -594,14 +574,11 @@ export default {
         this.errorMessage = "";
         this.searchResults = [];
 
-        const response = await axiosInstance.get(
-          `${VITE_API_URL}/search_candidate`,
-          {
-            params: {
-              candidate_query: this.searchQuery.trim(),
-            },
-          }
-        );
+        const response = await axiosInstance.get(`${VITE_API_URL}/search_candidate`, {
+          params: {
+            candidate_query: this.searchQuery.trim(),
+          },
+        });
 
         // this.searchResults = response.data.candidate|| [];
         if (response.data.candidate && response.data.candidate.length > 0) {
@@ -616,8 +593,7 @@ export default {
         ) {
           this.errorMessage = "Not Staff found for the specified criteria";
         } else {
-          this.errorMessage =
-            "An unexpected error occurred. Please try again later.";
+          this.errorMessage = "An unexpected error occurred. Please try again later.";
         }
         // if (
         //   (error.response && error.response.status === 404) ||
@@ -724,21 +700,18 @@ export default {
 
       const token = localStorage.getItem("token");
       try {
-        const response = await fetch(
-          `${VITE_API_URL}/chats/send_message_to_channel`,
-          {
-            method: "POST",
-            body: JSON.stringify({
-              channel_sid: this.channelSid,
-              message: tempMessage,
-            }),
-            headers: {
-              "Access-Control-Allow-Headers": "Content-Type",
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch(`${VITE_API_URL}/chats/send_message_to_channel`, {
+          method: "POST",
+          body: JSON.stringify({
+            channel_sid: this.channelSid,
+            message: tempMessage,
+          }),
+          headers: {
+            "Access-Control-Allow-Headers": "Content-Type",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         const data = await response.json();
 
@@ -752,8 +725,7 @@ export default {
         } else {
           Swal.fire({
             title: "Error!",
-            text:
-              data.message || "Failed to send the message. Please try again.",
+            text: data.message || "Failed to send the message. Please try again.",
             icon: "error",
             confirmButtonText: "OK",
           });
@@ -765,7 +737,8 @@ export default {
       } catch (error) {
         Swal.fire({
           title: "Error!",
-          text: "An unexpected error occurred while sending the message. Please try again.",
+          text:
+            "An unexpected error occurred while sending the message. Please try again.",
           icon: "error",
           confirmButtonText: "OK",
         });
@@ -780,19 +753,16 @@ export default {
 
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/chats/fetch_messages`,
-          {
-            params: {
-              channel_sid: channelSid,
-            },
-            headers: {
-              "Access-Control-Allow-Headers": "Content-Type",
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${VITE_API_URL}/chats/fetch_messages`, {
+          params: {
+            channel_sid: channelSid,
+          },
+          headers: {
+            "Access-Control-Allow-Headers": "Content-Type",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         this.selectedCandidateMessages = response.data.messages || [];
       } catch (error) {
@@ -853,8 +823,7 @@ export default {
       // User scroll detection
       const isAtTop = chatMessages.scrollTop === 0;
       const isAtBottom =
-        chatMessages.scrollTop + chatMessages.clientHeight >=
-        chatMessages.scrollHeight;
+        chatMessages.scrollTop + chatMessages.clientHeight >= chatMessages.scrollHeight;
 
       if (isAtTop) {
         // this.fetchMessages(this.channelSid);
@@ -936,20 +905,17 @@ export default {
       this.isLoading = true;
 
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/agency_notifications`,
-          {
-            params: {
-              page: this.currentPage,
-              per_page: this.itemsPerPage,
-            },
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${VITE_API_URL}/agency_notifications`, {
+          params: {
+            page: this.currentPage,
+            per_page: this.itemsPerPage,
+          },
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (response.status === 200) {
           // this.notifications = response.data.notifications || [];
