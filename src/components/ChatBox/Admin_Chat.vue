@@ -139,11 +139,9 @@
                             {{ candidate.first_name }} {{ candidate.last_name }}
                           </h6>
 
-                          <span
-                            class="text-capitalize"
-                            style="color: #f6851d"
-                            >{{ candidate.possition }}</span
-                          >
+                          <span class="text-capitalize chatTextThemeColor">{{
+                            candidate.possition
+                          }}</span>
                         </div>
                         <hr class="" />
                       </li>
@@ -203,10 +201,7 @@
                           <h5 class="mb-0 text-capitalize ms-3 mt-1">
                             {{ selectedCandidate?.first_name || "" }}
                             {{ selectedCandidate?.last_name || "" }}
-                            <p
-                              class="fs-6 text-wrap mt-1"
-                              style="color: rgb(246, 133, 29)"
-                            >
+                            <p class="fs-6 text-wrap mt-1 chatTextThemeColor">
                               {{ selectedCandidate?.possition }}
                             </p>
                           </h5>
@@ -877,7 +872,7 @@ export default {
 }
 
 .active-chat {
-  background-color: #fff6ef;
+  background-color: #f1f8b9;
   border-radius: 10px;
 }
 

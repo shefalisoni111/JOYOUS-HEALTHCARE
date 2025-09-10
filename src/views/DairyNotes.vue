@@ -60,8 +60,8 @@
                 </div>
                 <button
                   type="submit"
-                  class="btn"
-                  style="background: #f9944b; color: #fff"
+                  class="btn btn-primary"
+                  style="color: #fff"
                 >
                   Add Note
                 </button>

@@ -47,12 +47,13 @@
                 style="cursor: pointer"
               ></i>
               &nbsp;
-              <img
+              <!-- <img
                 src="../../assets/calender.png"
                 class="img-fluid pe-2"
                 alt="calender"
                 loading="eager"
-              />
+              /> -->
+              <i class="bi bi-calendar2-check pe-2 text-black fw-bold"></i>
               &nbsp;
               <span class="fw-bold fs-5">
                 {{ formatMonthYear(currentDate) }}

@@ -170,8 +170,8 @@
                 @click="openAllApplied(getdata.id)"
               >
                 <span
-                  :style="{ padding: getPadding(getdata.all_candidate) }"
-                  class="rounded-circle"
+                  style="padding: 10px 15px; border-radius: 10px"
+                  class="notificationIconBgThemeColor chatTextThemeColor"
                   >{{ getdata.all_candidate }}</span
                 >
               </button>
@@ -186,8 +186,8 @@
                 @click="openPopup(getdata.id)"
               >
                 <span
-                  :style="{ padding: getPadding(getdata.applied) }"
-                  class="rounded-circle"
+                  style="padding: 10px 15px; border-radius: 10px"
+                  class="notificationIconBgThemeColor chatTextThemeColor"
                   >{{ getdata.applied }}</span
                 >
               </button>
@@ -202,8 +202,8 @@
                 @click="openAssigned(getdata.id)"
               >
                 <span
-                  :style="{ padding: getPadding(getdata.assigned) }"
-                  class="rounded-circle"
+                  style="padding: 10px 15px; border-radius: 10px"
+                  class="notificationIconBgThemeColor chatTextThemeColor"
                   >{{ getdata.assigned }}</span
                 >
               </button>
@@ -218,8 +218,8 @@
                 @click="openRejected(getdata.id)"
               >
                 <span
-                  :style="{ padding: getPadding(getdata.rejected) }"
-                  class="rounded-circle"
+                  style="padding: 10px 15px; border-radius: 10px"
+                  class="notificationIconBgThemeColor chatTextThemeColor"
                   >{{ getdata.rejected }}</span
                 >
               </button>

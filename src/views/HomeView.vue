@@ -16,20 +16,15 @@
           <div class="d-flex justify-content-between">
             <div class="">
               <h3 class="fs-4 fw-bolder" style="color: #000000">
-                Welcome to Recpal
+                Welcome to Joyous Healthcare UK Ltd.
               </h3>
             </div>
             <!-- End Page Title -->
             <div class="d-flex align-items-center">
               <router-link
                 type="button"
-                class="text-nowrap fs-5 text-capitalize text-decoration-none"
-                style="
-                  color: #f9944b;
-                  font-family: Inter;
-                  font-weight: 600;
-                  font-size: 14px;
-                "
+                class="text-nowrap fs-5 text-capitalize text-decoration-none themeColorText"
+                style="font-family: Inter; font-weight: 600; font-size: 14px"
                 to="/report"
               >
                 <i class="bi bi-download"></i>
@@ -393,8 +388,7 @@
                           :to="{ name: 'DocumentReport' }"
                           class="text-decoration-none"
                           ><span
-                            class="d-flex align-items-center pe-3"
-                            style="color: #f9944b"
+                            class="d-flex align-items-center pe-3 themeColorText"
                             >View All</span
                           ></router-link
                         >

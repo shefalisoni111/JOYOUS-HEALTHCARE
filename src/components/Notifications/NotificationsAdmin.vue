@@ -81,11 +81,12 @@
                       class="notification-item"
                     >
                       <span
+                        class="notificationIconBgThemeColor"
                         style="
                           width: 44px;
                           height: 44px;
                           margin-top: 5px;
-                          background: #f9944b14;
+
                           border-radius: 50%;
 
                           line-height: 37px;
@@ -125,11 +126,26 @@
                     :key="notification.id"
                     class="notification-item"
                   >
-                    <img
-                      src="../../assets/bell.png"
-                      alt="icon"
-                      class="marker-icon"
-                    />
+                    <span
+                      class="notificationIconBgThemeColor"
+                      style="
+                        width: 44px;
+                        height: 44px;
+                        margin-top: 5px;
+
+                        border-radius: 50%;
+
+                        line-height: 37px;
+                        text-align: center;
+                      "
+                    >
+                      <img
+                        src="../../assets/bell.png"
+                        alt="icon"
+                        class="marker-icon"
+                      />
+                    </span>
+
                     <div class="notification-content">
                       <h4>{{ notification.title }}</h4>
                       <p>{{ notification.message }}</p>

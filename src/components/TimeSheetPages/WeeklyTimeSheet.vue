@@ -57,7 +57,10 @@
                       @click="moveToPrevious"
                       style="cursor: pointer"
                     ></i>
-                    &nbsp; &nbsp;
+                    &nbsp;<i
+                      class="bi bi-calendar2-check pe-2 text-black fw-bold"
+                    ></i>
+                    &nbsp;
                     <span class="fw-bold fs-5">
                       {{ formatMonthYear(currentDate) }}
                     </span>

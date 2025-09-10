@@ -73,7 +73,7 @@ export default {
   width: 6px;
   height: 18px;
   border-radius: 20%;
-  background: rgb(226, 77, 19);
+  background: rgb(82 115 45);
 }
 .lds-spinner div:nth-child(1) {
   transform: rotate(0deg);

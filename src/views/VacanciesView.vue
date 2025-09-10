@@ -33,6 +33,7 @@ export default {
 
   background-color: #fdce5e17;
 }
+
 .main-content {
   transition: all 0.3s;
 }

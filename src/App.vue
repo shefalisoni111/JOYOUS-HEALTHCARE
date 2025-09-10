@@ -17,7 +17,7 @@ export default {
 
   methods: {},
   computed: {
-    ...mapGetters(["getFavicon"]),
+    ...mapGetters(["getFavicon", "getAgencyLogo"]),
   },
   watch: {
     getFavicon(newVal) {
@@ -28,9 +28,14 @@ export default {
         }
       }
     },
-  },
-  mounted() {
-    // this.$store.dispatch("fetchAgencyLogo");
+    getAgencyLogo(newVal) {
+      if (newVal) {
+        const link = document.getElementById("logoAgency");
+        if (link) {
+          link.href = newVal;
+        }
+      }
+    },
   },
 };
 </script>

@@ -91,11 +91,11 @@ import InvoiceReport from "../components/ReportPages/InvoiceReport.vue";
 import DocumentReport from "../components/ReportPages/DocumentReport.vue";
 import RateCardReport from "../components/ReportPages/RateCardReport.vue";
 import Navbar from "../components/Navbar.vue";
-import staffIcon from "@/assets/staff_report.png";
-import clientIcon from "@/assets/client_report.png";
-import siteICon from "@/assets/site_report.png";
-import invoiceIcon from "@/assets/invoice_report.png";
-import rateCardIcon from "@/assets/ratecard_report.png";
+// import staffIcon from "@/assets/staff_report.png";
+// import clientIcon from "@/assets/client_report.png";
+// import siteICon from "@/assets/site_report.png";
+// import invoiceIcon from "@/assets/invoice_report.png";
+// import rateCardIcon from "@/assets/ratecard_report.png";
 // import EmailReport from "../components/ReportPages/EmailReport.vue";
 
 export default {
@@ -112,37 +112,37 @@ export default {
           name: "Staff Report ",
           component: "StaffReport",
           routeName: "StaffReport",
-          icon: staffIcon,
+          // icon: staffIcon,
         },
         {
           name: "Client Report ",
           component: "ClientReport",
           routeName: "ClientReport",
-          icon: clientIcon,
+          // icon: clientIcon,
         },
         {
           name: "Site Report",
           component: "BusinessUnitReport",
           routeName: "BusinessUnitReport",
-          icon: siteICon,
+          // icon: siteICon,
         },
         {
           name: "Invoice Report",
           component: "InvoiceReport",
           routeName: "InvoiceReport",
-          icon: invoiceIcon,
+          // icon: invoiceIcon,
         },
         {
           name: "Document Report",
           component: "DocumentReport",
           routeName: "DocumentReport",
-          icon: invoiceIcon,
+          // icon: invoiceIcon,
         },
         {
           name: "RateCard",
           component: "RateCardReport",
           routeName: "RateCardReport",
-          icon: rateCardIcon,
+          // icon: rateCardIcon,
         },
         // {
         //   name: "EmailReport",

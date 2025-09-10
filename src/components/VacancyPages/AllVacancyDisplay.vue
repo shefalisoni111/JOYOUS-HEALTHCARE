@@ -172,9 +172,12 @@
                 data-bs-whatever="@mdo"
                 @click="openAllApplied(getdata.id)"
                 :disabled="!getdata.activated"
-                style="color: orange; background: #f9944b14"
               >
-                <span>{{ getdata.all_candidate }}</span>
+                <span
+                  style="padding: 10px 15px; border-radius: 10px"
+                  class="notificationIconBgThemeColor chatTextThemeColor"
+                  >{{ getdata.all_candidate }}</span
+                >
               </button>
             </td>
             <td>
@@ -186,9 +189,12 @@
                 data-bs-whatever="@mdo"
                 @click="openPopup(getdata.id)"
                 :disabled="!getdata.activated"
-                style="color: orange; background: #f9944b14"
               >
-                <span>{{ getdata.applied }}</span>
+                <span
+                  style="padding: 10px 15px; border-radius: 10px"
+                  class="notificationIconBgThemeColor chatTextThemeColor"
+                  >{{ getdata.applied }}</span
+                >
               </button>
             </td>
             <td>
@@ -200,9 +206,12 @@
                 data-bs-whatever="@mdo"
                 @click="openAssigned(getdata.id)"
                 :disabled="!getdata.activated"
-                style="color: orange; background: #f9944b14"
               >
-                <span>{{ getdata.assigned }}</span>
+                <span
+                  style="padding: 10px 15px; border-radius: 10px"
+                  class="notificationIconBgThemeColor chatTextThemeColor"
+                  >{{ getdata.assigned }}</span
+                >
               </button>
             </td>
             <td>
@@ -214,9 +223,12 @@
                 data-bs-whatever="@mdo"
                 @click="openRejected(getdata.id)"
                 :disabled="!getdata.activated"
-                style="color: orange; background: #f9944b14"
               >
-                <span>{{ getdata.rejected }}</span>
+                <span
+                  style="padding: 10px 15px; border-radius: 10px"
+                  class="notificationIconBgThemeColor chatTextThemeColor"
+                  >{{ getdata.rejected }}</span
+                >
               </button>
             </td>
             <td>

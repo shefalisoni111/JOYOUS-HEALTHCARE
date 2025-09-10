@@ -156,7 +156,7 @@
                     <input type="checkbox" id="togBtn" checked />
                     <div class="slider round"></div>
                   </label> -->
-                  <label class="switch mt-2">
+                  <label class="switch">
                     <input
                       type="checkbox"
                       id="togBtn"
@@ -206,11 +206,10 @@
                 <div>
                   <button
                     type="button"
-                    class="btn text-nowrap"
+                    class="btn text-nowrap btn-bg-color"
                     data-bs-toggle="modal"
                     data-bs-target="#addStaffJobs"
                     data-bs-whatever="@mdo"
-                    style="background: #f9944b; color: #fff"
                   >
                     + Add
                   </button>
@@ -297,7 +296,7 @@
               <div class="d-flex justify-content-between">
                 <div class="d-flex align-items-center">
                   <div class="d-flex fs-smaller text-nowrap">Profile View</div>
-                  <label class="switch mt-2">
+                  <label class="switch">
                     <input type="checkbox" id="togBtn" checked />
                     <div class="slider round"></div>
                   </label>
@@ -338,11 +337,10 @@
 
                 <button
                   type="button"
-                  class="btn text-nowrap text-nowrap mb-3"
+                  class="btn text-nowrap text-nowrap mb-3 btn-bg-color"
                   data-bs-toggle="modal"
                   data-bs-target="#addNextToKin"
                   data-bs-whatever="@mdo"
-                  style="background: #f9944b; color: #fff"
                 >
                   + Add
                 </button>
@@ -478,12 +476,11 @@
                   Work experience
                 </h5>
                 <button
-                  class="btn rounded-1 text-capitalize fw-medium mb-3"
+                  class="btn rounded-1 text-capitalize fw-medium mb-3 btn-bg-color"
                   data-bs-toggle="modal"
                   data-bs-target="#addWorkExperience"
                   data-bs-whatever="@mdo"
                   type="button"
-                  style="background: #f9944b; color: #fff"
                 >
                   + Add
                 </button>
@@ -584,12 +581,11 @@
                   Education
                 </h5>
                 <button
-                  class="btn rounded-1 text-capitalize fw-medium mb-3"
+                  class="btn rounded-1 text-capitalize fw-medium mb-3 btn-bg-color"
                   data-bs-toggle="modal"
                   data-bs-target="#addEducation"
                   data-bs-whatever="@mdo"
                   type="button"
-                  style="background: #f9944b; color: #fff"
                 >
                   + Add
                 </button>

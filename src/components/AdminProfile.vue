@@ -34,13 +34,14 @@
             <div class="card h-100" style="border-radius: 25px">
               <div class="card-body p-0" style="height: 450px">
                 <div class="position-relative">
-                  <img
+                  <div class="themeBgColor w-100" style="height: 200px"></div>
+                  <!-- <img
                     src="../assets/profile_bg.png"
                     class="img-fluid w-100"
                     alt="RecPal"
                     loading="eager"
                     style="width: 200px; height: 200px"
-                  />
+                  /> -->
                 </div>
                 <div
                   class="d-flex flex-column align-items-center text-center float-start position-absolute ps-5"
@@ -86,7 +87,7 @@
                   />
                   <div class="mt-3">
                     <h4 class="text-capitalize">
-                      {{ getAdmin.first_name }}
+                      {{ getAdmin.first_name }} &nbsp;{{ getAdmin.last_name }}
                     </h4>
                     <p class="text-secondary mb-1">
                       {{ getAdmin.position }}
@@ -106,11 +107,9 @@
                   >
                     <div class="d-flex">
                       <i
-                        class="bi bi-person-fill fs-4 me-3"
+                        class="bi bi-person-fill fs-4 me-3 chatTextThemeColor notificationIconBgThemeColor"
                         style="
-                          color: #f9944b !important;
                           border-radius: 50%;
-                          background: #f9944b14;
 
                           padding: 5px 11px;
                         "
@@ -140,11 +139,9 @@
                   </li>
                   <li class="d-flex align-items-center mb-4">
                     <i
-                      class="bi bi-envelope-fill fs-4 me-3"
+                      class="bi bi-envelope-fill fs-4 me-3 chatTextThemeColor notificationIconBgThemeColor"
                       style="
-                        color: #f9944b !important;
                         border-radius: 50%;
-                        background: #f9944b14;
 
                         padding: 5px 11px;
                       "
@@ -158,11 +155,9 @@
                   </li>
                   <li class="d-flex align-items-center mb-4">
                     <i
-                      class="bi bi-telephone-fill fs-4 me-3"
+                      class="bi bi-telephone-fill fs-4 me-3 chatTextThemeColor notificationIconBgThemeColor"
                       style="
-                        color: #f9944b !important;
                         border-radius: 50%;
-                        background: #f9944b14;
 
                         padding: 5px 11px;
                       "
@@ -176,11 +171,9 @@
                   </li>
                   <li class="d-flex align-items-center">
                     <i
-                      class="bi bi-geo-alt-fill fs-4 me-3"
+                      class="bi bi-geo-alt-fill fs-4 me-3 chatTextThemeColor notificationIconBgThemeColor"
                       style="
-                        color: #f9944b !important;
                         border-radius: 50%;
-                        background: #f9944b14;
 
                         padding: 5px 11px;
                       "

@@ -107,7 +107,12 @@
             </div>
             <div class="col-md-4"></div>
             <div class="col-md-2 d-flex align-items-center flex-column">
-              <img src="./logo.png" class="img-fluid" loading="eager" />
+              <!-- <img
+                id="logoAgency"
+                :src="getAgencyLogo"
+                loading="eager"
+                class="w-32 h-32 img-fluid"
+              /> -->
             </div>
           </div>
 
@@ -276,12 +281,12 @@
                   </td>
                   <td class="d-flex align-items-center">
                     <div>
-                      <img
+                      <!-- <img
                         src="./logo.png"
                         class="img-fluid"
                         width="200"
                         loading="eager"
-                      />
+                      /> -->
                       <!-- <button
                         type="button"
                         class="btn btn-secondary"
@@ -448,6 +453,7 @@ import axios from "axios";
 import DOMPurify from "dompurify";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
+import { mapGetters } from "vuex";
 
 export default {
   name: "ProfileTabs",

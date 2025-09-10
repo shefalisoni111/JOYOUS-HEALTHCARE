@@ -143,13 +143,17 @@
                       <span v-for="(date, index) in data.dates" :key="index">
                         {{ date }}
 
-                        <template v-if="index !== data.dates.length - 1">, </template>
+                        <template v-if="index !== data.dates.length - 1"
+                          >,
+                        </template>
                       </span>
                     </td>
 
                     <td v-text="data.shift"></td>
                     <td class="withShow text-center">
-                      {{ data.staff_required === null ? 0 : data.staff_required }}
+                      {{
+                        data.staff_required === null ? 0 : data.staff_required
+                      }}
                     </td>
                     <td v-text="data.notes"></td>
 
@@ -186,7 +190,9 @@
                         data-bs-whatever="@mdo"
                         @click="openAllApplied(data.id)"
                       >
-                        <span class="rounded-circle">{{ data.all_candidate }}</span>
+                        <span class="rounded-circle">{{
+                          data.all_candidate
+                        }}</span>
                       </button>
                     </td>
                     <td>
@@ -277,10 +283,14 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+              >20 Records</a
+            >
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+              >50 Records</a
+            >
           </li>
           <li>
             <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
@@ -487,7 +497,10 @@ export default {
           .then((response) => {
             this.getVacancyDetail = response.data.data;
 
-            localStorage.setItem("vacancies", JSON.stringify(this.getVacancyDetail));
+            localStorage.setItem(
+              "vacancies",
+              JSON.stringify(this.getVacancyDetail)
+            );
           })
           .finally(() => {
             this.isLoading = false;
@@ -629,7 +642,9 @@ export default {
       }).then(async (result) => {
         if (result.isConfirmed) {
           try {
-            const response = await axios.put(`${VITE_API_URL}/active_vacancy/${id}`);
+            const response = await axios.put(
+              `${VITE_API_URL}/active_vacancy/${id}`
+            );
 
             this.inactiveCandidateData = response.data;
             this.getInactiveVacancyMethod();
@@ -644,7 +659,9 @@ export default {
             Swal.fire({
               icon: "error",
               title: "Error",
-              text: error.response?.data?.message || "Failed to re-activate the vacancy.",
+              text:
+                error.response?.data?.message ||
+                "Failed to re-activate the vacancy.",
               confirmButtonText: "OK",
             });
           }
