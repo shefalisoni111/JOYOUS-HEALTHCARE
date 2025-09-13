@@ -97,17 +97,23 @@
                     />
                   </th>
                   <th scope="col" class="bg-primary text-white">
-                    <div class="d-flex justify-content-center align-items-center gap-1">
+                    <div
+                      class="d-flex justify-content-center align-items-center gap-1"
+                    >
                       Job Code
                     </div>
                   </th>
                   <th scope="col" class="bg-primary text-white">
-                    <div class="d-flex justify-content-center align-items-center gap-1">
+                    <div
+                      class="d-flex justify-content-center align-items-center gap-1"
+                    >
                       No. of Clients
                     </div>
                   </th>
                   <th scope="col" class="bg-primary text-white text-center">
-                    <div class="d-flex justify-content-center align-items-center gap-1">
+                    <div
+                      class="d-flex justify-content-center align-items-center gap-1"
+                    >
                       <span>No. of Staff</span>
                       <img
                         src="../../assets/ArrowDown.png"
@@ -119,7 +125,9 @@
                     </div>
                   </th>
                   <th scope="col" class="bg-primary text-white">
-                    <div class="d-flex justify-content-center align-items-center gap-1">
+                    <div
+                      class="d-flex justify-content-center align-items-center gap-1"
+                    >
                       No. of Documents
                     </div>
                   </th>
@@ -138,7 +146,10 @@
                 <tr v-for="jobs in paginateSiteData" :key="jobs.id">
                   <td v-text="jobs.id"></td>
                   <td scope="row">
-                    <i class="bi bi-square-fill" :style="{ color: jobs.color }"></i>
+                    <i
+                      class="bi bi-square-fill"
+                      :style="{ color: jobs.color }"
+                    ></i>
                   </td>
                   <td class="text-capitalize" v-text="jobs.name"></td>
                   <td v-text="jobs.job_code"></td>
@@ -161,7 +172,11 @@
               </tbody>
               <tbody v-else>
                 <tr>
-                  <td colspan="8" class="text-center text-danger" v-if="!isLoading">
+                  <td
+                    colspan="8"
+                    class="text-center text-danger"
+                    v-if="!isLoading"
+                  >
                     {{ "Data Not Found!" }}
                   </td>
                 </tr>
@@ -216,7 +231,9 @@
                   />
                 </th>
                 <th scope="col" class="bg-primary text-white">
-                  <div class="d-flex justify-content-center align-items-center gap-1">
+                  <div
+                    class="d-flex justify-content-center align-items-center gap-1"
+                  >
                     No. of Vendor
                     <img
                       src="../../assets/ArrowDown.png"
@@ -227,7 +244,9 @@
                   </div>
                 </th>
                 <th scope="col" class="bg-primary text-white">
-                  <div class="d-flex justify-content-center align-items-center gap-1">
+                  <div
+                    class="d-flex justify-content-center align-items-center gap-1"
+                  >
                     No. of Staff
 
                     <img
@@ -239,7 +258,9 @@
                   </div>
                 </th>
                 <th scope="col" class="bg-primary text-white">
-                  <div class="d-flex justify-content-center align-items-center gap-1">
+                  <div
+                    class="d-flex justify-content-center align-items-center gap-1"
+                  >
                     No. of Documents
                     <img
                       src="../../assets/ArrowDown.png"
@@ -269,7 +290,10 @@
               >
                 <td v-text="jobs.id"></td>
                 <td scope="row">
-                  <i class="bi bi-square-fill" :style="{ color: jobs.color }"></i>
+                  <i
+                    class="bi bi-square-fill"
+                    :style="{ color: jobs.color }"
+                  ></i>
                 </td>
                 <td class="text-capitalize" v-text="jobs.name"></td>
                 <td v-text="jobs.job_code"></td>
@@ -313,7 +337,10 @@
                         data-bs-whatever="@mdo"
                         v-on:click="jobsEdit(jobs.id)"
                       >
-                        <i class="bi bi-pencil-square" style="color: #f9944b"></i>
+                        <i
+                          class="bi bi-pencil-square"
+                          style="color: #f9944b"
+                        ></i>
                         Edit
                       </button>
                       <button
@@ -333,7 +360,11 @@
             </tbody>
             <tbody v-else>
               <tr>
-                <td colspan="8" class="text-center text-danger" v-if="!isLoading">
+                <td
+                  colspan="8"
+                  class="text-center text-danger"
+                  v-if="!isLoading"
+                >
                   {{ "Data Not Found!" }}
                 </td>
               </tr>
@@ -361,10 +392,14 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+              >20 Records</a
+            >
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+              >50 Records</a
+            >
           </li>
           <li>
             <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
@@ -516,7 +551,9 @@ export default {
 
       this.confirmCallback = async () => {
         try {
-          const response = await axios.put(`${VITE_API_URL}/inactivate_job/` + id);
+          const response = await axios.put(
+            `${VITE_API_URL}/inactivate_job/` + id
+          );
           this.getJobData();
           this.getInactiveJobData();
 
@@ -624,11 +661,5 @@ table {
 .table td {
   text-align: center;
   width: 11.2857%;
-}
-.table td:last-child {
-  width: 16% !important;
-}
-.table th:last-child {
-  width: 16% !important;
 }
 </style>

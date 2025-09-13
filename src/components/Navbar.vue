@@ -828,13 +828,13 @@ export default {
           imageWidth: 200,
           imageAlt: "RecPal",
           showCancelButton: true,
-          confirmButtonColor: "#ff5f30",
+          confirmButtonColor: "#52732d",
           cancelButtonColor: "#d33",
           confirmButtonText: "Yes, sign me out!",
           cancelButtonText: "Cancel",
           didOpen: () => {
             const popup = document.querySelector(".swal2-popup");
-            popup.style.border = "4px solid #fc7d4f";
+            popup.style.border = "4px solid #52732d";
           },
         }).then((result) => {
           if (result.isConfirmed) {
