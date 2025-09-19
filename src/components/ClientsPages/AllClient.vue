@@ -262,49 +262,37 @@
                 >{{ client.activated ? "Active" : "No Account" }}</span
               >
             </td>
-            <td class="cursor-pointer" style="width: 10%">
-              <div class="action-wrapper position-relative">
-                <i class="bi bi-three-dots dot-icon"></i>
+            <td class="cursor-pointer" style="width: 20%">
+              <button
+                type="button"
+                class="btn btn-outline-success text-nowrap"
+                data-bs-toggle="modal"
+                data-bs-target="#editClient"
+                data-bs-whatever="@mdo"
+                @click="editClient(client.id)"
+              >
+                <i class="bi bi-pencil"></i>
+              </button>
 
-                <div
-                  v-if="selectedRow === index"
-                  class="action-menu position-absolute"
-                >
-                  <button
-                    type="button"
-                    class="btn text-nowrap border-0"
-                    data-bs-toggle="modal"
-                    data-bs-target="#editClient"
-                    data-bs-whatever="@mdo"
-                    @click="editClient(client.id)"
-                  >
-                    <i class="bi bi-pencil-square" style="color: #f9944b"></i>
-                    Edit
-                  </button>
+              &nbsp;
+              <button
+                class="btn text-nowrap btn-outline-success"
+                @click="
+                  $router.push({
+                    name: 'SingleClientProfile',
+                    params: { id: client.id },
+                  })
+                "
+              >
+                <i class="bi bi-eye"></i></button
+              >&nbsp;
 
-                  <router-link
-                    :to="{
-                      name: 'SingleClientProfile',
-                      params: { id: client.id },
-                    }"
-                    class="btn text-nowrap border-0"
-                  >
-                    <i class="bi bi-eye" style="color: #f9944b"></i>
-                    View
-                  </router-link>
-
-                  <button
-                    class="btn text-nowrap border-0"
-                    v-on:click="deleteClientDataMethod(client.id)"
-                  >
-                    <i
-                      class="bi bi-trash border-0 border-0"
-                      style="color: #f9944b"
-                    ></i>
-                    Delete
-                  </button>
-                </div>
-              </div>
+              <button
+                class="btn btn-outline-success text-nowrap"
+                v-on:click="deleteClientDataMethod(client.id)"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
             </td>
           </tr>
         </tbody>

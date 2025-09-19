@@ -65,50 +65,36 @@
             <td class="widthDefineNotes" v-text="data.notes"></td>
             <td v-text="data.status"></td>
             <td style="width: 10%">
-              <div class="action-wrapper position-relative">
-                <i class="bi bi-three-dots dot-icon"></i>
-
-                <div
-                  v-if="selectedRow === index"
-                  class="action-menu position-absolute"
+              <template v-if="isEditAllowed(data.dates)">
+                <button
+                  type="button"
+                  class="btn text-nowrap shadow-soft btn-outline-success"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editVacancy"
+                  data-bs-whatever="@mdo"
+                  @click="editAndReactivate(data.id)"
                 >
-                  <template v-if="isEditAllowed(data.dates)">
-                    <button
-                      type="button"
-                      class="btn text-nowrap shadow-soft"
-                      data-bs-toggle="modal"
-                      data-bs-target="#editVacancy"
-                      data-bs-whatever="@mdo"
-                      @click="editAndReactivate(data.id)"
-                    >
-                      <i class="bi bi-pencil-square" style="color: #f9944b"></i>
-                      Edit
-                    </button>
-                  </template>
+                  <i class="bi bi-pencil"></i>
+                </button>
+              </template>
 
-                  <template v-else>
-                    <button
-                      type="button"
-                      class="btn btn-success text-nowrap shadow-soft"
-                      @click="editAndReactivates(data.id)"
-                    >
-                      Re-activate
-                    </button>
-                  </template>
-
-                  <button
-                    type="button"
-                    class="btn text-nowrap shadow-soft border-0"
-                    @click="confirmed(data.id)"
-                  >
-                    <i
-                      class="bi bi-trash border-0 border-0"
-                      style="color: #f9944b"
-                    ></i>
-                    Delete
-                  </button>
-                </div>
-              </div>
+              <template v-else>
+                <button
+                  type="button"
+                  class="btn btn-success text-nowrap shadow-soft btn-outline-success"
+                  @click="editAndReactivates(data.id)"
+                >
+                  Re-activate
+                </button>
+              </template>
+              &nbsp;
+              <button
+                type="button"
+                class="btn text-nowrap shadow-soft btn-outline-success"
+                @click="confirmed(data.id)"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
 
               <!-- <button
                 v-if="isEditAllowed(data.dates)"

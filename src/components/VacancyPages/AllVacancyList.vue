@@ -247,36 +247,27 @@
               </span>
             </td>
 
-            <td class="cursor-pointer" style="width: 10%">
-              <div class="action-wrapper position-relative">
-                <i class="bi bi-three-dots dot-icon"></i>
+            <td class="cursor-pointer" style="width: 20%">
+              <button
+                type="button"
+                class="btn text-nowrap text-nowrap shadow-soft btn-outline-success"
+                data-bs-toggle="modal"
+                data-bs-target="#editVacancy"
+                data-bs-whatever="@mdo"
+                @click="editVacancyId(getdata.id)"
+              >
+                <i class="bi bi-pencil"></i>
+              </button>
+              &nbsp;
+              <button
+                type="button"
+                class="btn text-nowrap text-nowrap shadow-soft btn-outline-success"
+                v-on:click="confirmed(getdata.id)"
+              >
+                <i class="bi bi-pencil"></i>
+                In-Active
+              </button>
 
-                <div
-                  v-if="selectedRow === index"
-                  class="action-menu position-absolute"
-                >
-                  <button
-                    type="button"
-                    class="btn text-nowrap text-nowrap shadow-soft"
-                    data-bs-toggle="modal"
-                    data-bs-target="#editVacancy"
-                    data-bs-whatever="@mdo"
-                    @click="editVacancyId(getdata.id)"
-                  >
-                    <i class="bi bi-pencil-square" style="color: #f9944b"></i>
-                    Edit
-                  </button>
-
-                  <button
-                    type="button"
-                    class="btn text-nowrap text-nowrap shadow-soft"
-                    v-on:click="confirmed(getdata.id)"
-                  >
-                    <i class="bi bi-pencil-square" style="color: #f9944b"></i>
-                    In-Active
-                  </button>
-                </div>
-              </div>
               <!-- <i
                 class="bi bi-pencil-square btn btn-outline-success text-nowrap text-nowrap"
                 data-bs-toggle="modal"

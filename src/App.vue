@@ -1,6 +1,7 @@
 <script>
 import "./assets/main.css";
-import { mapGetters } from "vuex";
+
+import { mapActions } from "vuex";
 import "bootstrap/dist/js/bootstrap.bundle.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Navbar from "./components/Navbar.vue";
@@ -11,31 +12,13 @@ import "@fontsource/inter/700.css";
 export default {
   name: "App",
   data() {
-    return {};
+    return { getCompanyName: "" };
   },
   components: { Navbar },
 
-  methods: {},
-  computed: {
-    ...mapGetters(["getFavicon", "getAgencyLogo"]),
-  },
-  watch: {
-    getFavicon(newVal) {
-      if (newVal) {
-        const link = document.getElementById("dynamic-favicon");
-        if (link) {
-          link.href = newVal;
-        }
-      }
-    },
-    getAgencyLogo(newVal) {
-      if (newVal) {
-        const link = document.getElementById("logoAgency");
-        if (link) {
-          link.href = newVal;
-        }
-      }
-    },
+  methods: { ...mapActions(["fetchAgencyLogo"]) },
+  mounted() {
+    this.fetchAgencyLogo();
   },
 };
 </script>

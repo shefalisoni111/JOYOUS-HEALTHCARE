@@ -55,22 +55,13 @@
             </button>
           </td>
           <td>
-            <div class="action-wrapper position-relative">
-              <i class="bi bi-three-dots dot-icon"></i>
-
-              <div
-                v-if="selectedRow === index"
-                class="action-menu position-absolute"
-              >
-                <button
-                  type="button"
-                  class="btn text-nowrap border-0"
-                  v-on:click="confirmed(datas.id)"
-                >
-                  Re-Activate
-                </button>
-              </div>
-            </div>
+            <button
+              type="button"
+              class="btn text-nowrap btn-outline-success"
+              v-on:click="confirmed(datas.id)"
+            >
+              Re-Activate
+            </button>
           </td>
         </tr>
       </tbody>

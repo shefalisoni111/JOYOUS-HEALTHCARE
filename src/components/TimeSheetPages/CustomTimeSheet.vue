@@ -372,28 +372,15 @@
                         </button>
                       </td>
                       <td scope="col">
-                        <div class="action-wrapper position-relative">
-                          <i class="bi bi-three-dots dot-icon"></i>
-
-                          <div
-                            v-if="selectedRow === index"
-                            class="action-menu position-absolute"
-                          >
-                            <button
-                              type="button"
-                              class="btn btn-default text-nowrap border-0 shadow-soft"
-                              data-bs-toggle="modal"
-                              data-bs-target="#editCustomTimeSheet"
-                              @click="openEditModal(data.id)"
-                            >
-                              <i
-                                class="bi bi-pencil-square"
-                                style="color: #f9944b"
-                              ></i>
-                              Edit
-                            </button>
-                          </div>
-                        </div>
+                        <button
+                          type="button"
+                          class="btn btn-default text-nowrap btn-outline-success shadow-soft"
+                          data-bs-toggle="modal"
+                          data-bs-target="#editCustomTimeSheet"
+                          @click="openEditModal(data.id)"
+                        >
+                          <i class="bi bi-pencil text-success"></i>
+                        </button>
                       </td>
                     </tr>
                   </tbody>
@@ -533,33 +520,16 @@
                         </button>
                       </td>
                       <td scope="col">
-                        <div
-                          class="action-wrapper position-relative"
-                          @mouseenter="hover = true"
-                          @mouseleave="hover = false"
+                        <button
+                          type="button"
+                          class="btn text-nowrap text-nowrap btn-outline-success shadow-soft"
+                          data-bs-toggle="modal"
+                          data-bs-target="#editCustomTimeSheet"
+                          data-bs-whatever="@mdo"
+                          @click="openEditModal(data.id)"
                         >
-                          <i class="bi bi-three-dots dot-icon"></i>
-
-                          <div
-                            v-if="hover"
-                            class="action-menu position-absolute"
-                          >
-                            <button
-                              type="button"
-                              class="btn text-nowrap text-nowrap shadow-soft"
-                              data-bs-toggle="modal"
-                              data-bs-target="#editCustomTimeSheet"
-                              data-bs-whatever="@mdo"
-                              @click="openEditModal(data.id)"
-                            >
-                              <i
-                                class="bi bi-pencil-square"
-                                style="color: #f9944b"
-                              ></i>
-                              Edit
-                            </button>
-                          </div>
-                        </div>
+                          <i class="bi bi-pencil text-success"></i>
+                        </button>
                       </td>
                     </tr>
                   </tbody>

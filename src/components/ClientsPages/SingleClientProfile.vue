@@ -106,17 +106,17 @@
                     >
                       {{ getClientDatas?.activated ? "Active" : "In-Active" }}
                     </h6>
-                    <img
+                    <!-- <img
                       src="./location.jpg"
                       class="card-img-top position-relative"
                       height="219"
                       alt="..."
                       loading="eager"
-                    />
+                    /> -->
 
                     <!-- <div class="ribbon"><span>Active</span></div> -->
                     <div>
-                      <div class="">
+                      <div class="mt-5">
                         <div class="col-12 p-3">
                           <h4 class="card-title text-nowrap fw-bold text-capitalize">
                             {{ getClientDatas?.client_name }}
@@ -135,7 +135,7 @@
                     </div>
 
                     <ul class="nav nav-pills ps-3" id="pills-tab" role="tablist">
-                      <li class="nav-item d-inline-flex gap-3" role="presentation">
+                      <li class="nav-item d-inline-flex gap-5" role="presentation">
                         <button
                           class="nav-link px-0"
                           :class="{ active: activeTab === index }"
@@ -156,7 +156,7 @@
                 </div>
                 <div class="col-md-5 bg-white px-3" style="border-radius: 12px">
                   <div class="card-body">
-                    <h6 class="text-muted fw-semibold mb-3 mt-4">Details</h6>
+                    <h6 class="text-muted fw-semibold mt-4">Details</h6>
 
                     <!-- Name -->
                     <div class="detail-row">
@@ -214,14 +214,14 @@
                     </div>
 
                     <!-- Address -->
-                    <div class="detail-row">
+                    <!-- <div class="detail-row">
                       <div class="icon-box">
                         <i class="bi bi-geo-alt-fill"></i>
                       </div>
                       <div class="flex-grow-1">
                         {{ getClientDatas?.address }}
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
@@ -465,9 +465,7 @@ h6.tag:after {
 
   transition: all 0.3s;
 }
-.detail-row {
-  padding: 20px 0;
-}
+
 .card ul li {
   display: inline-block;
 }

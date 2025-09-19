@@ -16,30 +16,6 @@
           <div id="main" class="bg-orange-light px-4">
             <div class="pagetitle d-flex justify-content-between">
               <div class="">
-                <!-- <ol class="breadcrumb mb-1">
-                  <li class="breadcrumb-item active text-uppercase fs-6">
-                    <router-link
-                      class="nav-link d-inline"
-                      aria-current="page"
-                      to="/home"
-                      >Dashboard</router-link
-                    >
-                    /
-                    <router-link
-                      class="text-capitalize text-decoration-underline"
-                      style="color: #595b5b"
-                      :to="{
-                        name: 'AllSite',
-                      }"
-                      >SITE</router-link
-                    >
-                    /
-                    <span class="color-fonts">{{
-                      getSiteDatas.client_name
-                    }}</span
-                    >/ <span>{{ getSiteDatas.site_name }}</span>
-                  </li>
-                </ol> -->
                 <ol class="breadcrumb mb-1">
                   <li class="breadcrumb-item active">
                     <a
@@ -112,16 +88,16 @@
                     >
                       {{ getSiteDatas.status ? "Active" : "In-Active" }}
                     </h6>
-                    <img
+                    <!-- <img
                       src="../location.jpg"
                       class="card-img-top position-relative"
                       height="317"
                       alt="..."
                       loading="eager"
-                    />
+                    /> -->
 
                     <div>
-                      <div class="mt-1">
+                      <div class="mt-5">
                         <div class="col-12 p-3">
                           <h4
                             class="card-title text-nowrap fw-bold text-capitalize"
@@ -137,6 +113,38 @@
                             />
                             {{ getSiteDatas?.address }}</span
                           >
+                          <h6 class="text-capitalize mt-3">
+                            Contact person's name:
+                            {{
+                              getSiteDatas.contact_person_name
+                                ? getSiteDatas.contact_person_name
+                                : "Null"
+                            }}
+                          </h6>
+                          <h6>
+                            Contact person's email:
+                            {{
+                              getSiteDatas.contact_person_email
+                                ? getSiteDatas.contact_person_email
+                                : "Null"
+                            }}
+                          </h6>
+                          <h6>
+                            Contact person's number:
+                            {{
+                              getSiteDatas.contact_person_number
+                                ? getSiteDatas.contact_person_number
+                                : "Null"
+                            }}
+                          </h6>
+                          <h6>
+                            Bookings email:
+                            {{
+                              getSiteDatas.booking_email
+                                ? getSiteDatas.booking_email
+                                : "Null"
+                            }}
+                          </h6>
                         </div>
                       </div>
                     </div>
@@ -146,7 +154,7 @@
                       role="tablist"
                     >
                       <li
-                        class="nav-item d-inline-flex gap-4"
+                        class="nav-item d-inline-flex gap-5"
                         role="presentation"
                       >
                         <button
@@ -225,48 +233,7 @@
                           </div>
                         </div>
 
-                        <!-- Address -->
-                        <div class="detail-row">
-                          <div class="icon-box">
-                            <i class="bi bi-geo-alt-fill"></i>
-                          </div>
-                          <div class="flex-grow-1">
-                            {{ getSiteDatas?.address }}
-                          </div>
-                        </div>
                         <!-- <h6>Mobile : {{ getSiteDatas.phone_number }}</h6> -->
-                        <h6 class="text-capitalize mt-3">
-                          Contact person's name:
-                          {{
-                            getSiteDatas.contact_person_name
-                              ? getSiteDatas.contact_person_name
-                              : "Null"
-                          }}
-                        </h6>
-                        <h6>
-                          Contact person's email:
-                          {{
-                            getSiteDatas.contact_person_email
-                              ? getSiteDatas.contact_person_email
-                              : "Null"
-                          }}
-                        </h6>
-                        <h6>
-                          Contact person's number:
-                          {{
-                            getSiteDatas.contact_person_number
-                              ? getSiteDatas.contact_person_number
-                              : "Null"
-                          }}
-                        </h6>
-                        <h6>
-                          Bookings email:
-                          {{
-                            getSiteDatas.booking_email
-                              ? getSiteDatas.booking_email
-                              : "Null"
-                          }}
-                        </h6>
                       </div>
                       <div>
                         <!-- <h6 class="card-title text-nowrap fw-bold text-capitalize">

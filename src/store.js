@@ -6,6 +6,7 @@ export default createStore({
     channelSid: null,
     agencyLogo: null,
     favicon: null,
+    companyName: "",
     selectedAppliedItemId: null,
     selectedCandidateItemId: null,
     selectedAssignedItemId: null,
@@ -34,6 +35,9 @@ export default createStore({
     },
     setFavicon(state, faviconUrl) {
       state.favicon = faviconUrl;
+    },
+    setCompanyName(state, name) {
+      state.companyName = name;
     },
     setUser(state, user) {
       state.role = user.role;
@@ -132,12 +136,49 @@ export default createStore({
     updateFavicon({ commit }, faviconUrl) {
       commit("setFavicon", faviconUrl);
     },
-    // setUser({ commit }, userData) {
-    //   commit("setUser", userData);
-    // },
-    // logout({ commit }) {
-    //   commit("clearUser");
-    // },
+    async fetchProfileData({ commit }) {
+      const token = localStorage.getItem("token");
+      const merchantId = localStorage.getItem("merchant_id");
+
+      if (!token || !merchantId) return;
+
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/merchants/${merchantId}`,
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const { company_name } = response.data.data;
+
+        commit("setCompanyName", company_name);
+      } catch (err) {
+        // console.error("Error fetching profile data:", err);
+      }
+    },
+    async fetchAgencyLogo({ commit }) {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.get(`${VITE_API_URL}/agency_logo_list`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const agencyLogo = response.data.data.find(
+          (logo) => logo.logo_type === "agency_logo"
+        );
+
+        if (agencyLogo?.logo_url) {
+          const fullUrl = `${VITE_API_URL}${agencyLogo.logo_url}`;
+          commit("setAgencyLogo", fullUrl);
+        }
+      } catch (err) {
+        // console.error("Failed to fetch agency logo", err);
+      }
+    },
     async setUser({ commit }, user) {
       commit("setUser", user);
     },
@@ -229,6 +270,7 @@ export default createStore({
     // isAuthenticated: (state) => !!state.token,
     userRole: (state) => state.role,
     // clientId: (state) => state.client_id,
+    getCompanyName: (state) => state.companyName,
     getInvoiceData: (state) => state.invoiceData,
     getAgencyLogo: (state) => state.agencyLogo,
     getFavicon: (state) => state.favicon,

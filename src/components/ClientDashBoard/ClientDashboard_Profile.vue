@@ -1,7 +1,11 @@
 <template>
   <div>
     <!-- <ClientNavbarVue :profileImage="profileImage" /> -->
-    <div class="main-body d-flex" id="main">
+    <div
+      class="main-body d-flex"
+      id="main"
+      style="background-color: #f9f9f9; height: 100vh"
+    >
       <div
         style="
           background: #fff;
@@ -12,7 +16,7 @@
         <ClientNavbarVue :profileImage="profileImage" />
       </div>
       <div class="container mt-5">
-        <div class="" style="background-color: #f9f9f9">
+        <div class="">
           <h3
             class="text-center fw-bold p-2 m-auto rounded-3 mainheading"
             style="width: 100%"
@@ -23,9 +27,7 @@
             <div class="col-md-4">
               <div class="card h-100">
                 <div class="card-body">
-                  <div
-                    class="d-flex flex-column align-items-center text-center"
-                  >
+                  <div class="d-flex flex-column align-items-center text-center">
                     <div class="img-div position-relative">
                       <router-view to="/home">
                         <img

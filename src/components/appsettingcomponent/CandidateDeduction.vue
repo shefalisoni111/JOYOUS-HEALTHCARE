@@ -43,7 +43,7 @@
                     Active
                   </button>
                 </li>
-                <li class="nav-item" role="presentation">
+                <!-- <li class="nav-item" role="presentation">
                   <button
                     class="nav-link text-capitalize"
                     id="inactive_candidate_deduction"
@@ -56,7 +56,7 @@
                   >
                     Inactive
                   </button>
-                </li>
+                </li> -->
               </ul>
               <div class="tab-content" id="pills-tabContent">
                 <div
@@ -70,23 +70,15 @@
                     <table class="table table addjobtable">
                       <thead>
                         <tr>
-                          <th scope="col" class="col-2 bg-primary text-white">
-                            ID
-                          </th>
-                          <th scope="col" class="col-2 bg-primary text-white">
-                            Title
-                          </th>
+                          <th scope="col" class="col-2 bg-primary text-white">ID</th>
+                          <th scope="col" class="col-2 bg-primary text-white">Title</th>
                           <!-- <th scope="col" class="col-2 bg-primary text-white">Job</th> -->
-                          <th scope="col" class="col-2 bg-primary text-white">
-                            Amount
-                          </th>
+                          <th scope="col" class="col-2 bg-primary text-white">Amount</th>
 
                           <!--  <th scope="col" class="col-1 bg-primary text-white">
                             Frequency
                           </th> -->
-                          <th scope="col" class="col-1 bg-primary text-white">
-                            Action
-                          </th>
+                          <th scope="col" class="col-1 bg-primary text-white">Action</th>
                         </tr>
                       </thead>
                       <tbody v-if="getCandidateDeduction?.length > 0">
@@ -128,7 +120,7 @@
                     </table>
                   </div>
                 </div>
-                <div
+                <!-- <div
                   class="tab-pane fade"
                   id="pills-profile"
                   role="tabpanel"
@@ -136,7 +128,7 @@
                   tabindex="0"
                 >
                   <p>Work in Progress...</p>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -162,14 +154,10 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
-              >20 Records</a
-            >
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
-              >50 Records</a
-            >
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
           </li>
           <li>
             <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
@@ -290,29 +278,23 @@ export default {
         confirmButtonText: "Ok",
       }).then((result) => {
         if (result.isConfirmed) {
-          axios
-            .delete(`${VITE_API_URL}/candidate_deductions/` + id)
-            .then((response) => {
-              if (
-                response.data.error &&
-                response.data.error.toLowerCase().includes("could not deleted")
-              ) {
-                Swal.fire({
-                  icon: "warning",
-                  title: "Warning",
-                  text:
-                    response.data.error ||
-                    "Cannot delete Employee Type: This record is associated with candidate employee type records.",
-                });
-              } else {
-                this.fetchCandidateDeductions();
-                Swal.fire(
-                  "Deleted!",
-                  "Employee Type has been deleted.",
-                  "success"
-                );
-              }
-            });
+          axios.delete(`${VITE_API_URL}/candidate_deductions/` + id).then((response) => {
+            if (
+              response.data.error &&
+              response.data.error.toLowerCase().includes("could not deleted")
+            ) {
+              Swal.fire({
+                icon: "warning",
+                title: "Warning",
+                text:
+                  response.data.error ||
+                  "Cannot delete Employee Type: This record is associated with candidate employee type records.",
+              });
+            } else {
+              this.fetchCandidateDeductions();
+              Swal.fire("Deleted!", "Employee Type has been deleted.", "success");
+            }
+          });
         }
       });
     },

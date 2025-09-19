@@ -18,27 +18,23 @@
           <div class="col-12">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active">
-                <a
-                  class="nav-link d-inline fs-4 fw-bolder"
-                  style="color: #000000"
+                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
                   >App Settings</a
                 >
               </li>
             </ol>
           </div>
         </div>
-        <div class="d-flex gap-3 mt-4">
-          <div class=""><Sidebar /></div>
+        <div class="row mt-4">
+          <div class="col-2 col-md-2 col-lg-1"><Sidebar /></div>
           <div
-            class="col-3 p-3 bg-white borderight"
+            class="col-10 col-md-10 col-lg-3 ps-3 bg-white borderight mb-4"
             style="border-radius: 30px"
           >
             <div class="leftside">
               <div class="heading mb-3 position-relative">
                 <p class="bforeline"></p>
-                <p class="mb-0 text-capitalize fw-bold genSetting">
-                  agency Settings
-                </p>
+                <p class="mb-0 text-capitalize fw-bold genSetting">agency Settings</p>
                 <p class="afterline"></p>
               </div>
               <div>
@@ -60,99 +56,78 @@
               </div>
             </div>
           </div>
-          <div class="col-8 px-3 bg-white" style="border-radius: 30px">
-            <div class="settingsdetails">
-              <div class="pagetitle d-flex justify-content-between">
-                <div class="d-flex align-items-center">
-                  <ol class="breadcrumb mb-1 p-3">
-                    <li class="breadcrumb-item active text-capitalize fw-bold">
-                      agency setting / <span class="clr">profile</span>
-                    </li>
-                  </ol>
+          <div class="col-12 col-lg-8 px-3">
+            <div class="bg-white" style="border-radius: 30px">
+              <div class="settingsdetails">
+                <div class="pagetitle d-flex justify-content-between">
+                  <div class="d-flex align-items-center">
+                    <ol class="breadcrumb mb-1 p-3">
+                      <li class="breadcrumb-item active text-capitalize fw-bold">
+                        agency setting / <span class="clr">profile</span>
+                      </li>
+                    </ol>
+                  </div>
+                  <!-- End Page Title -->
                 </div>
-                <!-- End Page Title -->
               </div>
-            </div>
-            <div
-              class="col-12 bg-white"
-              style="border-radius: 30px !important"
-            ></div>
-            <div class="row">
-              <div class="col-12">
-                <div class="">
-                  <div class="col-5">
-                    <div
-                      class="d-flex justify-content-between align-items-center px-4"
-                    >
-                      <div class="position-relative">
-                        <div>
-                          <div v-if="filteredLogo">
-                            <img
-                              :src="filteredLogo.logo_url"
-                              class=""
-                              alt="Agency Logo"
-                              width="160"
-                              height="160"
-                              loading="eager"
-                            />
-                            <!-- <input
-                            type="file"
-                            id="agencyMainInput"
-                            style="display: none"
-                            accept="image/*"
-                            @change="previewAgencyLogo($event, 2)"
-                          />
-                          <label
-                            for="agencyMainInput"
-                            class="fs-3 fw-bold w-20 position-absolute end-0 top-0 text-center"
-                            style="border-radius: 0px; background-color: #57bd8e"
-                            >+</label
-                          > -->
+
+              <div class="row">
+                <div class="col-12">
+                  <div class="">
+                    <div class="col-5">
+                      <div class="d-flex justify-content-between align-items-center px-4">
+                        <div class="position-relative">
+                          <div>
+                            <div v-if="filteredLogo">
+                              <img
+                                :src="filteredLogo.logo_url"
+                                class=""
+                                alt="Agency Logo"
+                                width="160"
+                                height="80"
+                                loading="eager"
+                              />
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div class="d-flex flex-column text-capitalize">
-                        <h5 class="mb-0">
-                          {{
-                            getAgencyData.first_name +
-                            " " +
-                            getAgencyData.last_name
-                          }}
-                        </h5>
-                        <!-- <p class="mb-0">recruitment</p>
+                        <div class="d-flex flex-column text-capitalize">
+                          <h5 class="mb-0">
+                            {{ getAgencyData.company_name }}
+                          </h5>
+                          <!-- <p class="mb-0">recruitment</p>
                       <span>Description</span> -->
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="showdata p-4">
-                    <ul
-                      class="nav nav-pills"
-                      id="myTab"
-                      role="tablist"
-                      style="border-bottom: 1px solid #ddd"
-                    >
-                      <li class="nav-item" role="presentation">
-                        <button
-                          class="nav-link active ms-0"
-                          id="about"
-                          data-bs-toggle="tab"
-                          data-bs-target="#home"
-                          type="button"
-                          role="tab"
-                          aria-controls="home"
-                          aria-selected="true"
-                        >
-                          <!-- <img
+                    <div class="showdata p-4">
+                      <ul
+                        class="nav nav-pills"
+                        id="myTab"
+                        role="tablist"
+                        style="border-bottom: 1px solid #ddd"
+                      >
+                        <li class="nav-item" role="presentation">
+                          <button
+                            class="nav-link active ms-0"
+                            id="about"
+                            data-bs-toggle="tab"
+                            data-bs-target="#home"
+                            type="button"
+                            role="tab"
+                            aria-controls="home"
+                            aria-selected="true"
+                          >
+                            <!-- <img
                             src="../../assets/about.png"
                             class="img-fluid pe-2"
                             alt="RecPal"
                             loading="eager"
                           /> -->
-                          About
-                        </button>
-                      </li>
-                      <!-- <li class="nav-item" role="presentation">
+                            About
+                          </button>
+                        </li>
+                        <!-- <li class="nav-item" role="presentation">
                         <button
                           class="nav-link"
                           id="additional"
@@ -172,25 +147,25 @@
                           Additional
                         </button>
                       </li> -->
-                      <li class="nav-item" role="presentation">
-                        <button
-                          class="nav-link"
-                          id="RecPal"
-                          data-bs-toggle="tab"
-                          data-bs-target="#contact"
-                          type="button"
-                          role="tab"
-                          aria-controls="contact"
-                          aria-selected="false"
-                        >
-                          <!-- <i
+                        <li class="nav-item" role="presentation">
+                          <button
+                            class="nav-link"
+                            id="RecPal"
+                            data-bs-toggle="tab"
+                            data-bs-target="#contact"
+                            type="button"
+                            role="tab"
+                            aria-controls="contact"
+                            aria-selected="false"
+                          >
+                            <!-- <i
                             class="bi bi-house-door-fill"
                             style="color: #f9944b"
                           ></i> -->
-                          Favicon & Logo
-                        </button>
-                      </li>
-                      <!-- <li class="nav-item" role="presentation">
+                            Favicon & Logo
+                          </button>
+                        </li>
+                        <!-- <li class="nav-item" role="presentation">
                       <button
                         class="nav-link"
                         id="customUrl"
@@ -204,15 +179,15 @@
                         Custom Url
                       </button>
                     </li> -->
-                    </ul>
-                    <div class="tab-content border-0" id="myTabContent">
-                      <div
-                        class="tab-pane fade show active"
-                        id="home"
-                        role="tabpanel"
-                        aria-labelledby="about"
-                      >
-                        <!-- <div class="p-2 float-end">
+                      </ul>
+                      <div class="tab-content border-0" id="myTabContent">
+                        <div
+                          class="tab-pane fade show active"
+                          id="home"
+                          role="tabpanel"
+                          aria-labelledby="about"
+                        >
+                          <!-- <div class="p-2 float-end">
                           <button
                             type="button"
                             class="btn btn-outline-success text-nowrap text-nowrap"
@@ -224,116 +199,136 @@
                             <i class="bi bi-pencil"></i> Edit
                           </button>
                         </div> -->
-                        <div class="p-4 table-wrapper">
-                          <table class="table" v-if="getAgencyData">
-                            <thead></thead>
-                            <tbody v-if="getAgencyData">
-                              <tr>
-                                <th scope="row">
-                                  <i
-                                    class="bi bi-person-fill chatTextThemeColor notificationIconBgThemeColor"
-                                    style="
-                                      font-size: 20px;
+                          <div class="p-4 table-wrapper">
+                            <table class="table" v-if="getAgencyData">
+                              <thead></thead>
+                              <tbody v-if="getAgencyData">
+                                <tr>
+                                  <th scope="row">
+                                    <i
+                                      class="bi bi-person-fill chatTextThemeColor notificationIconBgThemeColor"
+                                      style="
+                                        font-size: 20px;
 
-                                      border-radius: 50%;
-                                      padding: 8px 10px;
-                                    "
-                                  ></i>
-                                  &nbsp; First Name
-                                </th>
+                                        border-radius: 50%;
+                                        padding: 8px 10px;
+                                      "
+                                    ></i>
+                                    &nbsp; Agency Name
+                                  </th>
 
-                                <td scope="row">
-                                  {{ getAgencyData.first_name }}
-                                </td>
-                              </tr>
-                              <tr>
-                                <th scope="row">
-                                  <i
-                                    class="bi bi-person-fill chatTextThemeColor notificationIconBgThemeColor"
-                                    style="
-                                      font-size: 20px;
+                                  <td scope="row">
+                                    {{ getAgencyData.company_name }}
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">
+                                    <i
+                                      class="bi bi-person-fill chatTextThemeColor notificationIconBgThemeColor"
+                                      style="
+                                        font-size: 20px;
 
-                                      border-radius: 50%;
-                                      padding: 8px 10px;
-                                      width: 20px;
-                                      height: 20px;
-                                    "
-                                  ></i>
-                                  &nbsp; Last Name
-                                </th>
-                                <td>
-                                  {{ getAgencyData.last_name }}
-                                </td>
-                              </tr>
-                              <tr>
-                                <th scope="row">
-                                  <i
-                                    class="bi bi-envelope-fill chatTextThemeColor notificationIconBgThemeColor"
-                                    style="
-                                      font-size: 20px;
+                                        border-radius: 50%;
+                                        padding: 8px 10px;
+                                      "
+                                    ></i>
+                                    &nbsp; First Name
+                                  </th>
 
-                                      border-radius: 50%;
-                                      padding: 8px 10px;
-                                      width: 20px;
-                                      height: 20px;
-                                    "
-                                  ></i>
-                                  &nbsp; Email
-                                </th>
-                                <td>{{ getAgencyData.email }}</td>
-                              </tr>
-                              <tr>
-                                <th scope="row">
-                                  <i
-                                    class="bi bi-geo-alt-fill chatTextThemeColor notificationIconBgThemeColor"
-                                    style="
-                                      font-size: 20px;
+                                  <td scope="row">
+                                    {{ getAgencyData.first_name }}
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">
+                                    <i
+                                      class="bi bi-person-fill chatTextThemeColor notificationIconBgThemeColor"
+                                      style="
+                                        font-size: 20px;
 
-                                      border-radius: 50%;
-                                      padding: 8px 10px;
-                                      width: 20px;
-                                      height: 20px;
-                                    "
-                                  ></i>
-                                  &nbsp; Address
-                                </th>
-                                <td colspan="2">{{ getAgencyData.address }}</td>
-                              </tr>
-                              <tr>
-                                <th scope="row">
-                                  <i
-                                    class="bi bi-telephone-fill chatTextThemeColor notificationIconBgThemeColor"
-                                    style="
-                                      font-size: 20px;
+                                        border-radius: 50%;
+                                        padding: 8px 10px;
+                                        width: 20px;
+                                        height: 20px;
+                                      "
+                                    ></i>
+                                    &nbsp; Last Name
+                                  </th>
+                                  <td>
+                                    {{ getAgencyData.last_name }}
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">
+                                    <i
+                                      class="bi bi-envelope-fill chatTextThemeColor notificationIconBgThemeColor"
+                                      style="
+                                        font-size: 20px;
 
-                                      border-radius: 50%;
-                                      padding: 8px 10px;
-                                      width: 20px;
-                                      height: 20px;
-                                    "
-                                  ></i>
-                                  &nbsp; Phone Number
-                                </th>
-                                <td colspan="2">
-                                  {{ getAgencyData.phone_number }}
-                                </td>
-                              </tr>
-                              <!-- <tr>
+                                        border-radius: 50%;
+                                        padding: 8px 10px;
+                                        width: 20px;
+                                        height: 20px;
+                                      "
+                                    ></i>
+                                    &nbsp; Email
+                                  </th>
+                                  <td>{{ getAgencyData.email }}</td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">
+                                    <i
+                                      class="bi bi-geo-alt-fill chatTextThemeColor notificationIconBgThemeColor"
+                                      style="
+                                        font-size: 20px;
+
+                                        border-radius: 50%;
+                                        padding: 8px 10px;
+                                        width: 20px;
+                                        height: 20px;
+                                      "
+                                    ></i>
+                                    &nbsp; Address
+                                  </th>
+                                  <td colspan="2">
+                                    {{ getAgencyData.address }}
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">
+                                    <i
+                                      class="bi bi-telephone-fill chatTextThemeColor notificationIconBgThemeColor"
+                                      style="
+                                        font-size: 20px;
+
+                                        border-radius: 50%;
+                                        padding: 8px 10px;
+                                        width: 20px;
+                                        height: 20px;
+                                      "
+                                    ></i>
+                                    &nbsp; Phone Number
+                                  </th>
+                                  <td colspan="2">
+                                    {{ getAgencyData.phone_number }}
+                                  </td>
+                                </tr>
+                                <!-- <tr>
                               <th scope="row">phone number</th>
                               <td colspan="2">{{ getAgencyData.phone_number }}</td>
                             </tr> -->
-                            </tbody>
-                            <tbody v-else>
-                              <tr>
-                                <td colspan="6" class="text-center text-danger">
-                                  {{ "Data Not Found!" }}
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
+                              </tbody>
+                              <tbody v-else>
+                                <tr>
+                                  <td colspan="6" class="text-center text-danger">
+                                    {{ "Data Not Found!" }}
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
-                      </div>
-                      <!-- <div
+                        <!-- <div
                         class="tab-pane fade"
                         id="profile"
                         role="tabpanel"
@@ -347,84 +342,78 @@
                           labore quod quo sint?
                         </p>
                       </div> -->
-                      <div
-                        class="tab-pane fade p-3 d-flex"
-                        id="contact"
-                        role="tabpanel"
-                        aria-labelledby="RecPal"
-                      >
                         <div
-                          class="col-4 d-flex gap-1 justify-content-between"
-                          v-for="agencyLogoList in agencyLogoList"
-                          :key="agencyLogoList.id"
+                          class="tab-pane fade p-3 d-flex"
+                          id="contact"
+                          role="tabpanel"
+                          aria-labelledby="RecPal"
                         >
-                          <div>
-                            <loader :isLoading="isLoading"></loader>
-                            <h6>
-                              <span class="ps-1 fs-6 fw-bold text-capitalize">{{
-                                agencyLogoList.logo_type.replace(/_/g, " ")
-                              }}</span
-                              >&nbsp;
-                              <!-- <span class="text-muted">(dimension 32px * 32px)</span> -->
-                            </h6>
-                            <div class="col-4 w-100">
-                              <div class="card">
-                                <div class="card-body">
-                                  <img
-                                    v-if="!agencyLogoList.logo_url"
-                                    src="./pic-image.jpg"
-                                    class="img-fluid"
-                                    loading="eager"
-                                    width="300"
-                                    style="height: 300px"
-                                    height="300"
-                                  />
-                                  <img
-                                    v-else
-                                    :src="agencyLogoList.logo_url"
-                                    class="img-fluid m-auto d-block"
-                                    loading="eager"
-                                    width="300"
-                                    style="height: 300px"
-                                    height="300"
-                                  />
-                                  <input
-                                    type="file"
-                                    :id="'faviconInput-' + agencyLogoList.id"
-                                    style="display: none"
-                                    accept="image/*"
-                                    @change="
-                                      previewAgencyLogo(
-                                        $event,
-                                        agencyLogoList.id
-                                      )
-                                    "
-                                  />
-                                  <label
-                                    :for="'faviconInput-' + agencyLogoList.id"
-                                    class="btn btn-primary w-100 position-absolute bottom-0 end-0 text-capitalize"
-                                    style="border-radius: 0px"
-                                    >Upload
-                                    {{
-                                      agencyLogoList.logo_type.replace(
-                                        /_/g,
-                                        " "
-                                      )
-                                    }}</label
-                                  >
-                                  <!-- <a
+                          <div
+                            class="col-4 d-flex gap-1 justify-content-between"
+                            v-for="agencyLogoList in agencyLogoList"
+                            :key="agencyLogoList.id"
+                          >
+                            <div>
+                              <loader :isLoading="isLoading"></loader>
+                              <h6>
+                                <span class="ps-1 fs-6 fw-bold text-capitalize">{{
+                                  agencyLogoList.logo_type.replace(/_/g, " ")
+                                }}</span
+                                >&nbsp;
+                                <!-- <span class="text-muted">(dimension 32px * 32px)</span> -->
+                              </h6>
+                              <div class="col-4 w-100">
+                                <div class="card">
+                                  <div class="card-body">
+                                    <img
+                                      v-if="!agencyLogoList.logo_url"
+                                      src="./pic-image.jpg"
+                                      class="img-fluid"
+                                      loading="eager"
+                                      width="300"
+                                      style="height: 300px"
+                                      height="300"
+                                    />
+                                    <img
+                                      v-else
+                                      :src="agencyLogoList.logo_url"
+                                      class="img-fluid m-auto d-block"
+                                      loading="eager"
+                                      width="300"
+                                      style="height: 300px"
+                                      height="300"
+                                    />
+                                    <input
+                                      type="file"
+                                      :id="'faviconInput-' + agencyLogoList.id"
+                                      style="display: none"
+                                      accept="image/*"
+                                      @change="
+                                        previewAgencyLogo($event, agencyLogoList.id)
+                                      "
+                                    />
+                                    <label
+                                      :for="'faviconInput-' + agencyLogoList.id"
+                                      class="btn btn-primary w-100 position-absolute bottom-0 end-0 text-capitalize"
+                                      style="border-radius: 0px"
+                                      >Upload
+                                      {{
+                                        agencyLogoList.logo_type.replace(/_/g, " ")
+                                      }}</label
+                                    >
+                                    <!-- <a
                                   href="#"
                                   class="btn btn-primary w-100"
                                   style="border-radius: 0px"
                                   >Upload Favicon</a
                                 > -->
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <!-- <div
+                        <!-- <div
                       class="tab-pane fade"
                       id="contacts"
                       role="tabpanel"
@@ -437,6 +426,7 @@
                         ipsam quis labore quod quo sint?
                       </p>
                     </div> -->
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -494,9 +484,7 @@ export default {
       return this.agencyLogoList.find((logo) => logo.id === 2);
     },
     filteredLogos() {
-      return this.agencyLogoList.find(
-        (logo) => logo.logo_type === "agency_logo"
-      );
+      return this.agencyLogoList.find((logo) => logo.logo_type === "agency_logo");
     },
     filteredFavicon() {
       return this.agencyLogoList.find((logo) => logo.logo_type === "favicon");
@@ -575,14 +563,11 @@ export default {
       }
 
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/merchants/${merchantId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const response = await axios.get(`${VITE_API_URL}/merchants/${merchantId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         this.getAgencyData = response.data.data;
       } catch (error) {
         if (error.response) {

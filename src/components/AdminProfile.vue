@@ -87,7 +87,7 @@
                   />
                   <div class="mt-3">
                     <h4 class="text-capitalize">
-                      {{ getAdmin.first_name }} &nbsp;{{ getAdmin.last_name }}
+                      {{ getAdmin.company_name }}
                     </h4>
                     <p class="text-secondary mb-1">
                       {{ getAdmin.position }}
@@ -102,9 +102,39 @@
             <div class="card h-100 mt-3" style="border-radius: 25px">
               <div class="card-body">
                 <ul class="list-unstyled">
-                  <li
-                    class="d-flex justify-content-between align-items-center mb-4 mt-3"
-                  >
+                  <li class="d-flex justify-content-between align-items-center mb-4 mt-3">
+                    <div class="d-flex">
+                      <i
+                        class="bi bi-person-fill fs-4 me-3 chatTextThemeColor notificationIconBgThemeColor"
+                        style="
+                          border-radius: 50%;
+
+                          padding: 5px 11px;
+                        "
+                      ></i>
+
+                      <div class="d-flex gap-4 align-items-center">
+                        <div class="fw-semibold">Agency Name</div>
+                        <div class="text-secondary text-capitalize text-black">
+                          {{ getAdmin.company_name }}
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <button
+                        class="text-nowrap text-nowrap border-0 bg-transparent"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editAdmin"
+                        data-bs-whatever="@mdo"
+                      >
+                        <i
+                          class="bi bi-pencil-fill"
+                          style="color: #f9944b !important"
+                        ></i>
+                      </button>
+                    </div>
+                  </li>
+                  <li class="d-flex justify-content-between align-items-center mb-4 mt-3">
                     <div class="d-flex">
                       <i
                         class="bi bi-person-fill fs-4 me-3 chatTextThemeColor notificationIconBgThemeColor"
@@ -121,20 +151,6 @@
                           {{ getAdmin.first_name + " " + getAdmin.last_name }}
                         </div>
                       </div>
-                    </div>
-
-                    <div>
-                      <button
-                        class="text-nowrap text-nowrap border-0 bg-transparent"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editAdmin"
-                        data-bs-whatever="@mdo"
-                      >
-                        <i
-                          class="bi bi-pencil-fill"
-                          style="color: #f9944b !important"
-                        ></i>
-                      </button>
                     </div>
                   </li>
                   <li class="d-flex align-items-center mb-4">
@@ -272,15 +288,12 @@ export default {
       const merchantId = localStorage.getItem("merchant_id");
 
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/merchants/${merchantId}`,
-          {
-            headers: {
-              "content-type": "application/json",
-              Authorization: "bearer " + token,
-            },
-          }
-        );
+        const response = await axios.get(`${VITE_API_URL}/merchants/${merchantId}`, {
+          headers: {
+            "content-type": "application/json",
+            Authorization: "bearer " + token,
+          },
+        });
 
         this.getAdmin = response.data.data;
         if (this.getAdmin.profile_photo) {

@@ -16,7 +16,7 @@
             href="/client/clientDashboard"
             style="outline: none; box-shadow: none"
             ><img
-              src="../../assets/logo.png"
+                  :src="computedLogo"
               class="img-fluid"
               alt="RecPal"
               width="138"
@@ -254,6 +254,8 @@ import axios from "axios";
 import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
 import Swal from "sweetalert2";
 import logo from "../../assets/logo.png";
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   name: "ClientNavbar",
 
@@ -282,6 +284,10 @@ export default {
   },
   components: { ConfirmationAlert },
   computed: {
+   ...mapGetters(["getAgencyLogo", "getCompanyName"]),
+    computedLogo() {
+      return this.getAgencyLogo;
+    },
     isTimesheetMenuActive() {
       return [
         "/timesheet/weekly",
@@ -344,6 +350,7 @@ export default {
     },
   },
   methods: {
+     ...mapActions(["fetchProfileData"]),
     toggleActionMenu(index) {
       this.selectedRow = this.selectedRow === index ? null : index;
     },
@@ -515,6 +522,8 @@ export default {
     if (clientId) {
       this.clientLink = `/client/clientDashboard/${clientId}`;
     }
+
+         this.fetchProfileData();
   },
 };
 </script>

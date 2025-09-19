@@ -12,7 +12,7 @@
           <!-- <div class="col-md-6 d-none d-md-flex bg-image"></div> -->
           <div class="login-form">
             <img
-              src="../logo.png"
+              :src="getAgencyLogo"
               class="img-fluid mb-2 m-auto d-block"
               alt="RecPal"
               width="170"
@@ -131,6 +131,7 @@
 import axios from "axios";
 import Loader from "../../Loader/Loader.vue";
 import loginBg from "@/assets/loginbggg12.png";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -151,7 +152,9 @@ export default {
   components: {
     Loader,
   },
-
+  computed: {
+    ...mapGetters(["getAgencyLogo"]),
+  },
   methods: {
     setLoginType(type) {
       this.loginType = type;

@@ -58,37 +58,27 @@
             </button>
           </td>
           <td>
-            <div class="action-wrapper position-relative">
-              <i class="bi bi-three-dots dot-icon"></i>
-
-              <div
-                v-if="selectedRow === index"
-                class="action-menu position-absolute"
-              >
-                <button
-                  type="button"
-                  class="btn text-nowrap border-0"
-                  v-on:click="confirmed(pending.id)"
-                >
-                  <i class="bi bi-check2-square" style="color: #f9944b"></i>
-                  Approve
-                </button>
-                <button
-                  type="button"
-                  class="btn text-nowrap border-0"
-                  v-on:click="confirmedReject(pending.id)"
-                >
-                  <i class="bi bi-ban" style="color: #f9944b"></i> Reject
-                </button>
-                <router-link
-                  class="btn text-nowrap border-0"
-                  :to="{ name: 'Profile', params: { id: pending.id } }"
-                >
-                  <i class="bi bi-eye" style="color: #f9944b"></i>
-                  View
-                </router-link>
-              </div>
-            </div>
+            <button
+              type="button"
+              class="btn text-nowrap btn-outline-success"
+              v-on:click="confirmed(pending.id)"
+            >
+              <i class="bi bi-check2"></i>
+              Approve</button
+            >&nbsp;
+            <button
+              type="button"
+              class="btn text-nowrap btn-outline-success"
+              v-on:click="confirmedReject(pending.id)"
+            >
+              <i class="bi bi-ban"></i> Reject</button
+            >&nbsp;
+            <router-link
+              class="btn text-nowrap btn-outline-success"
+              :to="{ name: 'Profile', params: { id: pending.id } }"
+            >
+              <i class="bi bi-eye text-success"></i>
+            </router-link>
           </td>
         </tr>
       </tbody>

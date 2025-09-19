@@ -100,33 +100,19 @@
                 }}
               </td>
               <td class="cursor-pointer">
-                <div class="action-wrapper position-relative">
-                  <i class="bi bi-three-dots dot-icon"></i>
-
-                  <div
-                    v-if="selectedRow === index"
-                    class="action-menu position-absolute"
-                  >
-                    <router-link
-                      class="btn text-nowrap border-0"
-                      :to="{ name: 'Profile', params: { id: candidate.id } }"
-                    >
-                      <i class="bi bi-eye" style="color: #f9944b"></i>
-                      View
-                    </router-link>
-
-                    <button
-                      class="btn text-nowrap border-0"
-                      v-on:click="deleteStaffMethod(candidate.id)"
-                    >
-                      <i
-                        class="bi bi-trash border-0 border-0"
-                        style="color: #f9944b"
-                      ></i>
-                      Delete
-                    </button>
-                  </div>
-                </div>
+                <router-link
+                  class="btn text-nowrap btn-outline-success"
+                  :to="{ name: 'Profile', params: { id: candidate.id } }"
+                >
+                  <i class="bi bi-eye text-success"></i>
+                </router-link>
+                &nbsp;
+                <button
+                  class="btn text-nowrap btn-outline-success"
+                  v-on:click="deleteStaffMethod(candidate.id)"
+                >
+                  <i class="bi bi-trash btn-outline-success"></i>
+                </button>
               </td>
             </tr>
           </tbody>

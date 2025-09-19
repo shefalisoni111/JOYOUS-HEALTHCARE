@@ -16,7 +16,7 @@
           <div class="d-flex justify-content-between">
             <div class="">
               <h3 class="fs-4 fw-bolder" style="color: #000000">
-                Welcome to Joyous Healthcare UK Ltd.
+                Welcome to {{ getCompanyName }}
               </h3>
             </div>
             <!-- End Page Title -->
@@ -605,6 +605,7 @@ import TimeSheet from "../components/charts/TimeSheet.vue";
 import Navbar from "../components/Navbar.vue";
 import InProgress from "../components/modals/InProgress.vue";
 import DocumentReport from "../components/ReportPages/DocumentReport.vue";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Home",
@@ -633,6 +634,7 @@ export default {
     },
   },
   computed: {
+    ...mapGetters(["getCompanyName"]),
     getMonthDates() {
       const currentDate = new Date();
       const daysInMonth = new Date(

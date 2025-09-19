@@ -28,7 +28,9 @@
               </ol> -->
               <ol class="breadcrumb mb-1">
                 <li class="breadcrumb-item active">
-                  <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                  <a
+                    class="nav-link d-inline fs-4 fw-bolder"
+                    style="color: #000000"
                     >All Clients</a
                   >
                   <p>
@@ -67,7 +69,10 @@
               role="tablist"
             >
               <div class="d-flex">
-                <li class="nav-item d-flex align-items-center gap-2" role="presentation">
+                <li
+                  class="nav-item d-flex align-items-center gap-2"
+                  role="presentation"
+                >
                   <button
                     a
                     class="nav-link"
@@ -147,16 +152,25 @@
                       data-bs-whatever="@mdo"
                       @click="editsiteId(data.id)"
                     >
-                      <i class="bi bi-pencil-square"></i>
+                      <i class="bi bi-pencil"></i>
                     </button>
                     &nbsp;&nbsp;
+                    <button
+                      class="btn text-nowrap btn-outline-success"
+                      :to="{
+                        name: 'SingleSiteprofile',
+                        params: { id: data.id },
+                      }"
+                    >
+                      <i class="bi bi-eye"></i>
+                    </button>
                     <!-- <button class="btn btn-outline-success text-nowrap">
                             <i
                               class="bi bi-trash border-0 border-0"
                               v-on:click="clientsDeleteMethod(client.id)"
                             ></i></button
                           >&nbsp;&nbsp; -->
-                    <router-link
+                    <!-- <router-link
                       :to="{
                         name: 'SingleSiteprofile',
                         params: { id: data.id },
@@ -164,7 +178,7 @@
                       class="btn btn-outline-success text-nowrap"
                     >
                       <i class="bi bi-eye"></i>
-                    </router-link>
+                    </router-link> -->
                   </td>
                 </tr>
               </tbody>
@@ -179,7 +193,11 @@
           </div>
         </div>
       </div>
-      <div class="mx-3" style="text-align: right" v-if="ddddddddResults.length >= 9">
+      <div
+        class="mx-3"
+        style="text-align: right"
+        v-if="ddddddddResults.length >= 9"
+      >
         <button class="btn btn-outline-dark btn-sm">
           {{ totalRecordsOnPage }} Records Per Page
         </button>
@@ -270,11 +288,15 @@ export default {
       return this.paginatedResults.length;
     },
     selectSite() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.site_name : "";
     },
     selectSitesAddress() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.address : "";
     },
   },
@@ -334,7 +356,9 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      const matchingTabIndex = vm.tabs.findIndex((tab) => tab.routeName === to.name);
+      const matchingTabIndex = vm.tabs.findIndex(
+        (tab) => tab.routeName === to.name
+      );
 
       if (matchingTabIndex !== -1) {
         vm.activeTab = matchingTabIndex;
@@ -343,7 +367,9 @@ export default {
     });
   },
   beforeRouteUpdate(to, from, next) {
-    const matchingTabIndex = this.tabs.findIndex((tab) => tab.routeName === to.name);
+    const matchingTabIndex = this.tabs.findIndex(
+      (tab) => tab.routeName === to.name
+    );
 
     if (matchingTabIndex !== -1) {
       this.activeTab = matchingTabIndex;

@@ -90,42 +90,35 @@
               >
             </td>
             <td class="cursor-pointer" style="width: 10%">
-              <div class="action-wrapper position-relative">
-                <i class="bi bi-three-dots dot-icon"></i>
+              <button
+                type="button"
+                class="btn text-nowrap btn-outline-success"
+                data-bs-toggle="modal"
+                data-bs-target="#editClient"
+                data-bs-whatever="@mdo"
+                @click="editClient(client.id)"
+              >
+                <i class="bi bi-pencil"></i>
+              </button>
 
-                <div
-                  v-if="selectedRow === index"
-                  class="action-menu position-absolute"
-                >
-                  <button
-                    type="button"
-                    class="btn text-nowrap border-0"
-                    data-bs-toggle="modal"
-                    data-bs-target="#editClient"
-                    data-bs-whatever="@mdo"
-                    @click="editClient(client.id)"
-                  >
-                    <i class="bi bi-pencil-square" style="color: #f9944b"></i
-                    >Edit
-                  </button>
-
-                  <!-- <button class="btn btn-outline-success text-nowrap">
+              <!-- <button class="btn btn-outline-success text-nowrap">
                 <i
                   class="bi bi-trash border-0 border-0"
                   v-on:click="clientsDeleteMethod(client.id)"
                 ></i></button
               >&nbsp;&nbsp; -->
-                  <router-link
-                    :to="{
-                      name: 'SingleClientProfile',
-                      params: { id: client.id },
-                    }"
-                    class="btn text-nowrap border-0"
-                  >
-                    <i class="bi bi-eye" style="color: #f9944b"></i>View
-                  </router-link>
-                </div>
-              </div>
+              &nbsp;
+              <button
+                class="btn text-nowrap btn-outline-success"
+                @click="
+                  $router.push({
+                    name: 'SingleClientProfile',
+                    params: { id: client.id },
+                  })
+                "
+              >
+                <i class="bi bi-eye"></i>
+              </button>
             </td>
           </tr>
         </tbody>

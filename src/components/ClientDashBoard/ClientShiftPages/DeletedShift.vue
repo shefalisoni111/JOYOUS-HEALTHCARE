@@ -49,11 +49,7 @@
               @change="filterData"
             >
               <option value="" disabled>All Jobs</option>
-              <option
-                v-for="option in options"
-                :key="option.id"
-                :value="option.id"
-              >
+              <option v-for="option in options" :key="option.id" :value="option.id">
                 {{ option.name }}
               </option>
             </select>
@@ -118,36 +114,18 @@
               <td scope="col">{{ data.shift }}</td>
               <td scope="col">{{ data.assigned }}</td>
               <td scope="col">
-                <div class="action-wrapper position-relative position-relative">
-                  <i class="bi bi-three-dots dot-icon"></i>
-
-                  <div
-                    v-if="selectedRow === index"
-                    class="action-menu position-absolute position-absolute"
-                    style="top: 17px; left: 13px"
-                  >
-                    <button
-                      class="btn text-nowrap border-0"
-                      v-on:click="confirmed(data.id)"
-                    >
-                      <i
-                        class="bi bi-trash border-0 border-0"
-                        style="color: #f9944b"
-                      ></i>
-                      Delete
-                    </button>
-                  </div>
-                </div>
+                <button
+                  class="btn text-nowrap btn-outline-success"
+                  v-on:click="confirmed(data.id)"
+                >
+                  <i class="bi bi-trash"></i>
+                </button>
               </td>
             </tr>
           </tbody>
           <tbody v-else>
             <tr>
-              <td
-                colspan="16"
-                class="text-center text-danger"
-                v-if="!isLoading"
-              >
+              <td colspan="16" class="text-center text-danger" v-if="!isLoading">
                 {{ "Data Not Found!" }}
               </td>
             </tr>
@@ -162,11 +140,7 @@
         /> -->
 
     <!-- <AddVacancy @addVacancy="createVacancy" /> -->
-    <div
-      class="mt-3"
-      style="text-align: right"
-      v-if="getShiftAssignData?.length >= 10"
-    >
+    <div class="mt-3" style="text-align: right" v-if="getShiftAssignData?.length >= 10">
       <button
         class="btn btn-sm btn-primary dropdown-toggle"
         type="button"
@@ -178,19 +152,13 @@
       </button>
       <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
-            >20 Records</a
-          >
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
         </li>
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
-            >50 Records</a
-          >
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
         </li>
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
-            >100 Records</a
-          >
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
         </li>
       </ul>
       &nbsp;&nbsp;
@@ -261,16 +229,12 @@ export default {
       return this.site_id || this.site_shift_id || this.job_id;
     },
     selectClients() {
-      const client_id = this.clientData.find(
-        (option) => option.id === this.client_id
-      );
+      const client_id = this.clientData.find((option) => option.id === this.client_id);
       return this.client_id;
     },
 
     selectShifts() {
-      const shifts_id = this.shiftsTime.find(
-        (option) => option.id === this.shifts_id
-      );
+      const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
       return shifts_id ? shifts_id.shift_name : "";
     },
     paginatedShift() {
@@ -476,9 +440,7 @@ export default {
         return;
       }
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/site_shift/${selectionSite}`
-        );
+        const response = await axios.get(`${VITE_API_URL}/site_shift/${selectionSite}`);
 
         this.shiftsTime =
           response.data.site_shift_data.map((shift) => ({

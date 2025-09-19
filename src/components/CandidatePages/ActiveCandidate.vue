@@ -90,22 +90,15 @@
               </td>
               <td>{{ formatDateFORUpdate(candidate.last_login) }}</td>
               <td class="cursor-pointer">
-                <div class="action-wrapper position-relative">
-                  <i class="bi bi-three-dots dot-icon"></i>
+                <button
+                  type="button"
+                  class="btn text-nowrap btn-outline-success"
+                  v-on:click="confirmed(candidate.id)"
+                >
+                  InActive
+                </button>
 
-                  <div
-                    v-if="selectedRow === index"
-                    class="action-menu position-absolute"
-                  >
-                    <button
-                      type="button"
-                      class="btn text-nowrap border-0"
-                      v-on:click="confirmed(candidate.id)"
-                    >
-                      InActive
-                    </button>
-
-                    <!-- <router-link
+                <!-- <router-link
                   :to="{
                     name: 'EditCandidate',
                     params: { id: candidate.id },
@@ -115,26 +108,33 @@
                   </router-link
                 > -->
 
-                    <!-- <i
+                <!-- <i
                   class="bi bi-pencil-square btn btn-outline-success text-nowrap text-nowrap"
                   data-bs-toggle="modal"
                   data-bs-target="#editCandidate"
                   data-bs-whatever="@mdo"
                   @click="editCandidate(candidate.id)"
                 ></i> -->
+                &nbsp;
+                <button
+                  class="btn text-nowrap btn-outline-success"
+                  :to="{
+                    name: 'Profile',
+                    params: { id: candidate.id },
+                  }"
+                >
+                  <i class="bi bi-eye text-success"></i>
+                </button>
+                <!-- <router-link
+                  class="btn text-nowrap btn-outline-success"
+                  :to="{
+                    name: 'Profile',
+                    params: { id: candidate.id },
+                  }"
+                >
+                  <i class="bi bi-eye"></i>
+                </router-link> -->
 
-                    <router-link
-                      class="btn text-nowrap border-0"
-                      :to="{
-                        name: 'Profile',
-                        params: { id: candidate.id },
-                      }"
-                    >
-                      <i class="bi bi-eye" style="color: #f9944b"></i>
-                      View
-                    </router-link>
-                  </div>
-                </div>
                 <!-- <router-link
                   :to="{
                     name: 'ProfileView',

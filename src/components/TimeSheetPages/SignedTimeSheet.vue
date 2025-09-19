@@ -254,29 +254,16 @@
                             </button>
                           </td>
                           <td scope="col">
-                            <div class="action-wrapper position-relative">
-                              <i class="bi bi-three-dots dot-icon"></i>
-
-                              <div
-                                v-if="selectedRow === index"
-                                class="action-menu position-absolute"
-                              >
-                                <button
-                                  type="button"
-                                  class="btn text-nowrap text-nowrap shadow-soft"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#signedTimeSheetView"
-                                  data-bs-whatever="@mdo"
-                                  @click="openSignedView(data.id)"
-                                >
-                                  <i
-                                    class="bi bi-eye"
-                                    style="color: #f9944b"
-                                  ></i>
-                                  View
-                                </button>
-                              </div>
-                            </div>
+                            <button
+                              type="button"
+                              class="btn text-nowrap text-nowrap btn-outline-success shadow-soft"
+                              data-bs-toggle="modal"
+                              data-bs-target="#signedTimeSheetView"
+                              data-bs-whatever="@mdo"
+                              @click="openSignedView(data.id)"
+                            >
+                              <i class="bi bi-eye text-success"></i>
+                            </button>
                           </td>
                         </tr>
                       </tbody>
@@ -450,29 +437,17 @@
                           </td>
                           <!-- <td scope="col"></td> -->
                           <td scope="col">
-                            <div class="action-wrapper position-relative">
-                              <i class="bi bi-three-dots dot-icon"></i>
+                            <button
+                              type="button"
+                              class="btn text-nowrap text-nowrap btn-outline-success shadow-soft"
+                              data-bs-toggle="modal"
+                              data-bs-target="#signedTimeSheetView"
+                              data-bs-whatever="@mdo"
+                              @click="openSignedView(data.id)"
+                            >
+                              <i class="bi bi-eye text-success"></i>
+                            </button>
 
-                              <div
-                                v-if="selectedRow === index"
-                                class="action-menu position-absolute"
-                              >
-                                <button
-                                  type="button"
-                                  class="btn text-nowrap text-nowrap shadow-soft"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#signedTimeSheetView"
-                                  data-bs-whatever="@mdo"
-                                  @click="openSignedView(data.id)"
-                                >
-                                  <i
-                                    class="bi bi-eye"
-                                    style="color: #f9944b"
-                                  ></i>
-                                  View
-                                </button>
-                              </div>
-                            </div>
                             <!-- <button
                               type="button"
                               :class="[

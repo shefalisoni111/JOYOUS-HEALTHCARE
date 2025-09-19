@@ -58,7 +58,7 @@
   z-index: 996;
   transition: all 0.3s;
   border-radius: 30px;
-  width: 90px;
+
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #aab7cf transparent;
@@ -187,9 +187,9 @@
     margin: -12px;
   }
 }
-@media (max-width: 767px) {
+@media (max-width: 990px) {
   .sidebar {
-    height: auto;
+    height: 400px;
   }
 }
 </style>

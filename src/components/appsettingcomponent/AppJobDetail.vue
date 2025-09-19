@@ -69,87 +69,37 @@
             <table class="table table addjobtable">
               <thead>
                 <tr>
+                  <th scope="col" class="bg-primary text-white">Id</th>
+                  <th scope="col" class="bg-primary text-white">Colour</th>
+                  <th scope="col" class="bg-primary text-white">Name</th>
                   <th scope="col" class="bg-primary text-white">
-                    Id
-                    <img
-                      src="../../assets/ArrowDown.png"
-                      class="img-fluid pe-2"
-                      alt="RecPal"
-                      loading="eager"
-                    />
-                  </th>
-                  <th scope="col" class="bg-primary text-white">
-                    Colour
-                    <img
-                      src="../../assets/ArrowDown.png"
-                      class="img-fluid pe-2"
-                      alt="RecPal"
-                      loading="eager"
-                    />
-                  </th>
-                  <th scope="col" class="bg-primary text-white">
-                    Name
-                    <img
-                      src="../../assets/ArrowDown.png"
-                      class="img-fluid pe-2"
-                      alt="RecPal"
-                      loading="eager"
-                    />
-                  </th>
-                  <th scope="col" class="bg-primary text-white">
-                    <div
-                      class="d-flex justify-content-center align-items-center gap-1"
-                    >
+                    <div class="d-flex justify-content-center align-items-center gap-1">
                       Job Code
                     </div>
                   </th>
                   <th scope="col" class="bg-primary text-white">
-                    <div
-                      class="d-flex justify-content-center align-items-center gap-1"
-                    >
+                    <div class="d-flex justify-content-center align-items-center gap-1">
                       No. of Clients
                     </div>
                   </th>
                   <th scope="col" class="bg-primary text-white text-center">
-                    <div
-                      class="d-flex justify-content-center align-items-center gap-1"
-                    >
+                    <div class="d-flex justify-content-center align-items-center gap-1">
                       <span>No. of Staff</span>
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid"
-                        alt="RecPal"
-                        loading="eager"
-                        style="height: 7px"
-                      />
                     </div>
                   </th>
                   <th scope="col" class="bg-primary text-white">
-                    <div
-                      class="d-flex justify-content-center align-items-center gap-1"
-                    >
+                    <div class="d-flex justify-content-center align-items-center gap-1">
                       No. of Documents
                     </div>
                   </th>
-                  <th scope="col" class="bg-primary text-white">
-                    Action
-                    <img
-                      src="../../assets/ArrowDown.png"
-                      class="img-fluid pe-2"
-                      alt="RecPal"
-                      loading="eager"
-                    />
-                  </th>
+                  <th scope="col" class="bg-primary text-white">Action</th>
                 </tr>
               </thead>
               <tbody v-if="paginateSiteData?.length > 0">
                 <tr v-for="jobs in paginateSiteData" :key="jobs.id">
                   <td v-text="jobs.id"></td>
                   <td scope="row">
-                    <i
-                      class="bi bi-square-fill"
-                      :style="{ color: jobs.color }"
-                    ></i>
+                    <i class="bi bi-square-fill" :style="{ color: jobs.color }"></i>
                   </td>
                   <td class="text-capitalize" v-text="jobs.name"></td>
                   <td v-text="jobs.job_code"></td>
@@ -172,11 +122,7 @@
               </tbody>
               <tbody v-else>
                 <tr>
-                  <td
-                    colspan="8"
-                    class="text-center text-danger"
-                    v-if="!isLoading"
-                  >
+                  <td colspan="8" class="text-center text-danger" v-if="!isLoading">
                     {{ "Data Not Found!" }}
                   </td>
                 </tr>
@@ -194,90 +140,27 @@
           <table class="table table addjobtable">
             <thead>
               <tr>
+                <th scope="col" class="bg-primary text-white">Id</th>
+                <th scope="col" class="bg-primary text-white">Colour</th>
+                <th scope="col" class="bg-primary text-white">Name</th>
+                <th scope="col" class="bg-primary text-white">Job Code</th>
                 <th scope="col" class="bg-primary text-white">
-                  Id
-                  <img
-                    src="../../assets/ArrowDown.png"
-                    class="img-fluid pe-2"
-                    alt="RecPal"
-                    loading="eager"
-                  />
-                </th>
-                <th scope="col" class="bg-primary text-white">
-                  Colour
-                  <img
-                    src="../../assets/ArrowDown.png"
-                    class="img-fluid pe-2"
-                    alt="RecPal"
-                    loading="eager"
-                  />
-                </th>
-                <th scope="col" class="bg-primary text-white">
-                  Name
-                  <img
-                    src="../../assets/ArrowDown.png"
-                    class="img-fluid pe-2"
-                    alt="RecPal"
-                    loading="eager"
-                  />
-                </th>
-                <th scope="col" class="bg-primary text-white">
-                  Job Code
-                  <img
-                    src="../../assets/ArrowDown.png"
-                    class="img-fluid pe-2"
-                    alt="RecPal"
-                    loading="eager"
-                  />
-                </th>
-                <th scope="col" class="bg-primary text-white">
-                  <div
-                    class="d-flex justify-content-center align-items-center gap-1"
-                  >
+                  <div class="d-flex justify-content-center align-items-center gap-1">
                     No. of Vendor
-                    <img
-                      src="../../assets/ArrowDown.png"
-                      class="img-fluid pe-2"
-                      alt="RecPal"
-                      loading="eager"
-                    />
                   </div>
                 </th>
                 <th scope="col" class="bg-primary text-white">
-                  <div
-                    class="d-flex justify-content-center align-items-center gap-1"
-                  >
+                  <div class="d-flex justify-content-center align-items-center gap-1">
                     No. of Staff
-
-                    <img
-                      src="../../assets/ArrowDown.png"
-                      class="img-fluid pe-2"
-                      alt="RecPal"
-                      loading="eager"
-                    />
                   </div>
                 </th>
                 <th scope="col" class="bg-primary text-white">
-                  <div
-                    class="d-flex justify-content-center align-items-center gap-1"
-                  >
+                  <div class="d-flex justify-content-center align-items-center gap-1">
                     No. of Documents
-                    <img
-                      src="../../assets/ArrowDown.png"
-                      class="img-fluid pe-2"
-                      alt="RecPal"
-                      loading="eager"
-                    />
                   </div>
                 </th>
-                <th scope="col" class="bg-primary text-white">
+                <th scope="col" class="bg-primary text-white" style="width: 20%">
                   Action
-                  <img
-                    src="../../assets/ArrowDown.png"
-                    class="img-fluid pe-2"
-                    alt="RecPal"
-                    loading="eager"
-                  />
                 </th>
               </tr>
             </thead>
@@ -290,10 +173,7 @@
               >
                 <td v-text="jobs.id"></td>
                 <td scope="row">
-                  <i
-                    class="bi bi-square-fill"
-                    :style="{ color: jobs.color }"
-                  ></i>
+                  <i class="bi bi-square-fill" :style="{ color: jobs.color }"></i>
                 </td>
                 <td class="text-capitalize" v-text="jobs.name"></td>
                 <td v-text="jobs.job_code"></td>
@@ -322,49 +202,30 @@
                     Re-Activate
                   </button> -->
 
-                  <div class="action-wrapper position-relative">
-                    <i class="bi bi-three-dots dot-icon"></i>
-
-                    <div
-                      v-if="selectedRow === index"
-                      class="action-menu position-absolute"
-                    >
-                      <button
-                        type="button"
-                        class="btn text-nowrap border-0"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editJob"
-                        data-bs-whatever="@mdo"
-                        v-on:click="jobsEdit(jobs.id)"
-                      >
-                        <i
-                          class="bi bi-pencil-square"
-                          style="color: #f9944b"
-                        ></i>
-                        Edit
-                      </button>
-                      <button
-                        class="btn text-nowrap"
-                        style="
-                          background-color: rgb(233, 250, 239);
-                          color: rgb(36, 209, 100);
-                        "
-                        v-on:click="jobActive(jobs.id)"
-                      >
-                        Re-Activate
-                      </button>
-                    </div>
-                  </div>
+                  <button
+                    type="button"
+                    class="btn text-nowrap btn-outline-success"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editJob"
+                    data-bs-whatever="@mdo"
+                    v-on:click="jobsEdit(jobs.id)"
+                  >
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  &nbsp;
+                  <button
+                    class="btn text-nowrap"
+                    style="background-color: rgb(233, 250, 239); color: rgb(36, 209, 100)"
+                    v-on:click="jobActive(jobs.id)"
+                  >
+                    Re-Activate
+                  </button>
                 </td>
               </tr>
             </tbody>
             <tbody v-else>
               <tr>
-                <td
-                  colspan="8"
-                  class="text-center text-danger"
-                  v-if="!isLoading"
-                >
+                <td colspan="8" class="text-center text-danger" v-if="!isLoading">
                   {{ "Data Not Found!" }}
                 </td>
               </tr>
@@ -392,14 +253,10 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
-              >20 Records</a
-            >
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
-              >50 Records</a
-            >
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
           </li>
           <li>
             <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
@@ -551,9 +408,7 @@ export default {
 
       this.confirmCallback = async () => {
         try {
-          const response = await axios.put(
-            `${VITE_API_URL}/inactivate_job/` + id
-          );
+          const response = await axios.put(`${VITE_API_URL}/inactivate_job/` + id);
           this.getJobData();
           this.getInactiveJobData();
 

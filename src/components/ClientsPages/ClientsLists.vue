@@ -19,7 +19,9 @@
             <div class="">
               <ol class="breadcrumb mb-1">
                 <li class="breadcrumb-item active">
-                  <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                  <a
+                    class="nav-link d-inline fs-4 fw-bolder"
+                    style="color: #000000"
                     >All Clients</a
                   >
                   <p>
@@ -112,7 +114,10 @@
                           </tr>
                         </thead>
                         <tbody v-if="paginateSearchResults?.length > 0">
-                          <tr v-for="client in paginateSearchResults" :key="client.id">
+                          <tr
+                            v-for="client in paginateSearchResults"
+                            :key="client.id"
+                          >
                             <td v-text="client.id"></td>
                             <td v-text="client.ref_code"></td>
                             <td>
@@ -136,7 +141,9 @@
                               >
                                 {{ job.job_name }}
 
-                                <template v-if="index !== client.jobs.length - 1">
+                                <template
+                                  v-if="index !== client.jobs.length - 1"
+                                >
                                 </template>
                               </span>
                             </td>
@@ -147,7 +154,10 @@
                             <td v-text="client.email"></td>
 
                             <td>
-                              <label class="switch" v-if="client.activated == true">
+                              <label
+                                class="switch"
+                                v-if="client.activated == true"
+                              >
                                 <input type="checkbox" id="togBtn" checked />
                                 <div class="slider round"></div>
                               </label>
@@ -166,7 +176,7 @@
                                 data-bs-whatever="@mdo"
                                 @click="editClient(client.id)"
                               >
-                                <i class="bi bi-pencil-square"></i>
+                                <i class="bi bi-pencil"></i>
                               </button>
                               &nbsp;&nbsp;
                               <!-- <button class="btn btn-outline-success text-nowrap">
@@ -175,22 +185,26 @@
                                   v-on:click="clientsDeleteMethod(client.id)"
                                 ></i></button
                               >&nbsp;&nbsp; -->
-                              <router-link
-                                :to="{
-                                  name: 'SingleClientProfile',
-                                  params: { id: client.id },
-                                }"
-                                class="btn btn-outline-success text-nowrap"
+                              <button
+                                class="btn text-nowrap btn-outline-success"
+                                @click="
+                                  $router.push({
+                                    name: 'SingleClientProfile',
+                                    params: { id: client.id },
+                                  })
+                                "
                               >
                                 <i class="bi bi-eye"></i>
-                              </router-link>
+                              </button>
                             </td>
                           </tr>
                         </tbody>
                         <tbody v-else>
                           <tr>
                             <td colspan="10" class="text-danger text-center">
-                              {{ " No candidates found for the specified criteria" }}
+                              {{
+                                " No candidates found for the specified criteria"
+                              }}
                             </td>
                           </tr>
                         </tbody>
@@ -400,7 +414,9 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      const matchingTabIndex = vm.tabs.findIndex((tab) => tab.routeName === to.name);
+      const matchingTabIndex = vm.tabs.findIndex(
+        (tab) => tab.routeName === to.name
+      );
 
       if (matchingTabIndex !== -1) {
         vm.activeTab = matchingTabIndex;
@@ -409,7 +425,9 @@ export default {
     });
   },
   beforeRouteUpdate(to, from, next) {
-    const matchingTabIndex = this.tabs.findIndex((tab) => tab.routeName === to.name);
+    const matchingTabIndex = this.tabs.findIndex(
+      (tab) => tab.routeName === to.name
+    );
 
     if (matchingTabIndex !== -1) {
       this.activeTab = matchingTabIndex;

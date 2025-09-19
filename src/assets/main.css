@@ -166,8 +166,7 @@ ul.navbar-nav li a span.badge {
 .detail-row {
   display: flex;
   align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid #eee;
+  padding: 6px 0;
 }
 .toggle-btn.active {
   background-color: #52732d !important;
