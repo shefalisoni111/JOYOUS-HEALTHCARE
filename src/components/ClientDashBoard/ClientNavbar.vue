@@ -469,7 +469,7 @@ export default {
       if (localStorage.getItem("token")) {
         Swal.fire({
           html: '<p style="font-size: 25px;">Are you sure want to sign out?</p>',
-          imageUrl: logo,
+          imageUrl: this.getAgencyLogo,
           imageWidth: 200,
           imageAlt: "RecPal",
           showCancelButton: true,
