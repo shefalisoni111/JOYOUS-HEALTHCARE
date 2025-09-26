@@ -686,7 +686,6 @@ export default {
       showSaveButton: true,
       isPublished: false,
       originalData: null,
-      VITE_API_URL: " https://recpalapp.co.uk/api/",
     };
   },
   components: { SuccessAlert },
