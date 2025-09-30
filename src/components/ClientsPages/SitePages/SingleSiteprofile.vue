@@ -108,7 +108,7 @@
                             <img
                               src="../../../assets/location.png"
                               class="img-fluid pe-2"
-                              alt="RecPal"
+                              :alt="getCompanyName"
                               loading="eager"
                             />
                             {{ getSiteDatas?.address }}</span
@@ -421,6 +421,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 h6.tag:after {
   content: " ";
   position: absolute;

@@ -124,7 +124,7 @@
                 </thead>
                 <tbody class="text-capitalize">
                   <tr>
-                    <td>RecPal Demo 1 ID Number</td>
+                    <td>{{ getCompanyName }} Demo 1 ID Number</td>
                     <td>:</td>
                     <td></td>
                   </tr>
@@ -238,7 +238,7 @@
         <div class="row" ref="invoiceContent">
           <div class="card-body border-0 px-3">
             <h5 class="text-center bg-colors">
-              RECPAL DEMO 1 EMPLOYEE PROFILE
+              {{ getCompanyName }} DEMO 1 EMPLOYEE PROFILE
             </h5>
             <table class="table table-bordered">
               <tbody class="text-capitalize">
@@ -318,7 +318,7 @@
                 </thead>
                 <tbody class="text-capitalize">
                   <tr>
-                    <td>RecPal Demo 1 ID Number</td>
+                    <td>{{ getCompanyName }} Demo 1 ID Number</td>
                     <td>...</td>
                     <td></td>
                   </tr>
@@ -466,6 +466,7 @@ export default {
     jsPDF,
   },
   computed: {
+    ...mapGetters(["getCompanyName"]),
     completeImageUrl() {
       if (
         this.getCandidatesDataInProfileTab &&
@@ -568,6 +569,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 img.profile {
   border: 1px solid #c3b6b6;
   border-radius: 8px;

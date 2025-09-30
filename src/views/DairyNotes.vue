@@ -87,7 +87,7 @@
                       <img
                         src="../assets/ArrowDown.png"
                         class="img-fluid pe-2"
-                        alt="RecPal"
+                        :alt="getCompanyName"
                         loading="eager"
                       />
                     </th>
@@ -96,7 +96,7 @@
                       <img
                         src="../assets/ArrowDown.png"
                         class="img-fluid pe-2"
-                        alt="RecPal"
+                        :alt="getCompanyName"
                         loading="eager"
                       />
                     </th>
@@ -105,7 +105,7 @@
                       <img
                         src="../assets/ArrowDown.png"
                         class="img-fluid pe-2"
-                        alt="RecPal"
+                        :alt="getCompanyName"
                         loading="eager"
                       />
                     </th>
@@ -385,6 +385,15 @@ export default {
 };
 </script>
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 .card-header {
   font-size: 1.2rem;
   font-weight: 500;

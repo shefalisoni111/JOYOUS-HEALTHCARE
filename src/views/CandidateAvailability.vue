@@ -13,12 +13,10 @@
                 >
                 <p>
                   All Staff /
-                  <router-link
+                  <span
                     class="nav-link d-inline fw-bolder"
                     style="color: #000000"
-                    aria-current="page"
-                    to="/availability"
-                    >Staff Availability</router-link
+                    >Staff Availability</span
                   >
                 </p>
               </li>
@@ -37,7 +35,7 @@
                 @input="debounceSearch"
               />
               <!-- Search icon inside input -->
-              <span
+              <!-- <span
                 class="position-absolute top-50 end-0 translate-middle-y pe-3"
               >
                 <img
@@ -47,7 +45,7 @@
                   width="20"
                   height="20"
                 />
-              </span>
+              </span> -->
             </form>
           </div>
         </div>
@@ -70,7 +68,7 @@
                 <img
                   src="../assets/Search.png"
                   class="img-fluid pe-2"
-                  alt="RecPal"
+                  :alt="getCompanyName"
                   loading="eager"
               /></span>
             </form>
@@ -143,7 +141,7 @@
                     <img
                       src="../assets/ArrowDown.png"
                       class="img-fluid pe-2"
-                      alt="RecPal"
+                      :alt="getCompanyName"
                       loading="eager"
                     />
                   </th>
@@ -165,7 +163,7 @@
                         <img
                           src="../assets/ArrowDown.png"
                           class="img-fluid pe-2"
-                          alt="RecPal"
+                          :alt="getCompanyName"
                           loading="eager"
                         />
                       </div>
@@ -913,6 +911,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 #main {
   background-color: #f9f9f9;
 }

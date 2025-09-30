@@ -5,7 +5,10 @@
         <div class="">
           <div
             class="text-muted bg-white p-3"
-            style="border: 1px solid #f8f8f8; box-shadow: 2px 2px 7px 2px #e7d7d7"
+            style="
+              border: 1px solid #f8f8f8;
+              box-shadow: 2px 2px 7px 2px #e7d7d7;
+            "
           >
             <div class="row">
               <div class="col-12">
@@ -29,13 +32,7 @@
                     </p>
                   </div>
                   <div class="col-4">
-                    <div class="m-auto text-center mt-3">
-                      <!-- <img
-                        src="../recpal_favicon.png"
-                        class="img-fluid"
-                        width="20%"
-                      /> -->
-                    </div>
+                    <div class="m-auto text-center mt-3"></div>
                   </div>
                   <div class="col-4">
                     <div class="float-end">
@@ -68,8 +65,12 @@
 
                       <h5 class="fw-bold">{{ getClientInvoiceDetail.site }}</h5>
 
-                      <p class="mb-0">Mob No: {{ siteData?.contact_person_number }}</p>
-                      <p class="mb-0">Email: {{ siteData?.contact_person_email }}</p>
+                      <p class="mb-0">
+                        Mob No: {{ siteData?.contact_person_number }}
+                      </p>
+                      <p class="mb-0">
+                        Email: {{ siteData?.contact_person_email }}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -96,7 +97,9 @@
             </div>
             <div class="col-12 mt-4">
               <div v-if="showEditComponentTwo" class="table-wrapper">
-                <ClientSecontTemplateEdit :invoice-id="getClientInvoiceDetail.id" />
+                <ClientSecontTemplateEdit
+                  :invoice-id="getClientInvoiceDetail.id"
+                />
               </div>
               <div class="table-wrapper">
                 <table class="table candidateTable">
@@ -115,7 +118,9 @@
                   </thead>
                   <tbody>
                     <tr
-                      v-for="(candidate, index) in getClientInvoiceDetail.candidate_data"
+                      v-for="(
+                        candidate, index
+                      ) in getClientInvoiceDetail.candidate_data"
                       :key="index"
                     >
                       <td scope="col">
@@ -132,7 +137,11 @@
                         {{ candidate.rate ? "£" + candidate.rate : "N/A" }}
                       </td>
                       <td scope="col">
-                        {{ candidate.total_cost ? "£" + candidate.total_cost : "N/A" }}
+                        {{
+                          candidate.total_cost
+                            ? "£" + candidate.total_cost
+                            : "N/A"
+                        }}
                       </td>
                     </tr>
 
@@ -147,7 +156,9 @@
                       </td>
                     </tr>
                     <tr>
-                      <td colspan="7" class="text-start fw-bold">Rate Per Mile</td>
+                      <td colspan="7" class="text-start fw-bold">
+                        Rate Per Mile
+                      </td>
                       <td colspan="2" class="font-weight-bold">
                         {{
                           getClientInvoiceDetail?.rate_per_mile !== undefined
@@ -157,7 +168,9 @@
                       </td>
                     </tr>
                     <tr>
-                      <td colspan="7" class="text-start fw-bold">Grand Total</td>
+                      <td colspan="7" class="text-start fw-bold">
+                        Grand Total
+                      </td>
                       <td colspan="2" class="font-weight-bold">
                         {{
                           getClientInvoiceDetail?.grand_total !== undefined
@@ -261,7 +274,9 @@ export default {
     },
     async fetchDeductions() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/candidate_deductions`);
+        const response = await axios.get(
+          `${VITE_API_URL}/candidate_deductions`
+        );
         this.deductions = response.data;
       } catch (error) {
         // console.error("Error fetching deductions:", error);

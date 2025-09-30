@@ -9,7 +9,10 @@
     </button>
     <!-- Sidebar -->
     <nav id="sidebar">
-      <aside :class="['sidebar', { show: isSidebarVisible }]" class="sidebar">
+      <aside
+        :class="['sidebar', { show: isSidebarVisible }]"
+        class="sidebar scrollable-sidebar"
+      >
         <div class="sidebar-header">
           <a
             class="navbar-brand ps-3"
@@ -18,10 +21,9 @@
             ><img
               :src="computedLogo"
               class="img-fluid"
-              alt="RecPal"
-              height="70"
+              :alt="getCompanyName"
               loading="eager"
-              style="height: 70px:width:100px"
+              style="max-height: 100px; width: auto"
           /></a>
           <button
             class="btn btn-outline-primary d-lg-none"
@@ -32,30 +34,33 @@
           </button>
         </div>
         <ul class="list-unstyled components">
-          <li>
+          <li class="pt-0">
             <router-link to="/home" class="ps-2">
               <img
                 src="../assets/Vector.png"
                 class="img-fluid pe-2"
-                alt="RecPal"
+                :alt="getCompanyName"
                 loading="eager"
               />
               Dashboard
             </router-link>
           </li>
 
-          <li :class="{ active: isClientActive }">
+          <li :class="{ active: isClientActive }" class="pt-0">
             <a
               href="#clientMenu"
               data-bs-toggle="collapse"
               :aria-expanded="isClientActive"
               class="d-flex justify-content-between"
             >
-              <span><i class="bi bi-people"></i> <span class="ms-2">Client</span></span>
+              <span
+                ><i class="bi bi-people"></i>
+                <span class="ms-2">Client</span></span
+              >
               <img
                 src="../assets/ArrowDown.png"
                 class="img-fluid pe-2"
-                alt="RecPal"
+                :alt="getCompanyName"
                 loading="eager"
               />
             </a>
@@ -80,18 +85,20 @@
             </ul>
           </li>
 
-          <li :class="{ active: isStaffMenuActive }">
+          <li :class="{ active: isStaffMenuActive }" class="pt-0">
             <a
               href="#staffMenu"
               data-bs-toggle="collapse"
               :aria-expanded="isStaffMenuActive"
               class="d-flex justify-content-between"
             >
-              <span> <i class="bi bi-person"></i> <span class="ms-2">Staff</span> </span>
+              <span>
+                <i class="bi bi-person"></i> <span class="ms-2">Staff</span>
+              </span>
               <img
                 src="../assets/ArrowDown.png"
                 class="img-fluid pe-2"
-                alt="RecPal"
+                :alt="getCompanyName"
                 loading="eager"
               />
             </a>
@@ -113,19 +120,19 @@
             </ul>
           </li>
 
-          <li>
+          <li class="pt-0">
             <router-link to="/shift-list">
               <i class="bi bi-calendar"></i> Shifts
             </router-link>
           </li>
 
-          <li>
+          <li class="pt-0">
             <router-link to="/schedule">
               <i class="bi bi-clock"></i> Schedule
             </router-link>
           </li>
 
-          <li :class="{ active: isTimesheetMenuActive }">
+          <li :class="{ active: isTimesheetMenuActive }" class="pt-0">
             <a
               href="#timesheetMenu"
               data-bs-toggle="collapse"
@@ -133,13 +140,14 @@
               class="d-flex justify-content-between"
             >
               <span>
-                <i class="bi bi-file-earmark-text"></i><span class="ms-2">Timesheet</span>
+                <i class="bi bi-file-earmark-text"></i
+                ><span class="ms-2">Timesheet</span>
               </span>
 
               <img
                 src="../assets/ArrowDown.png"
                 class="img-fluid pe-2"
-                alt="RecPal"
+                :alt="getCompanyName"
                 loading="eager"
               />
             </a>
@@ -167,19 +175,21 @@
             </ul>
           </li>
 
-          <li :class="{ active: isInvoiceMenuActive }">
+          <li :class="{ active: isInvoiceMenuActive }" class="pt-0">
             <a
               href="#invoiceMenu"
               data-bs-toggle="collapse"
               :aria-expanded="isInvoiceMenuActive"
               class="d-flex justify-content-between"
             >
-              <span><i class="bi bi-receipt"></i><span class="ms-2">Invoice</span> </span>
+              <span
+                ><i class="bi bi-receipt"></i><span class="ms-2">Invoice</span>
+              </span>
 
               <img
                 src="../assets/ArrowDown.png"
                 class="img-fluid pe-2"
-                alt="RecPal"
+                :alt="getCompanyName"
                 loading="eager"
               />
             </a>
@@ -201,25 +211,31 @@
             </ul>
           </li>
 
-          <li>
+          <li class="pt-0">
             <router-link to="/report">
               <i class="bi bi-bar-chart"></i> Reports
             </router-link>
           </li>
 
-          <li class="fw-bold text-muted mt-2">Support</li>
+          <li class="fw-bold text-muted mt-2 pt-0">Support</li>
 
           <ul class="navbar-nav m-0 mb-2 mb-lg-0 inline-nav">
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown pt-0">
               <router-link to="/chat">
                 <i class="bi bi-chat-left-dots"></i>Message</router-link
               >
             </li>
 
-            <li class="nav-item dropdown">
-              <router-link to="/notification" @click.prevent="handleNotificationClick">
+            <li class="nav-item dropdown pt-0">
+              <router-link
+                to="/notification"
+                @click.prevent="handleNotificationClick"
+              >
                 <i class="bi bi-bell"></i>
-                <span v-if="unread_count > 0" class="badge bg-primary badge-number">
+                <span
+                  v-if="unread_count > 0"
+                  class="badge bg-primary badge-number"
+                >
                   {{ unread_count }}
                 </span>
                 Notification
@@ -228,12 +244,12 @@
 
             <!-- End Notification Nav -->
 
-            <li class="cursor-pointer">
+            <li class="cursor-pointer pt-0">
               <router-link class="d-flex align-items-center" to="/support">
                 <i class="bi bi-brightness-low pe-2"></i><span>Support</span>
               </router-link>
             </li>
-            <li>
+            <li class="pt-0">
               <router-link
                 class="d-flex align-items-center"
                 aria-current="page"
@@ -242,11 +258,11 @@
                 <i class="bi bi-gear pe-2"></i><span> Settings</span>
               </router-link>
             </li>
-            <br /><br />
+
             <li>
               <hr class="" />
             </li>
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown pt-0">
               <a
                 class="nav-link nav-icon nav-profile d-flex align-items-center pe-0"
                 href="#"
@@ -278,7 +294,7 @@
                 class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"
                 style="width: 220px"
               >
-                <li>
+                <li class="py-0">
                   <router-link
                     class="dropdown-item d-flex align-items-center"
                     aria-current="page"
@@ -288,7 +304,7 @@
                   </router-link>
                 </li>
 
-                <li class="cursor-pointer my-1">
+                <li class="cursor-pointer py-0">
                   <router-link
                     class="dropdown-item d-flex align-items-center"
                     to="/dairy_notes"
@@ -297,19 +313,18 @@
                   >
                 </li>
 
-                <li class="cursor-pointer my-1">
+                <li class="cursor-pointer py-0">
                   <router-link
                     class="dropdown-item text-capitalize d-flex align-items-center"
                     :to="adminLink"
-                    ><i class="bi bi-gear-wide pe-2"></i><span>Personal Settings</span>
+                    ><i class="bi bi-gear-wide pe-2"></i
+                    ><span>Personal Settings</span>
                   </router-link>
                 </li>
 
-                <li>
-                  <hr class="" />
-                </li>
+                <hr class="" />
 
-                <li class="cursor-pointer">
+                <li class="cursor-pointer py-0">
                   <a
                     class="dropdown-item d-flex align-items-center"
                     v-on:click="confirmed"
@@ -411,9 +426,11 @@ export default {
       return ["/staff-list", "/availability"].includes(this.$route.path);
     },
     isTimesheetMenuActive() {
-      return ["/timesheet/weekly", "/timesheet/custom", "/timesheet/signed"].includes(
-        this.$route.path
-      );
+      return [
+        "/timesheet/weekly",
+        "/timesheet/custom",
+        "/timesheet/signed",
+      ].includes(this.$route.path);
     },
     isInvoiceMenuActive() {
       return ["/invoice/client-invoice", "/invoice/staff-payroll"].includes(
@@ -431,7 +448,6 @@ export default {
       return this.localProfileImage;
     },
     channelSid() {
-      // Access `channelSid` from the store (adjust according to your store setup)
       return this.$store.state.channelSid;
     },
   },
@@ -497,9 +513,6 @@ export default {
       }
     },
 
-    // handleChatClick() {
-    //   this.$router.push("/chat");
-    // },
     handleNotificationClick() {
       this.markAllAsRead();
       // this.$router.push("/notification");
@@ -534,12 +547,15 @@ export default {
       const token = localStorage.getItem("token");
       const merchantId = localStorage.getItem("merchant_id");
       try {
-        const response = await axios.get(`${VITE_API_URL}/merchants/${merchantId}`, {
-          headers: {
-            "content-type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/merchants/${merchantId}`,
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const imagePath = response.data.data.profile_photo;
         this.localProfileImage = `${VITE_API_URL}${imagePath}`;
 
@@ -579,11 +595,14 @@ export default {
         this.errorMessage = "";
         this.searchResults = [];
 
-        const response = await axiosInstance.get(`${VITE_API_URL}/search_candidate`, {
-          params: {
-            candidate_query: this.searchQuery.trim(),
-          },
-        });
+        const response = await axiosInstance.get(
+          `${VITE_API_URL}/search_candidate`,
+          {
+            params: {
+              candidate_query: this.searchQuery.trim(),
+            },
+          }
+        );
 
         // this.searchResults = response.data.candidate|| [];
         if (response.data.candidate && response.data.candidate.length > 0) {
@@ -598,14 +617,9 @@ export default {
         ) {
           this.errorMessage = "Not Staff found for the specified criteria";
         } else {
-          this.errorMessage = "An unexpected error occurred. Please try again later.";
+          this.errorMessage =
+            "An unexpected error occurred. Please try again later.";
         }
-        // if (
-        //   (error.response && error.response.status === 404) ||
-        //   error.response.status === 400
-        // ) {
-        //   this.errorMessage = "Not Staff found for the specified criteria";
-        // }
       }
     },
 
@@ -674,22 +688,9 @@ export default {
           await this.fetchMessages(data.channel_sid);
           return data.channel_sid;
         } else {
-          // Swal.fire({
-          //   title: "Error!",
-          //   text: data.message || "Failed to create chat channel. Please try again.",
-          //   icon: "error",
-          //   confirmButtonText: "OK",
-          // });
           return null;
         }
-      } catch (error) {
-        // Swal.fire({
-        //   title: "Error!",
-        //   text: "An unexpected error occurred while creating the chat channel. Please try again later.",
-        //   icon: "error",
-        //   confirmButtonText: "OK",
-        // });
-      }
+      } catch (error) {}
     },
 
     async sendMessage() {
@@ -705,18 +706,21 @@ export default {
 
       const token = localStorage.getItem("token");
       try {
-        const response = await fetch(`${VITE_API_URL}/chats/send_message_to_channel`, {
-          method: "POST",
-          body: JSON.stringify({
-            channel_sid: this.channelSid,
-            message: tempMessage,
-          }),
-          headers: {
-            "Access-Control-Allow-Headers": "Content-Type",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          `${VITE_API_URL}/chats/send_message_to_channel`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              channel_sid: this.channelSid,
+              message: tempMessage,
+            }),
+            headers: {
+              "Access-Control-Allow-Headers": "Content-Type",
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         const data = await response.json();
 
@@ -730,7 +734,8 @@ export default {
         } else {
           Swal.fire({
             title: "Error!",
-            text: data.message || "Failed to send the message. Please try again.",
+            text:
+              data.message || "Failed to send the message. Please try again.",
             icon: "error",
             confirmButtonText: "OK",
           });
@@ -742,8 +747,7 @@ export default {
       } catch (error) {
         Swal.fire({
           title: "Error!",
-          text:
-            "An unexpected error occurred while sending the message. Please try again.",
+          text: "An unexpected error occurred while sending the message. Please try again.",
           icon: "error",
           confirmButtonText: "OK",
         });
@@ -758,16 +762,19 @@ export default {
 
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(`${VITE_API_URL}/chats/fetch_messages`, {
-          params: {
-            channel_sid: channelSid,
-          },
-          headers: {
-            "Access-Control-Allow-Headers": "Content-Type",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/chats/fetch_messages`,
+          {
+            params: {
+              channel_sid: channelSid,
+            },
+            headers: {
+              "Access-Control-Allow-Headers": "Content-Type",
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         this.selectedCandidateMessages = response.data.messages || [];
       } catch (error) {
@@ -799,7 +806,7 @@ export default {
           html: '<p style="font-size: 25px;">Are you sure want to sign out?</p>',
           imageUrl: this.getAgencyLogo,
           imageWidth: 200,
-          imageAlt: "RecPal",
+
           showCancelButton: true,
           confirmButtonColor: "#52732d",
           cancelButtonColor: "#d33",
@@ -828,7 +835,8 @@ export default {
       // User scroll detection
       const isAtTop = chatMessages.scrollTop === 0;
       const isAtBottom =
-        chatMessages.scrollTop + chatMessages.clientHeight >= chatMessages.scrollHeight;
+        chatMessages.scrollTop + chatMessages.clientHeight >=
+        chatMessages.scrollHeight;
 
       if (isAtTop) {
         // this.fetchMessages(this.channelSid);
@@ -910,17 +918,20 @@ export default {
       this.isLoading = true;
 
       try {
-        const response = await axios.get(`${VITE_API_URL}/agency_notifications`, {
-          params: {
-            page: this.currentPage,
-            per_page: this.itemsPerPage,
-          },
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/agency_notifications`,
+          {
+            params: {
+              page: this.currentPage,
+              per_page: this.itemsPerPage,
+            },
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (response.status === 200) {
           // this.notifications = response.data.notifications || [];
@@ -972,13 +983,6 @@ export default {
     // this.scrollToBottom();
     await this.getCandidateMethods();
     await this.fetchProfileData();
-    // this.messageFetchInterval = setInterval(() => {
-    //   if ( this.channelSid) {
-    //     this.fetchMessages(this.channelSid);
-    //   } else {
-    //     this.$store.dispatch('updateChannelSid', null);
-    //   }
-    // }, 2000);
   },
   beforeUnmount() {
     if (this.messageFetchInterval) {
@@ -990,13 +994,22 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 .sidebar {
   top: 0;
   left: 0;
-
+  height: 100vh;
   overflow-y: auto;
   background: #ffffff;
-
+  position: fixed;
   color: #000000;
   padding-top: 12px;
   transition: all 0.3s ease;
@@ -1087,6 +1100,22 @@ ul.list-unstyled {
 
 .sidebar.collapsed .submenu {
   display: none;
+}
+.scrollable-sidebar {
+  max-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.scrollable-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+.scrollable-sidebar::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 4px;
+}
+.scrollable-sidebar::-webkit-scrollbar-thumb:hover {
+  background: #888;
 }
 @media (max-width: 1100px) {
   .sidebar {

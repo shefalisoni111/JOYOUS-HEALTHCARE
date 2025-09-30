@@ -288,6 +288,15 @@ export default {
 };
 </script>
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 #main {
   padding: 20px 20px;
   transition: all 0.3s;

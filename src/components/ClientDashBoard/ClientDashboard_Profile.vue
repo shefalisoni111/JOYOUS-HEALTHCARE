@@ -27,7 +27,9 @@
             <div class="col-md-4">
               <div class="card h-100">
                 <div class="card-body">
-                  <div class="d-flex flex-column align-items-center text-center">
+                  <div
+                    class="d-flex flex-column align-items-center text-center"
+                  >
                     <div class="img-div position-relative">
                       <router-view to="/home">
                         <img
@@ -235,6 +237,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 .img-div label {
   position: absolute;
   bottom: 0;
@@ -282,13 +293,13 @@ a.router-link-active,
 .dropdown-item:hover,
 .dropdown-item:focus {
   color: #fff;
-  background-color: #f6851d !important;
+  background-color: #bbd10d78 !important;
   border-radius: 4px;
 }
 ul.profile li a:hover,
 ul.profile .dropdown-item:hover,
 ul.profile .dropdown-item:focus {
-  background-color: #f6851d !important;
+  background-color: #bbd10d78 !important;
 }
 .gutters-sm {
   margin-right: -8px;

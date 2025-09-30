@@ -13,7 +13,10 @@
       >
         <Navbar />
       </div>
-      <div class="container-fluid px-5" style="background: rgb(82 74 74 / 6%)">
+      <div
+        class="container-fluid px-5 content-area"
+        style="background: rgb(82 74 74 / 6%)"
+      >
         <div class="col-10 pt-4">
           <div class="col-12">
             <ol class="breadcrumb mb-1 mt-2">
@@ -120,6 +123,15 @@ export default {
 };
 </script>
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 .pagetitle {
   margin-bottom: 10px;
   background-color: #fff;

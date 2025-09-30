@@ -21,7 +21,10 @@
               <div class="p-2">
                 <div class="d-flex justify-content-end gap-2">
                   <div class="form-inline my-2 my-lg-0">
-                    <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
+                    <form
+                      @submit.prevent="search"
+                      class="form-inline my-2 my-lg-0"
+                    >
                       <input
                         class="form-control mr-sm-2"
                         type="search"
@@ -84,7 +87,10 @@
                     >
                       Export
 
-                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <ul
+                        class="dropdown-menu"
+                        aria-labelledby="navbarDropdown"
+                      >
                         <li>
                           <label
                             for="fileAll"
@@ -97,7 +103,10 @@
                         </li>
                         <li><hr class="dropdown-divider" /></li>
                         <li>
-                          <a class="dropdown-item" href="#" @click="exportOneFile"
+                          <a
+                            class="dropdown-item"
+                            href="#"
+                            @click="exportOneFile"
                             >Export</a
                           >
                         </li>
@@ -127,7 +136,10 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="candidate in paginateCandidates" :key="candidate.id">
+                    <tr
+                      v-for="candidate in paginateCandidates"
+                      :key="candidate.id"
+                    >
                       <td>
                         <input
                           class="form-check-input"
@@ -145,11 +157,15 @@
                             params: { id: candidate.id },
                           }"
                         >
-                          {{ candidate.first_name }}&nbsp; {{ candidate.last_name }}
+                          {{ candidate.first_name }}&nbsp;
+                          {{ candidate.last_name }}
                         </router-link>
                       </td>
 
-                      <td class="text-capitalize" v-text="candidate.possition"></td>
+                      <td
+                        class="text-capitalize"
+                        v-text="candidate.possition"
+                      ></td>
                       <td>{{ candidate.email }}</td>
                       <td>
                         {{ candidate.phone_number }}
@@ -196,11 +212,15 @@
                             params: { id: candidate.id },
                           }"
                         >
-                          {{ candidate.first_name }}&nbsp; {{ candidate.last_name }}
+                          {{ candidate.first_name }}&nbsp;
+                          {{ candidate.last_name }}
                         </router-link>
                       </td>
 
-                      <td class="text-capitalize" v-text="candidate.possition"></td>
+                      <td
+                        class="text-capitalize"
+                        v-text="candidate.possition"
+                      ></td>
                       <td>{{ candidate.email }}</td>
                       <td>
                         {{ candidate.phone_number }}
@@ -244,13 +264,19 @@
       </button>
       <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+            >20 Records</a
+          >
         </li>
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+            >50 Records</a
+          >
         </li>
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+            >100 Records</a
+          >
         </li>
       </ul>
       &nbsp;&nbsp;
@@ -327,11 +353,14 @@ export default {
       try {
         this.searchResults = [];
 
-        const response = await axiosInstance.get(`${VITE_API_URL}/search_candidate`, {
-          params: {
-            candidate_query: this.searchQuery,
-          },
-        });
+        const response = await axiosInstance.get(
+          `${VITE_API_URL}/search_candidate`,
+          {
+            params: {
+              candidate_query: this.searchQuery,
+            },
+          }
+        );
 
         if (
           response.status === 200 &&
@@ -346,7 +375,11 @@ export default {
           this.errorMessage = "";
         }
       } catch (error) {
-        if (error.response && error.response.data && error.response.data.message) {
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) {
           this.errorMessage = error.response.data.message;
         } else {
           this.errorMessage = "No Staff found for the specified criteria";
@@ -393,7 +426,9 @@ export default {
           page: this.currentPage,
           per_page: this.itemsPerPage,
         };
-        const response = await axios.get(`${VITE_API_URL}/candidates`, { params });
+        const response = await axios.get(`${VITE_API_URL}/candidates`, {
+          params,
+        });
         this.getCandidatesData = response.data.data;
         this.totalPages = response.data.total_pages;
         this.currentPage = response.data.current_page;
@@ -412,6 +447,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 table th,
 table tr td {
   text-transform: capitalize;

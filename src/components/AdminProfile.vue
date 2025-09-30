@@ -38,7 +38,7 @@
                   <!-- <img
                     src="../assets/profile_bg.png"
                     class="img-fluid w-100"
-                    alt="RecPal"
+                    :alt="getCompanyName"
                     loading="eager"
                     style="width: 200px; height: 200px"
                   /> -->
@@ -102,7 +102,9 @@
             <div class="card h-100 mt-3" style="border-radius: 25px">
               <div class="card-body">
                 <ul class="list-unstyled">
-                  <li class="d-flex justify-content-between align-items-center mb-4 mt-3">
+                  <li
+                    class="d-flex justify-content-between align-items-center mb-4 mt-3"
+                  >
                     <div class="d-flex">
                       <i
                         class="bi bi-person-fill fs-4 me-3 chatTextThemeColor notificationIconBgThemeColor"
@@ -134,7 +136,9 @@
                       </button>
                     </div>
                   </li>
-                  <li class="d-flex justify-content-between align-items-center mb-4 mt-3">
+                  <li
+                    class="d-flex justify-content-between align-items-center mb-4 mt-3"
+                  >
                     <div class="d-flex">
                       <i
                         class="bi bi-person-fill fs-4 me-3 chatTextThemeColor notificationIconBgThemeColor"
@@ -288,12 +292,15 @@ export default {
       const merchantId = localStorage.getItem("merchant_id");
 
       try {
-        const response = await axios.get(`${VITE_API_URL}/merchants/${merchantId}`, {
-          headers: {
-            "content-type": "application/json",
-            Authorization: "bearer " + token,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/merchants/${merchantId}`,
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: "bearer " + token,
+            },
+          }
+        );
 
         this.getAdmin = response.data.data;
         if (this.getAdmin.profile_photo) {
@@ -315,6 +322,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 .img-div label {
   position: absolute;
   bottom: 0;
@@ -360,13 +376,13 @@ a.router-link-active,
 .dropdown-item:hover,
 .dropdown-item:focus {
   color: #fff;
-  background-color: #f6851d !important;
+  background-color: #bbd10d78 !important;
   border-radius: 4px;
 }
 ul.profile li a:hover,
 ul.profile .dropdown-item:hover,
 ul.profile .dropdown-item:focus {
-  background-color: #f6851d !important;
+  background-color: #bbd10d78 !important;
 }
 .gutters-sm {
   margin-right: -8px;

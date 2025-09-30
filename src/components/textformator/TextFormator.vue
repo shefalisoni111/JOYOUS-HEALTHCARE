@@ -3,18 +3,34 @@
     <div id="editparent">
       <div id="editControls">
         <div class="btn-group">
-          <a class="btn btn-xs btn-default" data-role="undo" href="#" title="Undo"
+          <a
+            class="btn btn-xs btn-default"
+            data-role="undo"
+            href="#"
+            title="Undo"
             ><i class="bi bi-arrow-counterclockwise"></i
           ></a>
-          <a class="btn btn-xs btn-default" data-role="redo" href="#" title="Redo"
+          <a
+            class="btn btn-xs btn-default"
+            data-role="redo"
+            href="#"
+            title="Redo"
             ><i class="bi bi-arrow-clockwise"></i
           ></a>
         </div>
         <div class="btn-group">
-          <a class="btn btn-xs btn-default" data-role="bold" href="#" title="Bold"
+          <a
+            class="btn btn-xs btn-default"
+            data-role="bold"
+            href="#"
+            title="Bold"
             ><i class="bi bi-type-bold"></i
           ></a>
-          <a class="btn btn-xs btn-default" data-role="italic" href="#" title="Italic"
+          <a
+            class="btn btn-xs btn-default"
+            data-role="italic"
+            href="#"
+            title="Italic"
             ><i class="bi bi-type-italic"></i
           ></a>
           <a
@@ -33,7 +49,11 @@
           ></a>
         </div>
         <div class="btn-group">
-          <a class="btn btn-xs btn-default" data-role="indent" href="#" title="Blockquote"
+          <a
+            class="btn btn-xs btn-default"
+            data-role="indent"
+            href="#"
+            title="Blockquote"
             ><i class="bi bi-text-indent-left"></i
           ></a>
           <a
@@ -52,16 +72,32 @@
           ></a>
         </div>
         <div class="btn-group">
-          <a class="btn btn-xs btn-default" data-role="h1" href="#" title="Heading 1"
+          <a
+            class="btn btn-xs btn-default"
+            data-role="h1"
+            href="#"
+            title="Heading 1"
             ><i class="bi bi-type-h1"></i><sup>1</sup></a
           >
-          <a class="btn btn-xs btn-default" data-role="h2" href="#" title="Heading 2"
+          <a
+            class="btn btn-xs btn-default"
+            data-role="h2"
+            href="#"
+            title="Heading 2"
             ><i class="bi bi-type-h2"></i><sup>2</sup></a
           >
-          <a class="btn btn-xs btn-default" data-role="h3" href="#" title="Heading 3"
+          <a
+            class="btn btn-xs btn-default"
+            data-role="h3"
+            href="#"
+            title="Heading 3"
             ><i class="bi bi-type-h3"></i><sup>3</sup></a
           >
-          <a class="btn btn-xs btn-default" data-role="p" href="#" title="Paragraph"
+          <a
+            class="btn btn-xs btn-default"
+            data-role="p"
+            href="#"
+            title="Paragraph"
             ><i class="bi bi-text-paragraph"></i
           ></a>
         </div>
@@ -137,6 +173,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 #editor {
   resize: vertical;
   overflow: auto;

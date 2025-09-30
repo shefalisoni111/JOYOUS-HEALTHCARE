@@ -14,30 +14,36 @@
         <Navbar />
       </div>
       <div
-        class="flex-grow-1 container-fluid px-4"
+        class="flex-grow-1 container-fluid px-4 content-area"
         style="background: rgb(82 74 74 / 6%)"
       >
         <div class="col-10 pt-4 pt-3">
           <div class="col-12">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active">
-                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                <a
+                  class="nav-link d-inline fs-4 fw-bolder"
+                  style="color: #000000"
                   >App Settings</a
                 >
               </li>
             </ol>
           </div>
         </div>
-        <div class="row mt-4">
-          <div class="col-2 col-md-2 col-lg-1"><Sidebar /></div>
+        <div class="row mt-4 align-items-stretch">
+          <div class="col-2 col-md-2 col-lg-1 d-flex">
+            <div class="w-100 rounded-3"><Sidebar /></div>
+          </div>
           <div
-            class="col-10 col-md-10 col-lg-3 p-3 bg-white borderight mb-4"
+            class="col-10 col-md-10 col-lg-3 p-3 bg-white borderight d-flex"
             style="border-radius: 30px"
           >
             <div class="leftside">
               <div class="heading mb-3 position-relative">
                 <p class="bforeline"></p>
-                <p class="mb-0 text-capitalize fw-bold genSetting">invoice Settings</p>
+                <p class="mb-0 text-capitalize fw-bold genSetting">
+                  invoice Settings
+                </p>
                 <p class="afterline"></p>
               </div>
               <div>
@@ -51,7 +57,9 @@
                         <i class="bi bi-file-earmark-text rounded-circle"></i>
                         <div>
                           <h6 class="mb-0 text-capitalize">invoice setting</h6>
-                          <p class="text-capitalize mb-0">check invoice dues date</p>
+                          <p class="text-capitalize mb-0">
+                            check invoice dues date
+                          </p>
                         </div>
                       </div>
                     </router-link>
@@ -60,13 +68,15 @@
               </div>
             </div>
           </div>
-          <div class="col-12 col-lg-8 px-3">
+          <div class="col-12 col-lg-8 px-3 d-flex">
             <div class="bg-white" style="border-radius: 30px">
               <div class="col-12">
                 <div class="pagetitle d-flex justify-content-between">
                   <div class="d-flex align-items-center">
                     <ol class="breadcrumb mb-1 p-3">
-                      <li class="breadcrumb-item active text-capitalize fw-bold">
+                      <li
+                        class="breadcrumb-item active text-capitalize fw-bold"
+                      >
                         invoice setting /
                         <span class="clr">rate And invoice setting</span>
                       </li>
@@ -100,14 +110,17 @@
                           class="card p-2 alert alert-warning"
                           style="color: #ff3b30; background: #fff3f4"
                         >
-                          <b style="color: #ff3b30">Warning!</b> Changes you made on split
-                          rate, will affect the entire site accordingly.
+                          <b style="color: #ff3b30">Warning!</b> Changes you
+                          made on split rate, will affect the entire site
+                          accordingly.
                         </div>
                       </div>
                     </div>
                   </div>
                   <div class="col-12">
-                    <div class="d-flex justify-content-between align-content-center">
+                    <div
+                      class="d-flex justify-content-between align-content-center"
+                    >
                       <h6 class="fw-bold">INVOICE SETTINGS DETAILS</h6>
                       <button
                         class="btn btn-primary me-3"
@@ -139,11 +152,11 @@
                   <div class="col-9">
                     <div class="d-flex my-3">
                       <div class="card p-2 alert alert-primary">
-                        If the cutoff day is chosen, each invoice created prior to the
-                        cutoff day will be placed in the previous/corresponding week,
-                        depending on the date.<br />
-                        After the cutoff day, any invoice created will be for the current
-                        week. Only applicable to weekly invoices.
+                        If the cutoff day is chosen, each invoice created prior
+                        to the cutoff day will be placed in the
+                        previous/corresponding week, depending on the date.<br />
+                        After the cutoff day, any invoice created will be for
+                        the current week. Only applicable to weekly invoices.
                       </div>
                     </div>
                   </div>
@@ -159,7 +172,11 @@
                           v-model="fetchInvoiceSetting.invoice_creation_period"
                           @change="handleInputChange"
                         >
-                          <option v-for="day in creation" :key="day" :value="day">
+                          <option
+                            v-for="day in creation"
+                            :key="day"
+                            :value="day"
+                          >
                             {{ day }}
                           </option>
                         </select>
@@ -201,7 +218,9 @@
                           <input
                             type="checkbox"
                             id="togBtn"
-                            v-model="fetchInvoiceSetting.enable_site_name_in_invoice"
+                            v-model="
+                              fetchInvoiceSetting.enable_site_name_in_invoice
+                            "
                             @input="handleInputChange"
                           />
                           <div class="slider round"></div>
@@ -211,7 +230,9 @@
 
                     <div class="d-flex my-3" style="gap: 0.3%">
                       <div class="col-3">
-                        <div>PDF Name Format (which should be shown first?):</div>
+                        <div>
+                          PDF Name Format (which should be shown first?):
+                        </div>
                       </div>
 
                       <div class="col-9">
@@ -260,7 +281,10 @@
                     </div>
                   </div>
                   <div class="col-9">
-                    <div class="d-flex my-3 justify-content-between" style="gap: 12.55%">
+                    <div
+                      class="d-flex my-3 justify-content-between"
+                      style="gap: 12.55%"
+                    >
                       <div>Client Invoice Template:</div>
                       <div class="w-100">
                         <select
@@ -268,12 +292,19 @@
                           @change="updateTemplateClient"
                           class="form-control"
                         >
-                          <option value="TemplateOneClient">Template One</option>
-                          <option value="TemplateTwoClient">Template Two</option>
+                          <option value="TemplateOneClient">
+                            Template One
+                          </option>
+                          <option value="TemplateTwoClient">
+                            Template Two
+                          </option>
                         </select>
                       </div>
                     </div>
-                    <div class="d-flex my-3 justify-content-between" style="gap: 13%">
+                    <div
+                      class="d-flex my-3 justify-content-between"
+                      style="gap: 13%"
+                    >
                       <div>Staff Invoice Template:</div>
                       <div class="w-100">
                         <select
@@ -313,9 +344,9 @@
                           class="card p-2 alert alert-warning"
                           style="color: #ff3b30; background: #fff3f4"
                         >
-                          <b style="color: #ff3b30">Warning!</b> Changes you made on
-                          enable booking code, will affect the entire client invoice and
-                          signed timesheet accordingly.
+                          <b style="color: #ff3b30">Warning!</b> Changes you
+                          made on enable booking code, will affect the entire
+                          client invoice and signed timesheet accordingly.
                         </div>
                       </div>
                     </div>
@@ -339,9 +370,9 @@
                           class="card p-2 alert alert-warning"
                           style="color: #ff3b30; background: #fff3f4"
                         >
-                          <b style="color: #ff3b30">Warning!</b> Changes you made on
-                          enable Exclude VAT on mileage or new row, will affect the entire
-                          site accordingly.
+                          <b style="color: #ff3b30">Warning!</b> Changes you
+                          made on enable Exclude VAT on mileage or new row, will
+                          affect the entire site accordingly.
                         </div>
                       </div>
                     </div>
@@ -356,7 +387,9 @@
 
                         <textarea
                           class="form-control"
-                          v-model="fetchInvoiceSetting.client_invoice_footer_note"
+                          v-model="
+                            fetchInvoiceSetting.client_invoice_footer_note
+                          "
                           @input="handleInputChange"
                           rows="3"
                         ></textarea>
@@ -372,7 +405,9 @@
                     /> -->
                         <textarea
                           class="form-control"
-                          v-model="fetchInvoiceSetting.staff_invoice_footer_note"
+                          v-model="
+                            fetchInvoiceSetting.staff_invoice_footer_note
+                          "
                           @input="handleInputChange"
                           rows="3"
                         ></textarea>
@@ -484,10 +519,11 @@ export default {
     },
     updateInvoiceNumberFormat() {
       this.isModified = true;
-      this.fetchInvoiceSetting.invoice_number_format = this.validationNumberString(
-        this.fetchInvoiceSetting.invoice_number_format,
-        10
-      );
+      this.fetchInvoiceSetting.invoice_number_format =
+        this.validationNumberString(
+          this.fetchInvoiceSetting.invoice_number_format,
+          10
+        );
     },
     validationNumberString(value, maxLength) {
       if (!value) return "";
@@ -510,17 +546,14 @@ export default {
       const regex = /^[A-Za-z\s]*$/;
 
       if (this.fetchInvoiceSetting.pdf_name_format.length > 10) {
-        this.pdfNameFormatError = "PDF Name Format must Not exceed 10 characters.";
-        this.fetchInvoiceSetting.pdf_name_format = this.fetchInvoiceSetting.pdf_name_format.slice(
-          0,
-          10
-        );
+        this.pdfNameFormatError =
+          "PDF Name Format must Not exceed 10 characters.";
+        this.fetchInvoiceSetting.pdf_name_format =
+          this.fetchInvoiceSetting.pdf_name_format.slice(0, 10);
       } else if (!regex.test(this.fetchInvoiceSetting.pdf_name_format)) {
         this.pdfNameFormatError = "PDF Name Format can only contain letters.";
-        this.fetchInvoiceSetting.pdf_name_format = this.fetchInvoiceSetting.pdf_name_format.replace(
-          /[^A-Za-z\s]/g,
-          ""
-        );
+        this.fetchInvoiceSetting.pdf_name_format =
+          this.fetchInvoiceSetting.pdf_name_format.replace(/[^A-Za-z\s]/g, "");
       }
       this.handleInputChange();
     },
@@ -531,17 +564,20 @@ export default {
       const regex = /^[A-Za-z\s]*$/;
 
       if (this.fetchInvoiceSetting.staff_invoice_table_head.length > 10) {
-        this.invoiceTableHeadError = "Invoice Table Head must Not exceed 10 characters.";
-        this.fetchInvoiceSetting.staff_invoice_table_head = this.fetchInvoiceSetting.staff_invoice_table_head.slice(
-          0,
-          10
-        );
-      } else if (!regex.test(this.fetchInvoiceSetting.staff_invoice_table_head)) {
-        this.invoiceTableHeadError = "Invoice Table Head can only contain letters.";
-        this.fetchInvoiceSetting.staff_invoice_table_head = this.fetchInvoiceSetting.staff_invoice_table_head.replace(
-          /[^A-Za-z\s]/g,
-          ""
-        );
+        this.invoiceTableHeadError =
+          "Invoice Table Head must Not exceed 10 characters.";
+        this.fetchInvoiceSetting.staff_invoice_table_head =
+          this.fetchInvoiceSetting.staff_invoice_table_head.slice(0, 10);
+      } else if (
+        !regex.test(this.fetchInvoiceSetting.staff_invoice_table_head)
+      ) {
+        this.invoiceTableHeadError =
+          "Invoice Table Head can only contain letters.";
+        this.fetchInvoiceSetting.staff_invoice_table_head =
+          this.fetchInvoiceSetting.staff_invoice_table_head.replace(
+            /[^A-Za-z\s]/g,
+            ""
+          );
       }
       this.handleInputChange();
     },
@@ -587,6 +623,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 #logo {
   width: 119px;
 

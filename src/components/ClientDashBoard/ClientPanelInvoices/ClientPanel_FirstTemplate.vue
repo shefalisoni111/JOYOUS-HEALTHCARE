@@ -30,11 +30,7 @@
                       {{ getClientInvoiceDetail?.client_data?.client_add }}
                     </p>
                   </div>
-                  <div class="col-4">
-                    <!-- <div class="m-auto text-center mt-3">
-                        <img src="../recpal_favicon.png" class="img-fluid" width="20%" />
-                      </div> -->
-                  </div>
+                  <div class="col-4"></div>
                   <div class="col-4">
                     <div class="float-end">
                       <h6 class="text-muted">INVOICE NUMBER</h6>

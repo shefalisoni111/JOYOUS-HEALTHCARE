@@ -23,7 +23,7 @@ export default defineConfig({
     },
     host: true,
     strictPort: true,
-    allowedHosts: [".recpalapp.co.uk"],
+    // allowedHosts: [".recpalapp.co.uk"],
   },
   define: {
     VITE_API_URL: JSON.stringify(API_URL),

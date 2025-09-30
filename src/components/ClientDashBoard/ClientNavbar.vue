@@ -9,18 +9,20 @@
     </button>
     <!-- Sidebar -->
     <nav id="sidebar">
-      <aside :class="['sidebar', { show: isSidebarVisible }]" class="sidebar">
+      <aside
+        :class="['sidebar', { show: isSidebarVisible }]"
+        class="sidebar scrollable-sidebar"
+      >
         <div class="sidebar-header">
           <a
             class="navbar-brand ps-3"
             href="/client/clientDashboard"
             style="outline: none; box-shadow: none"
             ><img
-                  :src="computedLogo"
+              :src="computedLogo"
               class="img-fluid"
-              alt="RecPal"
-              width="138"
-              height="31"
+              :alt="getCompanyName"
+              style="max-height: 100px; width: auto"
               loading="eager"
           /></a>
           <button
@@ -32,7 +34,7 @@
           </button>
         </div>
         <ul class="list-unstyled components">
-          <li class="nav-item">
+          <li class="nav-item pt-0">
             <router-link
               class="nav-link"
               aria-current="page"
@@ -41,14 +43,14 @@
               <img
                 src="../../assets/Vector.png"
                 class="img-fluid pe-2"
-                alt="RecPal"
+                :alt="getCompanyName"
                 loading="eager"
               />
               Dashboard
             </router-link>
           </li>
 
-          <li class="nav-item">
+          <li class="nav-item pt-0">
             <router-link
               class="nav-link"
               aria-current="page"
@@ -66,7 +68,7 @@
               Bookings
             </router-link>
           </li> -->
-          <li class="nav-item">
+          <li class="nav-item pt-0">
             <router-link
               class="nav-link"
               aria-current="page"
@@ -84,7 +86,7 @@
               Timesheet
             </router-link>
           </li> -->
-          <li class="nav-item">
+          <li class="nav-item pt-0">
             <router-link
               class="nav-link"
               aria-current="page"
@@ -93,7 +95,7 @@
               <i class="bi bi-file-earmark-text"></i> Timesheet
             </router-link>
           </li>
-          <li class="nav-item">
+          <li class="nav-item pt-0">
             <router-link
               class="nav-link"
               aria-current="page"
@@ -102,15 +104,11 @@
               <i class="bi bi-receipt"></i> Invoices
             </router-link>
           </li>
-        </ul>
-        <ul class="navbar-nav m-0 mb-2 mb-lg-0 inline-nav ps-4">
-          <li class="nav-item dropdown mt-2">
+          <li class="nav-item pt-0">
             <router-link
               class="nav-link"
               aria-current="page"
               to="/client/clientDashboard/ClientNotification"
-            
-             
               @click="markAllAsRead"
             >
               <i class="bi bi-bell pe-1"></i>
@@ -121,10 +119,29 @@
               >
                 {{ unread_count }}
               </span>
-          </router-link>
-            <li class="me-4">
-              <hr class="" />
-            </li>
+            </router-link>
+          </li>
+        </ul>
+        <ul class="navbar-nav m-0 mb-2 mb-lg-0 inline-nav ps-4">
+          <li class="nav-item dropdown mt-2">
+            <!-- <router-link
+              class="nav-link"
+              aria-current="page"
+              to="/client/clientDashboard/ClientNotification"
+              @click="markAllAsRead"
+            >
+              <i class="bi bi-bell pe-1"></i>
+              Notification
+              <span
+                v-if="!dropdownOpen && unread_count > 0"
+                class="badge bg-primary badge-number"
+              >
+                {{ unread_count }}
+              </span>
+            </router-link> -->
+
+            <hr class="" />
+
             <ul
               class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications"
               @click.self="dropdownOpen = false"
@@ -136,10 +153,9 @@
                 v-if="notifications.length === 0"
                 class="notification-item p-2 d-flex gap-1 text-danger"
               >
-              <a class="dropdown-item">
-       {{ errorMessageNotification }}
-              </a>
-         
+                <a class="dropdown-item">
+                  {{ errorMessageNotification }}
+                </a>
               </li>
               <li
                 v-for="(notification, index) in notifications"
@@ -188,7 +204,7 @@
                 width="40"
                 loading="eager"
               />
-             &nbsp; {{ getAdminData.client_name }}
+              &nbsp; {{ getAdminData.client_name }}
             </a>
 
             <ul
@@ -215,10 +231,7 @@
               </li>
 
               <li class="cursor-pointer my-1">
-                <a
-                  class="dropdown-item d-flex align-items-center"
-                  href="https://recpal.co.uk/support/"
-                >
+                <a class="dropdown-item d-flex align-items-center" href="#">
                   <i class="bi bi-brightness-low pe-2"></i><span>Support</span>
                 </a>
               </li>
@@ -284,7 +297,7 @@ export default {
   },
   components: { ConfirmationAlert },
   computed: {
-   ...mapGetters(["getAgencyLogo", "getCompanyName"]),
+    ...mapGetters(["getAgencyLogo", "getCompanyName"]),
     computedLogo() {
       return this.getAgencyLogo;
     },
@@ -350,7 +363,7 @@ export default {
     },
   },
   methods: {
-     ...mapActions(["fetchProfileData"]),
+    ...mapActions(["fetchProfileData"]),
     toggleActionMenu(index) {
       this.selectedRow = this.selectedRow === index ? null : index;
     },
@@ -471,15 +484,15 @@ export default {
           html: '<p style="font-size: 25px;">Are you sure want to sign out?</p>',
           imageUrl: this.getAgencyLogo,
           imageWidth: 200,
-          imageAlt: "RecPal",
+
           showCancelButton: true,
-          confirmButtonColor: "#ff5f30",
+          confirmButtonColor: "#52732d",
           cancelButtonColor: "#d33",
           confirmButtonText: "Yes, sign me out!",
           cancelButtonText: "Cancel",
           didOpen: () => {
             const popup = document.querySelector(".swal2-popup");
-            popup.style.border = "4px solid #fc7d4f";
+            popup.style.border = "4px solid #52732d";
           },
         }).then((result) => {
           if (result.isConfirmed) {
@@ -490,7 +503,6 @@ export default {
           }
         });
       }
- 
     },
     async fetchProfileImage() {
       const token = localStorage.getItem("token");
@@ -523,12 +535,21 @@ export default {
       this.clientLink = `/client/clientDashboard/${clientId}`;
     }
 
-         this.fetchProfileData();
+    this.fetchProfileData();
   },
 };
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 .main {
   height: 100vh;
 }
@@ -544,7 +565,22 @@ export default {
   transition: all 0.3s ease;
   z-index: 1000;
 }
+.scrollable-sidebar {
+  max-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
 
+.scrollable-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+.scrollable-sidebar::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 4px;
+}
+.scrollable-sidebar::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}
 #sidebar.active {
   width: 70px;
 }
@@ -564,7 +600,7 @@ ul.dropdown li a:hover,
 .nav-link:hover,
 .nav-link:focus {
   background: #bbd10d78;
-    color: #52732d;
+  color: #52732d;
   width: auto;
 
   border-radius: 10px;

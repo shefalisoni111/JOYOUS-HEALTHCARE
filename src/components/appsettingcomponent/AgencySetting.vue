@@ -13,28 +13,37 @@
       >
         <Navbar :logo-url="filteredLogos?.logo_url" />
       </div>
-      <div class="container-fluid px-5" style="background: rgb(82 74 74 / 6%)">
+      <div
+        class="container-fluid px-5 content-area"
+        style="background: rgb(82 74 74 / 6%)"
+      >
         <div class="col-10 pt-4 pt-3">
           <div class="col-12">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active">
-                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                <a
+                  class="nav-link d-inline fs-4 fw-bolder"
+                  style="color: #000000"
                   >App Settings</a
                 >
               </li>
             </ol>
           </div>
         </div>
-        <div class="row mt-4">
-          <div class="col-2 col-md-2 col-lg-1"><Sidebar /></div>
+        <div class="row mt-4 align-items-stretch">
+          <div class="col-2 col-md-2 col-lg-1 d-flex">
+            <div class="w-100 rounded-3"><Sidebar /></div>
+          </div>
           <div
-            class="col-10 col-md-10 col-lg-3 ps-3 bg-white borderight mb-4"
+            class="col-10 col-md-10 col-lg-3 ps-3 bg-white borderight d-flex"
             style="border-radius: 30px"
           >
             <div class="leftside">
               <div class="heading mb-3 position-relative">
                 <p class="bforeline"></p>
-                <p class="mb-0 text-capitalize fw-bold genSetting">agency Settings</p>
+                <p class="mb-0 text-capitalize fw-bold genSetting">
+                  agency Settings
+                </p>
                 <p class="afterline"></p>
               </div>
               <div>
@@ -62,7 +71,9 @@
                 <div class="pagetitle d-flex justify-content-between">
                   <div class="d-flex align-items-center">
                     <ol class="breadcrumb mb-1 p-3">
-                      <li class="breadcrumb-item active text-capitalize fw-bold">
+                      <li
+                        class="breadcrumb-item active text-capitalize fw-bold"
+                      >
                         agency setting / <span class="clr">profile</span>
                       </li>
                     </ol>
@@ -75,7 +86,9 @@
                 <div class="col-12">
                   <div class="">
                     <div class="col-5">
-                      <div class="d-flex justify-content-between align-items-center px-4">
+                      <div
+                        class="d-flex justify-content-between align-items-center px-4"
+                      >
                         <div class="position-relative">
                           <div>
                             <div v-if="filteredLogo">
@@ -121,7 +134,7 @@
                             <!-- <img
                             src="../../assets/about.png"
                             class="img-fluid pe-2"
-                            alt="RecPal"
+                            :alt="getCompanyName"
                             loading="eager"
                           /> -->
                             About
@@ -141,7 +154,7 @@
                           <img
                             src="../../assets/additioal.png"
                             class="img-fluid pe-2"
-                            alt="RecPal"
+                            :alt="getCompanyName"
                             loading="eager"
                           />
                           Additional
@@ -150,7 +163,6 @@
                         <li class="nav-item" role="presentation">
                           <button
                             class="nav-link"
-                            id="RecPal"
                             data-bs-toggle="tab"
                             data-bs-target="#contact"
                             type="button"
@@ -320,7 +332,10 @@
                               </tbody>
                               <tbody v-else>
                                 <tr>
-                                  <td colspan="6" class="text-center text-danger">
+                                  <td
+                                    colspan="6"
+                                    class="text-center text-danger"
+                                  >
                                     {{ "Data Not Found!" }}
                                   </td>
                                 </tr>
@@ -346,7 +361,6 @@
                           class="tab-pane fade p-3 d-flex"
                           id="contact"
                           role="tabpanel"
-                          aria-labelledby="RecPal"
                         >
                           <div
                             class="col-4 d-flex gap-1 justify-content-between"
@@ -356,9 +370,11 @@
                             <div>
                               <loader :isLoading="isLoading"></loader>
                               <h6>
-                                <span class="ps-1 fs-6 fw-bold text-capitalize">{{
-                                  agencyLogoList.logo_type.replace(/_/g, " ")
-                                }}</span
+                                <span
+                                  class="ps-1 fs-6 fw-bold text-capitalize"
+                                  >{{
+                                    agencyLogoList.logo_type.replace(/_/g, " ")
+                                  }}</span
                                 >&nbsp;
                                 <!-- <span class="text-muted">(dimension 32px * 32px)</span> -->
                               </h6>
@@ -389,7 +405,10 @@
                                       style="display: none"
                                       accept="image/*"
                                       @change="
-                                        previewAgencyLogo($event, agencyLogoList.id)
+                                        previewAgencyLogo(
+                                          $event,
+                                          agencyLogoList.id
+                                        )
                                       "
                                     />
                                     <label
@@ -398,7 +417,10 @@
                                       style="border-radius: 0px"
                                       >Upload
                                       {{
-                                        agencyLogoList.logo_type.replace(/_/g, " ")
+                                        agencyLogoList.logo_type.replace(
+                                          /_/g,
+                                          " "
+                                        )
                                       }}</label
                                     >
                                     <!-- <a
@@ -484,7 +506,9 @@ export default {
       return this.agencyLogoList.find((logo) => logo.id === 2);
     },
     filteredLogos() {
-      return this.agencyLogoList.find((logo) => logo.logo_type === "agency_logo");
+      return this.agencyLogoList.find(
+        (logo) => logo.logo_type === "agency_logo"
+      );
     },
     filteredFavicon() {
       return this.agencyLogoList.find((logo) => logo.logo_type === "favicon");
@@ -563,11 +587,14 @@ export default {
       }
 
       try {
-        const response = await axios.get(`${VITE_API_URL}/merchants/${merchantId}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/merchants/${merchantId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         this.getAgencyData = response.data.data;
       } catch (error) {
         if (error.response) {
@@ -652,6 +679,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 table th,
 .pagetitle {
   margin-bottom: 10px;

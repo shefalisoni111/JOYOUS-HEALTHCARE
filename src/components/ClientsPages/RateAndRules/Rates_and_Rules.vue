@@ -12,7 +12,10 @@
       >
         <Navbar />
       </div>
-      <div class="container-fluid ps-5 pt-5 pb-5">
+      <div
+        class="container-fluid ps-5 pt-5 pb-5 content-area"
+        style="height: 100vh"
+      >
         <div
           class="row pagetitle justify-content-center col-11 col-sm-11 col-md-11 col-lg-11 col-xl-12 col-xxl-12 px-2"
         >
@@ -24,17 +27,15 @@
                     <a
                       class="nav-link d-inline fs-4 fw-bolder"
                       style="color: #000000"
-                      >All Clients</a
+                      >Clients</a
                     >
                     <p>
                       Client / Site /
-                      <router-link
+                      <span
                         class="nav-link d-inline fw-bolder"
                         style="color: #000000"
-                        aria-current="page"
-                        to="/rates_and_rules"
                         >Rated and rules
-                      </router-link>
+                      </span>
                     </p>
                   </li>
                 </ol>
@@ -222,15 +223,15 @@
                               v-model="searchQuery"
                               @input="debounceSearch"
                             />
-                            <span
+                            <!-- <span
                               class="position-absolute top-50 end-0 translate-middle-y pe-3"
                             >
                               <img
                                 src="../../../assets/Search.png"
                                 class="img-fluid pe-2"
-                                alt="RecPal"
+                                :alt="getCompanyName"
                                 loading="eager"
-                            /></span>
+                            /></span> -->
                           </form>
                         </div>
                       </div>
@@ -1521,6 +1522,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 .btn-bg-color {
   background: rgb(82 115 45);
   color: rgb(255, 255, 255);

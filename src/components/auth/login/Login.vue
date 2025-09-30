@@ -14,7 +14,7 @@
             <img
               :src="getAgencyLogo"
               class="img-fluid mb-2 m-auto d-block"
-              alt="RecPal"
+              :alt="getCompanyName"
               width="170"
               loading="eager"
             />
@@ -313,6 +313,15 @@ export default {
 };
 </script>
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 .login,
 .image {
 }

@@ -70,15 +70,23 @@
                     <table class="table table addjobtable">
                       <thead>
                         <tr>
-                          <th scope="col" class="col-2 bg-primary text-white">ID</th>
-                          <th scope="col" class="col-2 bg-primary text-white">Title</th>
+                          <th scope="col" class="col-2 bg-primary text-white">
+                            ID
+                          </th>
+                          <th scope="col" class="col-2 bg-primary text-white">
+                            Title
+                          </th>
                           <!-- <th scope="col" class="col-2 bg-primary text-white">Job</th> -->
-                          <th scope="col" class="col-2 bg-primary text-white">Amount</th>
+                          <th scope="col" class="col-2 bg-primary text-white">
+                            Amount
+                          </th>
 
                           <!--  <th scope="col" class="col-1 bg-primary text-white">
                             Frequency
                           </th> -->
-                          <th scope="col" class="col-1 bg-primary text-white">Action</th>
+                          <th scope="col" class="col-1 bg-primary text-white">
+                            Action
+                          </th>
                         </tr>
                       </thead>
                       <tbody v-if="getCandidateDeduction?.length > 0">
@@ -154,10 +162,14 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+              >20 Records</a
+            >
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+              >50 Records</a
+            >
           </li>
           <li>
             <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
@@ -278,23 +290,29 @@ export default {
         confirmButtonText: "Ok",
       }).then((result) => {
         if (result.isConfirmed) {
-          axios.delete(`${VITE_API_URL}/candidate_deductions/` + id).then((response) => {
-            if (
-              response.data.error &&
-              response.data.error.toLowerCase().includes("could not deleted")
-            ) {
-              Swal.fire({
-                icon: "warning",
-                title: "Warning",
-                text:
-                  response.data.error ||
-                  "Cannot delete Employee Type: This record is associated with candidate employee type records.",
-              });
-            } else {
-              this.fetchCandidateDeductions();
-              Swal.fire("Deleted!", "Employee Type has been deleted.", "success");
-            }
-          });
+          axios
+            .delete(`${VITE_API_URL}/candidate_deductions/` + id)
+            .then((response) => {
+              if (
+                response.data.error &&
+                response.data.error.toLowerCase().includes("could not deleted")
+              ) {
+                Swal.fire({
+                  icon: "warning",
+                  title: "Warning",
+                  text:
+                    response.data.error ||
+                    "Cannot delete Employee Type: This record is associated with candidate employee type records.",
+                });
+              } else {
+                this.fetchCandidateDeductions();
+                Swal.fire(
+                  "Deleted!",
+                  "Employee Type has been deleted.",
+                  "success"
+                );
+              }
+            });
         }
       });
     },
@@ -325,6 +343,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 td i.bi-trash {
   border: 1px solid #9e9e9e;
   padding: 3px 15px;

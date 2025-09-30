@@ -53,7 +53,11 @@
         </table>
       </div>
     </div>
-    <div class="mx-3 mb-2" style="text-align: right" v-if="candidateList?.length >= 10">
+    <div
+      class="mx-3 mb-2"
+      style="text-align: right"
+      v-if="candidateList?.length >= 10"
+    >
       <button
         class="btn btn-sm btn-primary dropdown-toggle"
         type="button"
@@ -65,13 +69,19 @@
       </button>
       <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+            >20 Records</a
+          >
         </li>
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+            >50 Records</a
+          >
         </li>
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+            >100 Records</a
+          >
         </li>
       </ul>
       &nbsp;&nbsp;
@@ -166,6 +176,15 @@ export default {
 };
 </script>
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 #main {
   transition: all 0.3s;
   height: 100vh;

@@ -12,7 +12,7 @@
       >
         <Navbar />
       </div>
-      <div class="container-fluid ps-5 pt-3">
+      <div class="container-fluid ps-5 pt-3 content-area" style="height: 100vh">
         <div class="row pagetitle d-flex justify-content-between px-2">
           <div class="py-3">
             <ol class="breadcrumb mb-1">
@@ -24,12 +24,10 @@
                 >
                 <p>
                   Weekly Timesheet / Custom Timesheet /
-                  <router-link
+                  <span
                     class="nav-link d-inline fw-bolder"
                     style="color: #000000"
-                    aria-current="page"
-                    to="/timesheet/signed"
-                    >Signed Timesheet</router-link
+                    >Signed Timesheet</span
                   >
                 </p>
               </li>
@@ -79,15 +77,15 @@
                         v-model="searchQuery"
                         @input="debounceSearch"
                       />
-                      <span
+                      <!-- <span
                         class="position-absolute top-50 end-0 translate-middle-y pe-3"
                       >
                         <img
                           src="../../assets/Search.png"
                           class="img-fluid pe-2"
-                          alt="RecPal"
+                          :alt="getCompanyName"
                           loading="eager"
-                      /></span>
+                      /></span> -->
                     </form>
                   </div>
                 </div>
@@ -996,6 +994,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 #main {
   transition: all 0.3s;
 

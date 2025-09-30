@@ -11,12 +11,12 @@
       >
         <Navbar />
       </div>
-      <div class="container-fluid">
+      <div class="container-fluid content-area">
         <div class="row pagetitle mt-4 mx-2" style="margin-top: 31px">
           <div class="d-flex justify-content-between">
             <div class="">
-              <h3 class="fs-4 fw-bolder" style="color: #000000">
-                Welcome to {{ getCompanyName }}
+              <h3 class="fs-4" style="color: #000000">
+                Welcome to <span class="fw-bolder">{{ getCompanyName }}</span>
               </h3>
             </div>
             <!-- End Page Title -->
@@ -686,6 +686,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 .pagetitle {
   margin-bottom: 10px;
 

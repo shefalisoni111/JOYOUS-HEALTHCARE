@@ -13,7 +13,10 @@
           <Navbar />
         </div>
 
-        <div class="container-fluid pt-3 px-5 flex-grow-1 overflow-auto">
+        <div
+          class="container-fluid pt-3 px-5 flex-grow-1 overflow-auto content-area"
+          style="height: 100vh"
+        >
           <div class="row">
             <div class="p-0">
               <div class="py-3">
@@ -363,6 +366,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   background-color: #f9944b;

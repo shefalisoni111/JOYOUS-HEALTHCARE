@@ -10,7 +10,7 @@
       >
         <Navbar />
       </div>
-      <div class="container-fluid px-5 pt-4">
+      <div class="container-fluid px-5 pt-4 content-area" style="height: 100vh">
         <div class="p-0">
           <div class="">
             <ol class="breadcrumb my-2">
@@ -27,10 +27,11 @@
         <div class="support-form my-5">
           <div class="header text-center p-4 rounded-top text-white">
             <h1 class="fw-bold">Need Help?</h1>
-            <p class="lead fs-4">RecPal Support</p>
+            <p class="lead fs-4">{{ getCompanyName }} Support</p>
             <p>
-              Use the form below to raise a ticket with the RecPal Support
-              team.<br />We aim to resolve all tickets in under 24 hours.
+              Use the form below to raise a ticket with the
+              {{ getCompanyName }} Support team.<br />We aim to resolve all
+              tickets in under 24 hours.
             </p>
           </div>
           <div class="col-12 bg-white rounded-bottom shadow d-flex py-3">
@@ -152,6 +153,7 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 import Navbar from "../components/Navbar.vue";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -168,6 +170,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(["getCompanyName"]),
     isFormValid() {
       return (
         this.form.name.trim() !== "" &&
@@ -262,6 +265,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 .support-form .header {
   background-color: #52732d;
 }
@@ -269,5 +281,9 @@ export default {
   border: 2px dashed #52732d;
   background: #fff8f3;
   cursor: pointer;
+}
+
+#main {
+  background-color: #f9f9f9;
 }
 </style>

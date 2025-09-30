@@ -11,7 +11,7 @@
                 <img
                   src="../logo.png"
                   class="img-fluid mb-2"
-                  alt="RecPal"
+                  :alt="getCompanyName"
                   width="150"
                   loading="eager"
                 />
@@ -179,6 +179,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 .login,
 .image {
   min-height: 100vh;

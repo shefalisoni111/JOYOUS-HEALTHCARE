@@ -13,7 +13,7 @@
       >
         <Navbar />
       </div>
-      <div class="container-fluid ps-5 pt-3">
+      <div class="container-fluid ps-5 pt-3 content-area" style="height: 100vh">
         <div class="row pagetitle d-flex justify-content-between px-2">
           <div class="py-3">
             <ol class="breadcrumb my-2">
@@ -232,6 +232,15 @@ export default {
   transition: all 0.3s;
 
   background-color: #f9f9f9;
+}
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
 }
 .main-content {
   transition: all 0.3s;

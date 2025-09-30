@@ -16,20 +16,29 @@
           </button>
         </div>
         <div v-if="paginateCandidates?.length > 0" class="d-flex">
-          <div class="card mt-2 mx-3" v-for="data in paginateCandidates" :key="data.id">
-            <div class="card-body d-flex align-items-start justify-content-evenly">
+          <div
+            class="card mt-2 mx-3"
+            v-for="data in paginateCandidates"
+            :key="data.id"
+          >
+            <div
+              class="card-body d-flex align-items-start justify-content-evenly"
+            >
               <div class="card-text d-flex gap-3">
                 <div class="mt-3">
                   <router-link
                     :to="{ name: 'SingleSiteprofile', params: { id: data.id } }"
                   >
-                    <span class="rounded-circle p-3 text-decoration-none text-black">{{
-                      getFirstCharAndNumber(data.site_name)
-                    }}</span></router-link
+                    <span
+                      class="rounded-circle p-3 text-decoration-none text-black"
+                      >{{ getFirstCharAndNumber(data.site_name) }}</span
+                    ></router-link
                   >
                 </div>
                 <div class="">
-                  <span class="fw-bold text-capitalize">{{ data.site_name }}</span
+                  <span class="fw-bold text-capitalize">{{
+                    data.site_name
+                  }}</span
                   ><br />
                   <span>{{ data.email }}</span
                   ><br />
@@ -180,6 +189,15 @@ export default {
 };
 </script>
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 .card .rounded-circle {
   border: 1px solid #000;
   padding: 19px 12px;

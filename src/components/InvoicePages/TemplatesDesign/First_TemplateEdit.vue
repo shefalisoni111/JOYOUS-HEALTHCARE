@@ -57,11 +57,7 @@
                         {{ getClientInvoiceDetail?.merchant_data?.mer_address }}
                       </p>
                     </div>
-                    <div class="col-4">
-                      <!-- <div class="m-auto text-center mt-3">
-                      <img src="../recpal_favicon.png" class="img-fluid" width="20%" />
-                    </div> -->
-                    </div>
+                    <div class="col-4"></div>
                     <div class="col-4">
                       <div class="float-end">
                         <h6 class="text-muted">INVOICE NUMBER</h6>
@@ -537,6 +533,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 #main {
   transition: all 0.3s;
   height: 100vh;

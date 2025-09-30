@@ -253,6 +253,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 ul.list-unstyled li {
   border: 1px solid #dad2d2;
   padding: 10px;

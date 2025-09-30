@@ -312,7 +312,7 @@
     </div>
     <div
       class="mx-3 d-flex justify-content-between"
-      v-if="getClientDetail?.length"
+      v-if="getClientDetail?.length >= 10"
     >
       <div class="d-flex">
         <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
@@ -953,6 +953,15 @@ export default {
 };
 </script>
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 #main {
   transition: all 0.3s;
 }

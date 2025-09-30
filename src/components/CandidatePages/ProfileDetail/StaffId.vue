@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-3">
         <div class="card border-success mb-3">
-          <div class="card-header">RECPAL DEMO</div>
+          <div class="card-header">{{ getCompanyName }} DEMO</div>
           <div class="card-body">
             <div class="col-12">
               <table class="table table-sm">
@@ -39,7 +39,7 @@
       </div>
       <div class="col-md-3">
         <div class="card border-success mb-3">
-          <div class="card-header">RECPAL DEMO</div>
+          <div class="card-header">{{ getCompanyName }} DEMO</div>
           <div class="card-body">
             <div class="col-12">
               <table class="table table-sm">
@@ -75,7 +75,7 @@
       </div>
       <div class="col-md-3">
         <div class="card border-success mb-3">
-          <div class="card-header">RECPAL DEMO</div>
+          <div class="card-header">{{ getCompanyName }} DEMO</div>
           <div class="card-body">
             <div class="col-12">
               <table class="table table-sm">
@@ -111,7 +111,7 @@
       </div>
       <div class="col-md-3">
         <div class="card border-success mb-3">
-          <div class="card-header">RECPAL DEMO</div>
+          <div class="card-header">{{ getCompanyName }} DEMO</div>
           <div class="card-body">
             <div class="col-12">
               <table class="table table-sm">
@@ -151,6 +151,7 @@
 
 <script>
 import axios from "axios";
+import { mapGetters } from "vuex";
 
 export default {
   name: "StaffId",
@@ -161,6 +162,9 @@ export default {
   },
 
   components: {},
+  computed: {
+    ...mapGetters(["getCompanyName"]),
+  },
   methods: {
     toggleActionMenu(index) {
       this.selectedRow = this.selectedRow === index ? null : index;
@@ -198,6 +202,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 table tr td {
   text-transform: capitalize;
 }

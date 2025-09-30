@@ -5,40 +5,40 @@
         <div>
           <Navbar />
         </div>
-
-        <div class="pt-3 px-5 flex-grow-1 overflow-auto">
-          <div class="row">
-            <div class="p-0">
-              <div class="py-3">
-                <ol class="breadcrumb my-2">
-                  <li class="breadcrumb-item active fs-6">
-                    <a
-                      class="nav-link d-inline fs-4 fw-bolder"
-                      style="color: #000000; background: none !important"
-                      >Message</a
-                    >
-                  </li>
-                </ol>
+        <div class="container-fluid content-area">
+          <div class="pt-3 px-5 flex-grow-1 overflow-auto">
+            <div class="row">
+              <div class="p-0">
+                <div class="py-3">
+                  <ol class="breadcrumb my-2">
+                    <li class="breadcrumb-item active fs-6">
+                      <a
+                        class="nav-link d-inline fs-4 fw-bolder"
+                        style="color: #000000; background: none !important"
+                        >Message</a
+                      >
+                    </li>
+                  </ol>
+                </div>
               </div>
-            </div>
 
-            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-              <li class="nav-item" role="presentation">
-                <button
-                  class="nav-link active"
-                  id="pills-chat-tab"
-                  data-bs-toggle="pill"
-                  data-bs-target="#pills-chat"
-                  type="button"
-                  role="tab"
-                  aria-controls="pills-chat"
-                  aria-selected="true"
-                >
-                  All
-                </button>
-              </li>
-              &nbsp;&nbsp;
-              <!-- <li class="nav-item" role="presentation">
+              <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link active"
+                    id="pills-chat-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#pills-chat"
+                    type="button"
+                    role="tab"
+                    aria-controls="pills-chat"
+                    aria-selected="true"
+                  >
+                    All
+                  </button>
+                </li>
+                &nbsp;&nbsp;
+                <!-- <li class="nav-item" role="presentation">
                 <button
                   class="nav-link position-relative"
                   id="pills-unread-tab"
@@ -52,38 +52,38 @@
                   Unread
                 </button>
               </li> -->
-            </ul>
-            <div class="tab-content pt-2 ps-0" id="pills-tabContent ">
-              <div
-                class="tab-pane fade show active d-flex gap-4"
-                id="pills-chat"
-                role="tabpanel"
-                aria-labelledby="pills-chat-tab"
-              >
+              </ul>
+              <div class="tab-content pt-2 ps-0" id="pills-tabContent ">
                 <div
-                  class="col-3"
-                  style="
-                    background: #fff;
-                    padding: 30px;
-                    border-radius: 10px;
-                    overflow-y: auto;
-                    height: 750px;
-                  "
+                  class="tab-pane fade show active d-flex gap-4"
+                  id="pills-chat"
+                  role="tabpanel"
+                  aria-labelledby="pills-chat-tab"
                 >
-                  <div>
-                    <form
-                      @submit.prevent="search"
-                      class="d-flex align-items-center position-relative"
-                    >
-                      <input
-                        class="form-control form-control-lg mr-sm-2"
-                        type="search"
-                        placeholder="Search..."
-                        aria-label="Search"
-                        v-model="searchQuery"
-                        @input="debounceSearch"
-                      />
-                      <span
+                  <div
+                    class="col-3"
+                    style="
+                      background: #fff;
+                      padding: 30px;
+                      border-radius: 10px;
+                      overflow-y: auto;
+                      height: 750px;
+                    "
+                  >
+                    <div>
+                      <form
+                        @submit.prevent="search"
+                        class="d-flex align-items-center position-relative"
+                      >
+                        <input
+                          class="form-control form-control-lg mr-sm-2"
+                          type="search"
+                          placeholder="Search..."
+                          aria-label="Search"
+                          v-model="searchQuery"
+                          @input="debounceSearch"
+                        />
+                        <!-- <span
                         class="position-absolute"
                         style="
                           right: 10px;
@@ -96,247 +96,258 @@
                           class="img-fluid pe-2"
                           alt="Search"
                         />
-                      </span>
-                    </form>
-                    <ul class="ps-0 list-ul">
-                      <li
-                        class="notification-item p-2 d-flex gap-1 divide_sec cursor-pointer ps-3 mt-3"
-                        :class="{
-                          'active-chat': selectedCandidate?.id === candidate.id,
-                        }"
-                        v-for="candidate in getCandidatesData"
-                        :key="candidate.id"
-                        style=""
-                        @click="openChat(candidate)"
-                      >
-                        <div>
-                          <img
-                            v-if="candidate.profile_photo"
-                            :src="getProfilePhotoUrl(candidate.profile_photo)"
-                            class="img-fluid"
-                            alt="Profile Photo"
-                            loading="eager"
-                            style="
-                              border-radius: 50%;
-                              width: 50px;
-                              height: 50px;
-                            "
-                          />
-                          <div
-                            class="else_profile"
-                            v-else
-                            v-html="getProfilePhotoUrl(candidate.profile_photo)"
-                            style="
-                              border: 1px solid orange;
-                              border-radius: 50%;
-                              padding: 6px 13px;
-                              font-size: x-large;
-                            "
-                          ></div>
-                        </div>
-                        <div class="ms-1">
-                          <h6 class="text-capitalize chat-staff mb-0 mt-1">
-                            {{ candidate.first_name }} {{ candidate.last_name }}
-                          </h6>
+                      </span> -->
+                      </form>
+                      <ul class="ps-0 list-ul">
+                        <li
+                          class="notification-item p-2 d-flex gap-1 divide_sec cursor-pointer ps-3 mt-3"
+                          :class="{
+                            'active-chat':
+                              selectedCandidate?.id === candidate.id,
+                          }"
+                          v-for="candidate in getCandidatesData"
+                          :key="candidate.id"
+                          style=""
+                          @click="openChat(candidate)"
+                        >
+                          <div>
+                            <img
+                              v-if="candidate.profile_photo"
+                              :src="getProfilePhotoUrl(candidate.profile_photo)"
+                              class="img-fluid"
+                              alt="Profile Photo"
+                              loading="eager"
+                              style="
+                                border-radius: 50%;
+                                width: 50px;
+                                height: 50px;
+                              "
+                            />
+                            <div
+                              class="else_profile"
+                              v-else
+                              v-html="
+                                getProfilePhotoUrl(candidate.profile_photo)
+                              "
+                              style="
+                                border: 1px solid orange;
+                                border-radius: 50%;
+                                padding: 6px 13px;
+                                font-size: x-large;
+                              "
+                            ></div>
+                          </div>
+                          <div class="ms-1">
+                            <h6 class="text-capitalize chat-staff mb-0 mt-1">
+                              {{ candidate.first_name }}
+                              {{ candidate.last_name }}
+                            </h6>
 
-                          <span class="text-capitalize chatTextThemeColor">{{
-                            candidate.possition
-                          }}</span>
-                        </div>
-                        <hr class="" />
-                      </li>
-                    </ul>
+                            <span class="text-capitalize chatTextThemeColor">{{
+                              candidate.possition
+                            }}</span>
+                          </div>
+                          <hr class="" />
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-                </div>
-                <div class="col-9" style="border-radius: 15px">
-                  <loader
-                    :isLoading="isLoading"
-                    style=""
-                    class="text-center m-auto"
-                  ></loader>
-                  <div v-if="showChatBox" class="chat-box mt-1">
-                    <div class="chat-container">
-                      <div class="chat-header">
-                        <div class="divide_sec d-flex">
-                          <img
-                            v-if="
-                              selectedCandidate &&
-                              selectedCandidate.profile_photo
-                            "
-                            :src="
-                              getProfilePhotoUrl(
+                  <div class="col-9" style="border-radius: 15px">
+                    <loader
+                      :isLoading="isLoading"
+                      style=""
+                      class="text-center m-auto"
+                    ></loader>
+                    <div v-if="showChatBox" class="chat-box mt-1">
+                      <div class="chat-container">
+                        <div class="chat-header">
+                          <div class="divide_sec d-flex">
+                            <img
+                              v-if="
+                                selectedCandidate &&
                                 selectedCandidate.profile_photo
-                              )
-                            "
-                            class="img-fluid"
-                            alt="Profile Photo"
-                            loading="eager"
-                            style="
-                              border-radius: 50%;
-                              width: 52px;
-                              height: 52px;
-                              border: 2px solid orange;
-                            "
-                          />
-                          <div
-                            class="else_profile"
-                            v-else
-                            v-html="
-                              getProfilePhotoUrl(
-                                selectedCandidate
-                                  ? selectedCandidate.profile_photo
-                                  : ''
-                              )
-                            "
-                            style="
-                              border: 1px solid orange;
-                              border-radius: 50%;
-                              padding: 6px 14px;
-                              font-size: xx-large;
+                              "
+                              :src="
+                                getProfilePhotoUrl(
+                                  selectedCandidate.profile_photo
+                                )
+                              "
+                              class="img-fluid"
+                              alt="Profile Photo"
+                              loading="eager"
+                              style="
+                                border-radius: 50%;
+                                width: 52px;
+                                height: 52px;
+                                border: 2px solid orange;
+                              "
+                            />
+                            <div
+                              class="else_profile"
+                              v-else
+                              v-html="
+                                getProfilePhotoUrl(
+                                  selectedCandidate
+                                    ? selectedCandidate.profile_photo
+                                    : ''
+                                )
+                              "
+                              style="
+                                border: 1px solid orange;
+                                border-radius: 50%;
+                                padding: 6px 14px;
+                                font-size: xx-large;
 
-                              display: flex;
-                              align-items: center;
-                            "
-                          ></div>
-                          <h5 class="mb-0 text-capitalize ms-3 mt-1">
-                            {{ selectedCandidate?.first_name || "" }}
-                            {{ selectedCandidate?.last_name || "" }}
-                            <p class="fs-6 text-wrap mt-1 chatTextThemeColor">
-                              {{ selectedCandidate?.possition }}
-                            </p>
-                          </h5>
-                        </div>
+                                display: flex;
+                                align-items: center;
+                              "
+                            ></div>
+                            <h5 class="mb-0 text-capitalize ms-3 mt-1">
+                              {{ selectedCandidate?.first_name || "" }}
+                              {{ selectedCandidate?.last_name || "" }}
+                              <p class="fs-6 text-wrap mt-1 chatTextThemeColor">
+                                {{ selectedCandidate?.possition }}
+                              </p>
+                            </h5>
+                          </div>
 
-                        <!-- <button class="btn btn-danger btn-sm" @click="closeChatBox">
+                          <!-- <button class="btn btn-danger btn-sm" @click="closeChatBox">
                           <i class="bi bi-x-lg"></i>
                         </button> -->
-                      </div>
+                        </div>
 
+                        <div
+                          class="chat-messages"
+                          ref="chatMessages"
+                          @scroll="handleScroll"
+                        >
+                          <div
+                            v-if="selectedCandidateMessages?.length > 0"
+                            v-for="message in selectedCandidateMessages"
+                            :key="message.id"
+                            :class="{
+                              'chat-message-left':
+                                message.sender?.type === 'Candidate',
+                              'chat-message-right':
+                                message.sender?.type === 'Merchant',
+                            }"
+                          >
+                            <div
+                              v-if="
+                                message.sender?.name &&
+                                message?.is_read === true
+                              "
+                            >
+                              <strong>{{
+                                message.sender?.name || "Unknown Receiver"
+                              }}</strong>
+                              <div>
+                                {{ message.content || "No content" }}
+                              </div>
+                            </div>
+
+                            <div
+                              v-if="
+                                message.sender?.name &&
+                                message?.is_read === false
+                              "
+                            >
+                              <!--gh <strong>{{ message.sender?.name === message.sender?.name ? 'You' : message.sender?.name || 'Unknown Sender' }}</strong> -->
+                              <strong>
+                                {{
+                                  message.sender?.type === "Merchant" &&
+                                  message.sender?.name
+                                    ? "You"
+                                    : message.sender?.name || "Unknown Sender"
+                                }}
+                              </strong>
+                              <div>
+                                {{ message.content || "No content" }}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div
+                            v-else-if="
+                              selectedCandidateMessages?.length === 0 &&
+                              !isLoading
+                            "
+                          >
+                            <div class="text-danger text-center">
+                              No Chat Found!
+                            </div>
+                          </div>
+
+                          <div
+                            v-else-if="
+                              selectedCandidateMessages?.length === 0 &&
+                              isLoading
+                            "
+                          >
+                            <div
+                              class="spinner-border d-block m-auto"
+                              role="status"
+                            >
+                              <span class="visually-hidden">Loading...</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      v-if="showChatBox"
+                      class="px-5"
+                      style="
+                        background: #fff;
+                        border-bottom-left-radius: 15px;
+                        border-bottom-right-radius: 15px;
+                      "
+                    >
                       <div
-                        class="chat-messages"
-                        ref="chatMessages"
-                        @scroll="handleScroll"
+                        class="chat-input"
+                        style="border-top: 1px solid #ddd"
                       >
-                        <div
-                          v-if="selectedCandidateMessages?.length > 0"
-                          v-for="message in selectedCandidateMessages"
-                          :key="message.id"
-                          :class="{
-                            'chat-message-left':
-                              message.sender?.type === 'Candidate',
-                            'chat-message-right':
-                              message.sender?.type === 'Merchant',
-                          }"
-                        >
-                          <div
-                            v-if="
-                              message.sender?.name && message?.is_read === true
-                            "
-                          >
-                            <strong>{{
-                              message.sender?.name || "Unknown Receiver"
-                            }}</strong>
-                            <div>
-                              {{ message.content || "No content" }}
-                            </div>
-                          </div>
-
-                          <div
-                            v-if="
-                              message.sender?.name && message?.is_read === false
-                            "
-                          >
-                            <!--gh <strong>{{ message.sender?.name === message.sender?.name ? 'You' : message.sender?.name || 'Unknown Sender' }}</strong> -->
-                            <strong>
-                              {{
-                                message.sender?.type === "Merchant" &&
-                                message.sender?.name
-                                  ? "You"
-                                  : message.sender?.name || "Unknown Sender"
-                              }}
-                            </strong>
-                            <div>
-                              {{ message.content || "No content" }}
-                            </div>
-                          </div>
-                        </div>
-
-                        <div
-                          v-else-if="
-                            selectedCandidateMessages?.length === 0 &&
-                            !isLoading
-                          "
-                        >
-                          <div class="text-danger text-center">
-                            No Chat Found!
-                          </div>
-                        </div>
-
-                        <div
-                          v-else-if="
-                            selectedCandidateMessages?.length === 0 && isLoading
-                          "
-                        >
-                          <div
-                            class="spinner-border d-block m-auto"
-                            role="status"
-                          >
-                            <span class="visually-hidden">Loading...</span>
-                          </div>
-                        </div>
+                        <input
+                          ref="fileInput"
+                          v-model="newMessage"
+                          type="text"
+                          class="form-control"
+                          placeholder="Write message..."
+                          rows="3"
+                          style="padding-bottom: 45px; border: none"
+                          @keydown.enter="sendMessage"
+                        />
                       </div>
-                    </div>
-                  </div>
-                  <div
-                    v-if="showChatBox"
-                    class="px-5"
-                    style="
-                      background: #fff;
-                      border-bottom-left-radius: 15px;
-                      border-bottom-right-radius: 15px;
-                    "
-                  >
-                    <div class="chat-input" style="border-top: 1px solid #ddd">
-                      <input
-                        ref="fileInput"
-                        v-model="newMessage"
-                        type="text"
-                        class="form-control"
-                        placeholder="Write message..."
-                        rows="3"
-                        style="padding-bottom: 45px; border: none"
-                        @keydown.enter="sendMessage"
-                      />
-                    </div>
-                    <div class="px-3 pb-2 d-flex justify-content-end">
-                      <!-- <button
+                      <div class="px-3 pb-2 d-flex justify-content-end">
+                        <!-- <button
                         class="btn btn-outline-secondary"
                         type="button"
                         @click="handleClick"
                       >
                         <i class="bi bi-paperclip"></i>
                       </button> -->
-                      <button
-                        @click="sendMessage"
-                        :disabled="!newMessage.trim() || sending"
-                        class="btn btn-primary flex-end"
-                      >
-                        Send
-                        <i
-                          class="bi bi-send-fill ms-1"
-                          style="font-size: 11px"
-                        ></i>
-                      </button>
+                        <button
+                          @click="sendMessage"
+                          :disabled="!newMessage.trim() || sending"
+                          class="btn btn-primary flex-end"
+                        >
+                          Send
+                          <i
+                            class="bi bi-send-fill ms-1"
+                            style="font-size: 11px"
+                          ></i>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
+                <div
+                  class="tab-pane fade"
+                  id="pills-unread"
+                  role="tabpanel"
+                  aria-labelledby="pills-unread-tab"
+                ></div>
               </div>
-              <div
-                class="tab-pane fade"
-                id="pills-unread"
-                role="tabpanel"
-                aria-labelledby="pills-unread-tab"
-              ></div>
             </div>
           </div>
         </div>
@@ -731,7 +742,7 @@ export default {
           html: '<p style="font-size: 25px;">Are you sure want to sign out?</p>',
           imageUrl: logo,
           imageWidth: 200,
-          imageAlt: "RecPal",
+
           showCancelButton: true,
           confirmButtonColor: "#ff5f30",
           cancelButtonColor: "#d33",
@@ -859,13 +870,21 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   background-color: #f9944b;
   color: #fff;
   padding: 6px 15px;
-  border-radius: 5px;
 }
 .nav-pills .nav-link {
   color: #000;
@@ -898,11 +917,6 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-.dropdown-item:hover,
-.dropdown-item:focus {
-  background-color: #f6851d !important;
-  color: #fff !important;
 }
 
 .message {

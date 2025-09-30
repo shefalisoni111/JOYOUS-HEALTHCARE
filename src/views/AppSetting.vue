@@ -8,7 +8,7 @@
 
       <!-- Main content wrapper -->
       <div
-        class="flex-grow-1 container-fluid px-4 py-4"
+        class="flex-grow-1 container-fluid px-4 py-4 content-area"
         style="background: rgb(82 74 74 / 6%)"
       >
         <!-- Breadcrumb -->
@@ -16,51 +16,56 @@
           <div class="col-12">
             <ol class="breadcrumb mb-1 mt-2">
               <li class="breadcrumb-item active">
-                <a class="nav-link d-inline fs-4 fw-bolder text-dark">App Settings</a>
+                <a class="nav-link d-inline fs-4 fw-bolder text-dark"
+                  >App Settings</a
+                >
               </li>
             </ol>
           </div>
         </div>
 
         <!-- Main content row -->
-        <div class="row mt-4">
+        <div class="row mt-4 align-items-stretch">
           <!-- Left Sidebar Panel -->
 
-          <div class="col-2 col-md-2 col-lg-1"><Sidebar /></div>
-          <div class="col-10 col-md-10 col-lg-3 mb-4 ps-0">
-            <div class="bg-white p-3" style="border-radius: 30px">
+          <div class="col-2 col-md-2 col-lg-1 d-flex">
+            <div class="w-100 rounded-3">
+              <Sidebar />
+            </div>
+          </div>
+          <div class="col-10 col-md-10 col-lg-3 ps-0 d-flex">
+            <div class="w-100 bg-white p-3" style="border-radius: 30px">
               <!-- General Settings -->
               <div class="heading mb-3 position-relative">
                 <p class="bforeline"></p>
-                <p class="mb-0 fw-bold text-capitalize genSetting">General Settings</p>
+                <p class="mb-0 fw-bold text-capitalize genSetting">
+                  General Settings
+                </p>
                 <p class="afterline"></p>
               </div>
 
               <!-- Settings List -->
               <ul class="list-unstyled generalsetting">
                 <li class="list-items d-flex mb-3">
-                  <router-link to="/addjobdetail" class="text-decoration-none d-flex">
+                  <router-link
+                    to="/addjobdetail"
+                    class="text-decoration-none d-flex"
+                  >
                     <i class="bi bi-suitcase-lg rounded-circle"></i>
                     <div class="job ms-2">
                       <h6 class="mb-0 text-capitalize">jobs</h6>
-                      <p class="mb-0 text-capitalize">Add jobs, positions & roles</p>
+                      <p class="mb-0 text-capitalize">
+                        Add jobs, positions & roles
+                      </p>
                     </div>
                   </router-link>
                 </li>
-                <!-- <li class="list-items d-flex mt-3">
-                    <router-link
-                      to="/staff-status"
-                      class="text-decoration-none"
-                    >
-                      <i class="bi bi-check-lg rounded-circle"></i>
-                      <div class="job">
-                        <h6 class="mb-0 text-capitalize">Staff status</h6>
-                        <p class="text-capitalize mb-0">view & modify</p>
-                      </div>
-                    </router-link>
-                  </li> -->
+
                 <li class="list-items d-flex mt-3">
-                  <router-link to="/employmenttypedetail" class="text-decoration-none">
+                  <router-link
+                    to="/employmenttypedetail"
+                    class="text-decoration-none"
+                  >
                     <i class="bi bi-person-square rounded-circle"></i>
                     <div class="job">
                       <h6 class="mb-0 text-capitalize">employment types</h6>
@@ -78,7 +83,10 @@
                   </router-link>
                 </li>
                 <li class="list-items d-flex mt-3">
-                  <router-link to="/holidaycalender" class="text-decoration-none">
+                  <router-link
+                    to="/holidaycalender"
+                    class="text-decoration-none"
+                  >
                     <i class="bi bi-calendar2-range-fill rounded-circle"></i>
                     <div class="job">
                       <h6 class="mb-0 text-capitalize">Holiday Calendar</h6>
@@ -87,7 +95,10 @@
                   </router-link>
                 </li>
                 <li class="list-items d-flex mt-3">
-                  <router-link to="/staff-deduction" class="text-decoration-none">
+                  <router-link
+                    to="/staff-deduction"
+                    class="text-decoration-none"
+                  >
                     <i class="bi bi-credit-card rounded-circle"></i>
                     <div class="job">
                       <h6 class="mb-0 text-capitalize">Staff Deduction</h6>
@@ -95,34 +106,7 @@
                     </div>
                   </router-link>
                 </li>
-                <!-- <li class="list-items d-flex mt-3">
-                    <i class="bi bi-person-vcard rounded-circle"></i>
-                    <router-link
-                      to="/staff-profiles"
-                      class="text-decoration-none"
-                    >
-                      <div class="job">
-                        <h6 class="mb-0 text-capitalize">Staff profile</h6>
-                        <p class="text-capitalize mb-0">Add mandatory fields</p>
-                      </div>
-                    </router-link>
-                  </li>-->
-                <!-- <li class="list-items d-flex mt-3">
-                    <i class="bi bi-card-list rounded-circle"></i>
-                    <router-link
-                      to="/staff-detail-field"
-                      class="text-decoration-none"
-                    >
-                      <div class="job">
-                        <h6 class="mb-0 text-capitalize">
-                          Staff Detail Section Field
-                        </h6>
-                        <p class="text-capitalize mb-0">
-                          Add Staff Detail Section Field
-                        </p>
-                      </div>
-                    </router-link>
-                  </li> -->
+
                 <div class="heading my-3 position-relative px-sm-2">
                   <p class="bforeline"></p>
                   <p class="mb-0 text-capitalize fw-bold docSetting ms-1">
@@ -132,10 +116,17 @@
                 </div>
                 <li class="list-items d-flex">
                   <i class="bi bi-file-earmark-medical rounded-circle"></i>
-                  <router-link to="/documentcategories" class="text-decoration-none">
+                  <router-link
+                    to="/documentcategories"
+                    class="text-decoration-none"
+                  >
                     <div class="job">
-                      <h6 class="mb-0 text-capitalize ms-1">documents categories</h6>
-                      <p class="text-capitalize mb-0">create & update categories</p>
+                      <h6 class="mb-0 text-capitalize ms-1">
+                        documents categories
+                      </h6>
+                      <p class="text-capitalize mb-0">
+                        create & update categories
+                      </p>
                     </div>
                   </router-link>
                 </li>
@@ -144,8 +135,8 @@
           </div>
 
           <!-- Right Content -->
-          <div class="col-12 col-lg-8" style="height: 100vh">
-            <div class="bg-white p-4">
+          <div class="col-12 col-lg-8 d-flex" style="height: 100vh">
+            <div class="w-100 bg-white p-4">
               <RouterView />
             </div>
           </div>
@@ -185,6 +176,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 .docSetting {
   margin-left: -16px;
   color: #6c757d;

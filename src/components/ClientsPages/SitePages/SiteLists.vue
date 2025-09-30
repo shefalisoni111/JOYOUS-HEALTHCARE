@@ -11,7 +11,7 @@
       >
         <Navbar />
       </div>
-      <div class="container-fluid">
+      <div class="container-fluid content-area" style="height: 100vh">
         <div
           class="row ps-5 pt-5 pb-5 justify-content-center col-10 col-sm-11 col-md-11 col-lg-11 col-xl-12 col-xxl-12"
         >
@@ -31,16 +31,14 @@
                   <a
                     class="nav-link d-inline fs-4 fw-bolder"
                     style="color: #000000"
-                    >All Clients</a
+                    >Clients</a
                   >
                   <p>
                     Client /
-                    <router-link
+                    <span
                       class="nav-link d-inline fw-bolder"
                       style="color: #000000"
-                      aria-current="page"
-                      to="/SiteLists"
-                      >Site</router-link
+                      >Site</span
                     >
                     / Rated and rules
                   </p>
@@ -193,33 +191,7 @@
           </div>
         </div>
       </div>
-      <div
-        class="mx-3"
-        style="text-align: right"
-        v-if="ddddddddResults.length >= 9"
-      >
-        <button class="btn btn-outline-dark btn-sm">
-          {{ totalRecordsOnPage }} Records Per Page
-        </button>
-        &nbsp;&nbsp;
-        <button
-          class="btn btn-sm btn-primary mr-2"
-          :disabled="currentPage === 1"
-          @click="changePage(currentPage - 1)"
-        >
-          <i class="bi bi-chevron-left"></i>
-        </button>
-        &nbsp;&nbsp;
-        <span>{{ currentPage }}</span>
-        &nbsp;&nbsp;
-        <button
-          class="btn btn-sm btn-primary ml-2"
-          :disabled="currentPage === totalPages"
-          @click="changePage(currentPage + 1)"
-        >
-          <i class="bi bi-chevron-right"></i>
-        </button>
-      </div>
+
       <AddSiteNotes />
       <!-- <AddSite @site="handleSiteAdded" ref="addSite" /> -->
       <EditSite
@@ -382,6 +354,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 #main {
   transition: all 0.3s;
 }

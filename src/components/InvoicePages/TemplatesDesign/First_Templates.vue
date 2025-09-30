@@ -5,7 +5,10 @@
         <div class="">
           <div
             class="text-muted bg-white p-3"
-            style="border: 1px solid #f8f8f8; box-shadow: 2px 2px 7px 2px #e7d7d7"
+            style="
+              border: 1px solid #f8f8f8;
+              box-shadow: 2px 2px 7px 2px #e7d7d7;
+            "
           >
             <div class="row">
               <div class="col-12">
@@ -16,20 +19,19 @@
                       {{ getClientInvoiceDetail?.merchant_data?.merc_name }}
                     </h5>
                     <p class="mb-0">
-                      Mob No: {{ getClientInvoiceDetail?.merchant_data?.mer_phone }}
+                      Mob No:
+                      {{ getClientInvoiceDetail?.merchant_data?.mer_phone }}
                     </p>
                     <p class="mb-0">
-                      Email: {{ getClientInvoiceDetail?.merchant_data?.mer_email }}
+                      Email:
+                      {{ getClientInvoiceDetail?.merchant_data?.mer_email }}
                     </p>
                     <p class="mb-0">
-                      Address: {{ getClientInvoiceDetail?.merchant_data?.mer_address }}
+                      Address:
+                      {{ getClientInvoiceDetail?.merchant_data?.mer_address }}
                     </p>
                   </div>
-                  <div class="col-4">
-                    <!-- <div class="m-auto text-center mt-3">
-                      <img src="../recpal_favicon.png" class="img-fluid" width="20%" />
-                    </div> -->
-                  </div>
+                  <div class="col-4"></div>
                   <div class="col-4">
                     <div class="float-end">
                       <h6 class="text-muted">INVOICE NUMBER</h6>
@@ -61,8 +63,12 @@
 
                       <h5 class="fw-bold">{{ getClientInvoiceDetail.site }}</h5>
 
-                      <p class="mb-0">Mob No: {{ siteData?.contact_person_number }}</p>
-                      <p class="mb-0">Email: {{ siteData?.contact_person_email }}</p>
+                      <p class="mb-0">
+                        Mob No: {{ siteData?.contact_person_number }}
+                      </p>
+                      <p class="mb-0">
+                        Email: {{ siteData?.contact_person_email }}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -108,7 +114,9 @@
                   </thead>
                   <tbody>
                     <tr
-                      v-for="(candidate, index) in getClientInvoiceDetail.candidate_data"
+                      v-for="(
+                        candidate, index
+                      ) in getClientInvoiceDetail.candidate_data"
                       :key="index"
                     >
                       <td scope="col">
@@ -118,12 +126,18 @@
                       <td scope="col">{{ candidate.end_time || "N/A" }}</td>
                       <td scope="col">{{ candidate.can_name || "N/A" }}</td>
                       <td scope="col">{{ candidate.job || "N/A" }}</td>
-                      <td scope="col">{{ getClientInvoiceDetail.unit || "N/A" }}</td>
+                      <td scope="col">
+                        {{ getClientInvoiceDetail.unit || "N/A" }}
+                      </td>
                       <td scope="col">
                         {{ candidate.rate ? "£" + candidate.rate : "N/A" }}
                       </td>
                       <td scope="col">
-                        {{ candidate.total_cost ? "£" + candidate.total_cost : "N/A" }}
+                        {{
+                          candidate.total_cost
+                            ? "£" + candidate.total_cost
+                            : "N/A"
+                        }}
                       </td>
                     </tr>
 
@@ -138,7 +152,9 @@
                       </td>
                     </tr>
                     <tr>
-                      <td colspan="7" class="text-start fw-bold">Rate Per Mile</td>
+                      <td colspan="7" class="text-start fw-bold">
+                        Rate Per Mile
+                      </td>
                       <td colspan="2" class="font-weight-bold">
                         {{
                           getClientInvoiceDetail?.rate_per_mile !== undefined
@@ -148,7 +164,9 @@
                       </td>
                     </tr>
                     <tr>
-                      <td colspan="7" class="text-start fw-bold">Grand Total</td>
+                      <td colspan="7" class="text-start fw-bold">
+                        Grand Total
+                      </td>
                       <td colspan="2" class="font-weight-bold">
                         {{
                           getClientInvoiceDetail?.grand_total !== undefined

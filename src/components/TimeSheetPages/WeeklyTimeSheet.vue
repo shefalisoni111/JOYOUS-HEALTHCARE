@@ -13,7 +13,7 @@
         >
           <Navbar />
         </div>
-        <div class="p-3 container-fluid">
+        <div class="p-3 container-fluid content-area" style="height: 100vh">
           <div class="row pagetitle d-flex justify-content-between px-2">
             <div class="py-3">
               <!-- <ol class="breadcrumb mb-1">
@@ -32,12 +32,10 @@
                     >Timesheet</a
                   >
                   <p>
-                    <router-link
+                    <span
                       class="nav-link d-inline fw-bolder"
                       style="color: #000000"
-                      aria-current="page"
-                      to="/timesheet/weekly"
-                      >Weekly Timesheet</router-link
+                      >Weekly Timesheet</span
                     >
                     / Custom Timesheet / Signed Timesheet
                   </p>
@@ -1258,6 +1256,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 #main {
   background-color: #f9f9f9;
 }

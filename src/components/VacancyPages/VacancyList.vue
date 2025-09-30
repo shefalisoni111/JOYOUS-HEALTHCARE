@@ -11,7 +11,7 @@
         >
           <Navbar />
         </div>
-        <div class="container-fluid pt-3 px-5">
+        <div class="container-fluid pt-3 px-5 content-area">
           <div class="row">
             <div
               class="d-flex justify-content-between col-11 col-md-11 col-xl-12 col-xxl-12"
@@ -81,7 +81,7 @@
                       v-model="searchQuery"
                       @input="debounceSearch"
                     />
-                    <span
+                    <!-- <span
                       class="position-absolute"
                       style="right: 10px; top: 50%; transform: translateY(-50%)"
                     >
@@ -90,7 +90,7 @@
                         class="img-fluid pe-2"
                         alt="Search"
                       />
-                    </span>
+                    </span> -->
                   </form>
                 </div>
               </div>
@@ -720,6 +720,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 .withShow {
   width: 5%;
 }

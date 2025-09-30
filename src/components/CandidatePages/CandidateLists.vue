@@ -17,12 +17,10 @@
                   >All Staff</a
                 >
                 <p>
-                  <router-link
+                  <span
                     class="nav-link d-inline fw-bolder"
                     style="color: #000000"
-                    aria-current="page"
-                    to="/staff-list"
-                    >All Staff</router-link
+                    >All Staff</span
                   >
                   / Staff Availability
                 </p>
@@ -79,7 +77,7 @@
               v-model="searchQuery"
               @input="debounceSearch"
             />
-            <span
+            <!-- <span
               class="position-absolute"
               style="right: 10px; top: 50%; transform: translateY(-50%)"
             >
@@ -88,7 +86,7 @@
                 class="img-fluid pe-2"
                 alt="Search"
               />
-            </span>
+            </span> -->
           </form>
         </div>
 
@@ -489,48 +487,6 @@ export default {
       }
     },
 
-    // async searchByStatus() {
-    //   try {
-    //     this.searchResults = [];
-    //     let activatedStatus = null;
-
-    //     if (this.activeTab === 3) {
-    //       activatedStatus = "pending";
-    //     } else if (this.activeTab === 4) {
-    //       activatedStatus = "rejected";
-    //     }
-
-    //     const response = await axiosInstance.get(
-    //       `${VITE_API_URL}/candidate_searching_according_to_status`,
-    //       {
-    //         params: {
-    //           candidate_query: this.searchQuery,
-    //           status: activatedStatus,
-    //           tab: this.activeTabName.toLowerCase(),
-    //         },
-    //       }
-    //     );
-
-    //     if (
-    //       response.status === 200 &&
-    //       response.data.length === 0 &&
-    //       error.response &&
-    //       error.response.data &&
-    //       error.response.data.message
-    //     ) {
-    //       this.errorMessage = "No Staff found for the specified criteria";
-    //     } else {
-    //       this.searchResults = response.data;
-    //       this.errorMessage = "";
-    //     }
-    //   } catch (error) {
-    //     if (error.response && error.response.data && error.response.data.message) {
-    //       this.errorMessage = error.response.data.message;
-    //     } else {
-    //       this.errorMessage = "No Staff found for the specified criteria";
-    //     }
-    //   }
-    // },
     async getActiveCAndidateMethod() {
       const params = {
         status_value: "approved",
@@ -567,13 +523,8 @@ export default {
   },
 
   created() {
-    // this.getActiveCAndidateMethod();
-    // this.getCandidateMethods();
     this.setActiveTabFromRoute();
     this.setActiveTabNameOnLoad();
-    // this.getCandidateMethods();
-    // this.getCandidate();
-    // this.pendingCandidateMethod();
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -600,6 +551,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 #main {
   background-color: #fff;
 }
@@ -641,6 +601,12 @@ a {
 .nav-link:hover,
 .nav-link:focus {
   color: #667085;
+}
+.nav-pills .nav-link {
+  padding-top: 10px;
+  padding-right: 15px;
+  padding-bottom: 11px;
+  padding-left: 15px;
 }
 .nav-pills {
   background: #fff;

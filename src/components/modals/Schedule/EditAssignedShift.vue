@@ -6,29 +6,53 @@
           <div class="col-6">
             <div class="mb-3">
               <label class="form-label">Assign To</label>
-              <input type="text" class="form-control" aria-describedby="emailHelp" />
+              <input
+                type="text"
+                class="form-control"
+                aria-describedby="emailHelp"
+              />
             </div>
             <div class="mb-3">
               <label class="form-label">Site</label>
-              <input type="text" class="form-control" aria-describedby="emailHelp" />
+              <input
+                type="text"
+                class="form-control"
+                aria-describedby="emailHelp"
+              />
             </div>
             <div class="mb-3">
               <label class="form-label">Time</label>
-              <input type="text" class="form-control" aria-describedby="emailHelp" />
+              <input
+                type="text"
+                class="form-control"
+                aria-describedby="emailHelp"
+              />
             </div>
           </div>
           <div class="col-6">
             <div class="mb-3">
               <label class="form-label">Position</label>
-              <input type="text" class="form-control" aria-describedby="emailHelp" />
+              <input
+                type="text"
+                class="form-control"
+                aria-describedby="emailHelp"
+              />
             </div>
             <div class="mb-3">
               <label class="form-label">Date</label>
-              <input type="text" class="form-control" aria-describedby="emailHelp" />
+              <input
+                type="text"
+                class="form-control"
+                aria-describedby="emailHelp"
+              />
             </div>
             <div class="mb-3">
               <label class="form-label">Rate Cards</label>
-              <input type="text" class="form-control" aria-describedby="emailHelp" />
+              <input
+                type="text"
+                class="form-control"
+                aria-describedby="emailHelp"
+              />
             </div>
           </div>
           <div class="mb-3">
@@ -110,6 +134,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 .form-check-input {
   border: 2px solid grey;
 }

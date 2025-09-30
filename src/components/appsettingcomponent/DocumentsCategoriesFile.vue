@@ -448,6 +448,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 .main-doc {
   border: 1px solid rgb(167, 167, 167);
   border-radius: 4px;

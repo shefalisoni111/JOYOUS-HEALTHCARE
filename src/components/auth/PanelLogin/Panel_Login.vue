@@ -52,7 +52,9 @@
             >
               <li>
                 <a class="dropdown-item text-capitalize">
-                  <h5 class="d-block mb-0 fw-bold">{{ getAdminData.first_name }}</h5>
+                  <h5 class="d-block mb-0 fw-bold">
+                    {{ getAdminData.first_name }}
+                  </h5>
                   <span class="d-block">Admin</span>
                 </a>
               </li>
@@ -72,13 +74,15 @@
 
               <li class="cursor-pointer my-1">
                 <a class="dropdown-item d-flex align-items-center">
-                  <i class="bi bi-asterisk pe-2"></i><span>Activity Log</span></a
+                  <i class="bi bi-asterisk pe-2"></i
+                  ><span>Activity Log</span></a
                 >
               </li>
 
               <li class="cursor-pointer my-1">
                 <a class="dropdown-item d-flex align-items-center"
-                  ><i class="bi bi-ban-fill pe-2"></i><span>Recruitment</span></a
+                  ><i class="bi bi-ban-fill pe-2"></i
+                  ><span>Recruitment</span></a
                 >
               </li>
 
@@ -93,15 +97,13 @@
                 <router-link
                   class="dropdown-item text-capitalize d-flex align-items-center"
                   to="/admin/4"
-                  ><i class="bi bi-gear-wide pe-2"></i><span>Personal Settings</span>
+                  ><i class="bi bi-gear-wide pe-2"></i
+                  ><span>Personal Settings</span>
                 </router-link>
               </li>
 
               <li class="cursor-pointer my-1">
-                <a
-                  class="dropdown-item d-flex align-items-center"
-                  href="https://recpal.co.uk/support/"
-                >
+                <a class="dropdown-item d-flex align-items-center" href="#">
                   <i class="bi bi-brightness-low pe-2"></i><span>Support</span>
                 </a>
               </li>
@@ -110,7 +112,10 @@
               </li>
 
               <li class="cursor-pointer">
-                <a class="dropdown-item d-flex align-items-center" v-on:click="confirmed">
+                <a
+                  class="dropdown-item d-flex align-items-center"
+                  v-on:click="confirmed"
+                >
                   <i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp;
                   <span>Sign Out</span>
                 </a>
@@ -131,19 +136,23 @@
             ><img
               src="../logo.png"
               class="img-fluid"
-              alt="RecPal"
+              :alt="getCompanyName"
               width="119"
               loading="eager"
           /></a>
           <div class="card-header">
-            <h5 class="card-title">Recpal Demo1</h5>
-            <p class="card-text">Recpal to Recpal Demol.</p>
+            <h5 class="card-title">{{ getCompanyName }} Demo1</h5>
+            <p class="card-text">
+              {{ getCompanyName }} to {{ getCompanyName }} Demol.
+            </p>
           </div>
 
           <div class="card-body">
             <a href="#" class="btn btn-primary mb-2">As SuperAdmin ></a>
             <a href="#" class="btn btn-primary mb-2 ms-2">As Candidate ></a>
-            <a href="#" class="btn btn-primary mb-2">As Client (Staycase Hospital) ></a>
+            <a href="#" class="btn btn-primary mb-2"
+              >As Client (Staycase Hospital) ></a
+            >
           </div>
         </div>
       </div>
@@ -266,11 +275,14 @@ export default {
       try {
         this.searchResults = [];
 
-        const response = await axiosInstance.get(`${VITE_API_URL}/search_candidate`, {
-          params: {
-            candidate_query: this.searchQuery,
-          },
-        });
+        const response = await axiosInstance.get(
+          `${VITE_API_URL}/search_candidate`,
+          {
+            params: {
+              candidate_query: this.searchQuery,
+            },
+          }
+        );
 
         this.searchResults = response.data.candidate;
       } catch (error) {
@@ -364,6 +376,15 @@ export default {
 </script>
 
 <style scoped>
+.content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+@media (max-width: 1120px) {
+  .content-area {
+    margin-left: 0;
+  }
+}
 .chat-staff {
   cursor: pointer;
 }
@@ -390,12 +411,6 @@ export default {
 
 .cursor-pointer {
   cursor: pointer;
-}
-
-.dropdown-item:hover,
-.dropdown-item:focus {
-  background-color: #f6851d !important;
-  color: #fff !important;
 }
 
 .fixed-navbar {
@@ -431,7 +446,7 @@ ul.navbar-nav li a span.badge {
 .dropdown-item:active {
   color: #fff;
   text-decoration: none;
-  background-color: #f6851d !important;
+  background-color: #bbd10d78 !important;
 }
 .dropdown-item:hover,
 .dropdown-item:focus {
