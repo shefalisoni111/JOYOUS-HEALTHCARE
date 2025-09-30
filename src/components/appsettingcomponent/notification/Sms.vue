@@ -83,7 +83,7 @@
                             </div>
                           </div>
                           <router-link
-                            class="btn btn-primary rounded-4 text-capitalize fw-medium"
+                            class="btn btn-primary text-capitalize fw-medium"
                             type="button"
                             to="/appsetting/notificationsetting/ActivatePayment"
                           >

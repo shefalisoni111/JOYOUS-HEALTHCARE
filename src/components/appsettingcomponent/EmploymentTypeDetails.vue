@@ -12,7 +12,7 @@
       <!-- End Page Title -->
       <div class="d-flex align-items-center">
         <button
-          class="btn btn-primary rounded-4 text-capitalize fw-medium btn-bg-color"
+          class="btn btn-primary text-capitalize fw-medium btn-bg-color"
           data-bs-toggle="modal"
           data-bs-target="#addEmployee"
           data-bs-whatever="@mdo"

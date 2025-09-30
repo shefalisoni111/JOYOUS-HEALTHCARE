@@ -103,7 +103,7 @@
               Cancel
             </button>
             <button
-              class="btn btn-primary rounded-4 text-capitalize fw-medium"
+              class="btn btn-primary text-capitalize fw-medium"
               data-bs-target="#editClientUser"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"

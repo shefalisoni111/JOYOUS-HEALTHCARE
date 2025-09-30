@@ -215,7 +215,7 @@
             <button
               :disabled="!isValidForm || isFieldEmpty()"
               :class="{
-                'btn btn-primary rounded-4 text-capitalize fw-medium': true,
+                'btn btn-primary text-capitalize fw-medium': true,
                 disabled: !isValidForm || isFieldEmpty(),
               }"
               v-on:click="AddPrivileges"

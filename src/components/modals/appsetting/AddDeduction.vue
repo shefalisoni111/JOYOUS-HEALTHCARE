@@ -32,22 +32,7 @@
                       </div>
                     </div>
                   </div>
-                  <!-- <div class="mb-3 ">
-                  <div class="col-12">
-                    <label class="form-label" for="selectAddDeduction">JOB</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <select v-model="jobs_id" id="selectAddDeduction">
-                      <option
-                        v-for="option in options"
-                        :key="option.id"
-                        :value="option.id"
-                      >
-                        {{ option.name }}
-                      </option>
-                    </select>
-                  </div>
-                </div> -->
+
                   <div class="col-6">
                     <div class="mb-3">
                       <div class="col-12">
@@ -64,16 +49,6 @@
                     </div>
                   </div>
                 </div>
-
-                <!-- <div class="mb-3 ">
-                  <div class="col-12">
-                    <label class="form-label">FREQUENCY</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <input type="text" class="form-control" v-model="frequency" />
-                    
-                  </div>
-                </div> -->
               </form>
             </div>
           </div>
@@ -88,7 +63,7 @@
               Cancel
             </button>
             <button
-              class="btn btn-primary rounded-4 text-capitalize fw-medium"
+              class="btn btn-primary text-capitalize fw-medium"
               data-bs-dismiss="modal"
               v-on:click="addDeductionMethod()"
               :disabled="isFormInvalid"

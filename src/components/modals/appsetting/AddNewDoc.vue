@@ -73,16 +73,6 @@
                           </label>
                         </td>
                       </tr>
-
-                      <!-- <tr>
-                        <td>EXPIRY DATE</td>
-                        <td>
-                          <label class="switch">
-                            <input type="checkbox" id="togBtn" v-model="mandatory" />
-                            <div class="slider round"></div>
-                          </label>
-                        </td>
-                      </tr> -->
                     </tbody>
                   </table>
                 </div>
@@ -99,7 +89,7 @@
               Cancel
             </button>
             <button
-              class="btn btn-primary rounded-4 text-capitalize fw-medium"
+              class="btn btn-primary text-capitalize fw-medium"
               data-bs-dismiss="modal"
               v-on:click="addCandidateStatus()"
             >

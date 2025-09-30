@@ -73,7 +73,10 @@
                       ref="email"
                     />
                     <span
-                      v-if="fetchAdmin.email && !validateEmailFormat(fetchAdmin.email)"
+                      v-if="
+                        fetchAdmin.email &&
+                        !validateEmailFormat(fetchAdmin.email)
+                      "
                       class="text-danger"
                       >Invalid Email</span
                     >
@@ -127,7 +130,7 @@
               Cancel
             </button>
             <button
-              class="btn btn-primary rounded-4 text-capitalize fw-medium"
+              class="btn btn-primary text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="updateAdminMethod"
             >
@@ -169,7 +172,8 @@ export default {
   },
   methods: {
     validateEmailFormat(email) {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
+      const emailRegex =
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
       return emailRegex.test(email);
     },
     validatePhoneNumberFormat(phone_number) {
@@ -190,7 +194,9 @@ export default {
       }
 
       try {
-        const response = await axios.get(`${VITE_API_URL}/merchants/${merchantId}`);
+        const response = await axios.get(
+          `${VITE_API_URL}/merchants/${merchantId}`
+        );
 
         this.fetchAdmin = { ...this.fetchAdmin, ...response.data.data };
       } catch (error) {
@@ -209,7 +215,9 @@ export default {
           Swal.fire({
             icon: "error",
             title: "Error",
-            text: emailError ? `Email ${emailError}` : "Email has already been taken",
+            text: emailError
+              ? `Email ${emailError}`
+              : "Email has already been taken",
           });
         } else {
           const message = "Admin updated successfully";

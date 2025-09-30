@@ -224,7 +224,7 @@
             <button
               :disabled="!isFormFilledAndValid || !isJobsSelected || emailInUse"
               :class="{ disabled: !isFormFilledAndValid || !isJobsSelected }"
-              class="btn btn-primary rounded-4 text-capitalize fw-medium"
+              class="btn btn-primary text-capitalize fw-medium"
               data-bs-dismiss="modal"
               v-on:click="addClients()"
             >
@@ -564,7 +564,7 @@ select {
   border: 0px;
 }
 .btn-primary {
-  background-color: #f9944b !important;
+  background-color: rgb(82 115 45) !important;
   font-weight: bold;
   border: none;
   border-radius: 4px;
@@ -634,7 +634,7 @@ select {
 }
 
 .custom-close {
-  background-color: #f9944b !important;
+  background-color: rgb(82 115 45) !important;
   border-radius: 50% !important;
   width: 35px;
   height: 35px;
@@ -653,6 +653,6 @@ select {
 
 .switch input:checked + .slider:before {
   transform: translateX(15px);
-  background-color: #ff9800;
+  background-color: rgb(82 115 45) !important;
 }
 </style>

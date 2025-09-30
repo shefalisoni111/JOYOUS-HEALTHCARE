@@ -27,37 +27,7 @@
                       shift.shift_name
                     }}</label>
                   </div>
-                  <!-- <div class="col-10">
-                    <div class="d-flex justify-content-around">
-                      <div class="col-5">
-                        <label for="start-time" class="form-label"
-                          >Start Time<span class="text-danger">*</span></label
-                        >
-                        <input
-                          type="text"
-                          :id="'start-time-' + shift.id"
-                          :name="'start-time-' + shift.id"
-                          class="form-control"
-                          v-model="shift.start_time"
-                          @input="updateTime(shift, 'start_time', $event.target.value)"
-                        />
-                      </div>
 
-                      <div class="col-5">
-                        <label for="end-time" class="form-label"
-                          >End Time<span class="text-danger">*</span></label
-                        >
-                        <input
-                          type="text"
-                          :id="'end-time-' + shift.id"
-                          :name="'end-time-' + shift.id"
-                          class="form-control"
-                          v-model="shift.end_time"
-                          @input="updateTime(shift, 'end_time', $event.target.value)"
-                        />
-                      </div>
-                    </div>
-                  </div> -->
                   <div class="col-10">
                     <div class="d-flex justify-content-around">
                       <div class="col-5">
@@ -115,7 +85,7 @@
               Cancel
             </button>
             <button
-              class="btn btn-primary rounded-4 text-capitalize fw-medium"
+              class="btn btn-primary text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click="updateShift"
             >
