@@ -170,10 +170,22 @@ export default createStore({
         const agencyLogo = response.data.data.find(
           (logo) => logo.logo_type === "agency_logo"
         );
+        const faviconLogo = response.data.data.find(
+          (logo) => logo.logo_type === "favicon"
+        );
 
         if (agencyLogo?.logo_url) {
           const fullUrl = `${VITE_API_URL}${agencyLogo.logo_url}`;
           commit("setAgencyLogo", fullUrl);
+        }
+        if (faviconLogo?.logo_url) {
+          const faviconUrl = `${VITE_API_URL}${faviconLogo.logo_url}`;
+          commit("setFavicon", faviconUrl);
+
+          const faviconElement = document.getElementById("dynamic-favicon");
+          if (faviconElement) {
+            faviconElement.setAttribute("href", faviconUrl);
+          }
         }
       } catch (err) {
         // console.error("Failed to fetch agency logo", err);
