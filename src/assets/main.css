@@ -37,7 +37,7 @@ html {
   overflow-x: hidden;
 }
 .form-check-input:checked {
-  background-color: #52732d !important;
+  background-color: #ff5722 !important;
 }
 
 body {
@@ -170,7 +170,7 @@ ul.navbar-nav li a span.badge {
   padding: 6px 0;
 }
 .toggle-btn.active {
-  background-color: #52732d !important;
+  background-color: #ff5722 !important;
   color: white !important;
 }
 .icon-box {

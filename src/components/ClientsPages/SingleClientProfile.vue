@@ -11,7 +11,7 @@
       >
         <Navbar />
       </div>
-      <div class="container-fluid">
+      <div class="container-fluid content-area">
         <div class="container-fluid p-0 mt-3" v-if="getClientDatas">
           <div id="main" class="bg-orange-light">
             <div class="pagetitle d-flex justify-content-between px-5">
@@ -41,9 +41,7 @@
                 </ol> -->
                 <ol class="breadcrumb mb-1">
                   <li class="breadcrumb-item active">
-                    <a
-                      class="nav-link d-inline fs-4 fw-bolder"
-                      style="color: #000000"
+                    <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
                       >All Clients</a
                     >
                     <p>
@@ -101,10 +99,7 @@
             <div class="row px-5">
               <div class="d-flex gap-4 justify-content-between">
                 <div class="col-md-7" style="border-radius: 12px">
-                  <div
-                    class="card profile position-relative"
-                    style="border-radius: 20px"
-                  >
+                  <div class="card profile position-relative" style="border-radius: 20px">
                     <h6
                       class="position-absolute p-2 z-1 text-white text-capitalize tag"
                       style="background: #68a325; margin-left: -7px"
@@ -123,9 +118,7 @@
                     <div>
                       <div class="mt-5">
                         <div class="col-12 p-3">
-                          <h4
-                            class="card-title text-nowrap fw-bold text-capitalize"
-                          >
+                          <h4 class="card-title text-nowrap fw-bold text-capitalize">
                             {{ getClientDatas?.client_name }}
                           </h4>
                           <span>
@@ -141,15 +134,8 @@
                       </div>
                     </div>
 
-                    <ul
-                      class="nav nav-pills ps-3"
-                      id="pills-tab"
-                      role="tablist"
-                    >
-                      <li
-                        class="nav-item d-inline-flex gap-5"
-                        role="presentation"
-                      >
+                    <ul class="nav nav-pills ps-3" id="pills-tab" role="tablist">
+                      <li class="nav-item d-inline-flex gap-5" role="presentation">
                         <button
                           class="nav-link px-0"
                           :class="{ active: activeTab === index }"
@@ -247,10 +233,7 @@
                 style="height: 100vh; border-radius: 12px"
               >
                 <div class="tab-content">
-                  <component
-                    :is="activeComponent"
-                    :options="options"
-                  ></component>
+                  <component :is="activeComponent" :options="options"></component>
                 </div>
               </div>
             </div>

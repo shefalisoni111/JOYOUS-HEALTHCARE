@@ -10,7 +10,7 @@
       >
         <Navbar />
       </div>
-      <div class="container-fluid px-5 pt-4 content-area" style="height: 100vh">
+      <div class="container-fluid px-5 pt-4 content-area">
         <div class="p-0">
           <div class="">
             <ol class="breadcrumb my-2">
@@ -30,8 +30,8 @@
             <p class="lead fs-4">{{ getCompanyName }} Support</p>
             <p>
               Use the form below to raise a ticket with the
-              {{ getCompanyName }} Support team.<br />We aim to resolve all
-              tickets in under 24 hours.
+              {{ getCompanyName }} Support team.<br />We aim to resolve all tickets in
+              under 24 hours.
             </p>
           </div>
           <div class="col-12 bg-white rounded-bottom shadow d-flex py-3">
@@ -42,12 +42,7 @@
                   <label for="name" class="form-label"
                     >Name <span class="text-danger">*</span></label
                   >
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="form.name"
-                    required
-                  />
+                  <input type="text" class="form-control" v-model="form.name" required />
                 </div>
 
                 <div class="mb-3">
@@ -63,14 +58,8 @@
                 </div>
 
                 <div class="mb-3">
-                  <label class="form-label"
-                    >What can we help you with today?</label
-                  >
-                  <div
-                    v-for="(option, i) in helpOptions"
-                    :key="i"
-                    class="form-check"
-                  >
+                  <label class="form-label">What can we help you with today?</label>
+                  <div v-for="(option, i) in helpOptions" :key="i" class="form-check">
                     <input
                       class="form-check-input"
                       type="radio"
@@ -99,8 +88,7 @@
 
                 <div class="mb-3">
                   <label class="form-label"
-                    >Have you got a file to share with our team? Upload it
-                    here.</label
+                    >Have you got a file to share with our team? Upload it here.</label
                   >
                   <div
                     class="file-dropzone border rounded p-3 text-center"
@@ -114,9 +102,7 @@
                       @change="handleFileSelect"
                     />
                     <i class="bi bi-upload fs-4"></i>
-                    <p class="m-0">
-                      Click or drag a file to this area to upload
-                    </p>
+                    <p class="m-0">Click or drag a file to this area to upload</p>
                     <button
                       type="button"
                       class="btn btn-sm btn-outline-secondary mt-2"
@@ -221,16 +207,12 @@ export default {
       }
 
       try {
-        const response = await axios.post(
-          `${VITE_API_URL}/support_mail`,
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            validateStatus: (status) => status >= 200 && status < 300,
-          }
-        );
+        const response = await axios.post(`${VITE_API_URL}/support_mail`, formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          validateStatus: (status) => status >= 200 && status < 300,
+        });
 
         if (response.status === 200) {
           Swal.fire({

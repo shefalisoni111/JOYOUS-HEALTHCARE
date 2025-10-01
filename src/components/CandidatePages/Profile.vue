@@ -6,9 +6,7 @@
           <div class="">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active">
-                <a
-                  class="nav-link d-inline fs-4 fw-bolder"
-                  style="color: #000000"
+                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
                   >All Staff</a
                 >
                 <p>
@@ -38,10 +36,7 @@
 
         <div class="row mb-3">
           <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-            <li
-              class="nav-item d-lg-inline-flex gap-4 d-in"
-              role="presentation"
-            >
+            <li class="nav-item d-lg-inline-flex gap-4 d-in" role="presentation">
               <button
                 class="nav-link px-0 btn-css"
                 :to="`/${tab.routeName}`"
@@ -83,9 +78,7 @@
                 }"
               >
                 {{
-                  getCandidates.status === "approved"
-                    ? "Active"
-                    : getCandidates.status
+                  getCandidates.status === "approved" ? "Active" : getCandidates.status
                 }}
               </h6>
               <img
@@ -113,17 +106,13 @@
               <!-- <div class="ribbon"><span>Active</span></div> -->
 
               <div class="card-body">
-                <div
-                  class="mt-3 d-flex justify-content-between align-items-center"
-                >
+                <div class="mt-3 d-flex justify-content-between align-items-center">
                   <div class="col-12 mt-4">
                     <div class="d-flex justify-content-between">
                       <h6
                         class="card-title text-nowrap fw-bold text-capitalize mb-0 my-2"
                       >
-                        {{ getCandidates.first_name }}&nbsp;{{
-                          getCandidates.last_name
-                        }}
+                        {{ getCandidates.first_name }}&nbsp;{{ getCandidates.last_name }}
                       </h6>
                       <div class="">
                         <button
@@ -146,8 +135,8 @@
                     &nbsp; |&nbsp;
 
                     <span
-                      ><i class="bi bi-telephone-fill chatTextThemeColor"></i>
-                      &nbsp; {{ getCandidates.phone_number }}</span
+                      ><i class="bi bi-telephone-fill chatTextThemeColor"></i> &nbsp;
+                      {{ getCandidates.phone_number }}</span
                     >
                   </div>
                   <!-- <div></div> -->
@@ -169,9 +158,7 @@
                     </div> -->
 
                     <div class="d-flex justify-content-between mt-2">
-                      <h6 class="fs-smaller text-nowrap fw-bold">
-                        Profile View
-                      </h6>
+                      <h6 class="fs-smaller text-nowrap fw-bold">Profile View</h6>
                       <!-- <label class="switch">
                           <input type="checkbox" id="togBtn" title="check" checked />
                           <div class="slider round"></div>
@@ -518,10 +505,7 @@ ul li a {
 .bg-white {
   border-left: 1px solid #dedede;
 }
-.bg-orange-light {
-  background: #fef8f8;
-  background-color: #fdce5e17;
-}
+
 .card ul li {
   display: inline-block;
 }

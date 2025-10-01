@@ -11,16 +11,14 @@
       >
         <Navbar />
       </div>
-      <div class="container-fluid">
+      <div class="container-fluid content-area">
         <div class="container-fluid p-0 mt-3">
           <div id="main" class="bg-orange-light px-4">
             <div class="pagetitle d-flex justify-content-between">
               <div class="">
                 <ol class="breadcrumb mb-1">
                   <li class="breadcrumb-item active">
-                    <a
-                      class="nav-link d-inline fs-4 fw-bolder"
-                      style="color: #000000"
+                    <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
                       >All Clients</a
                     >
                     <p>
@@ -78,10 +76,7 @@
             <div class="row px-5">
               <div class="d-flex gap-4 justify-content-center">
                 <div class="col-md-7">
-                  <div
-                    class="card profile position-relative"
-                    style="border-radius: 20px"
-                  >
+                  <div class="card profile position-relative" style="border-radius: 20px">
                     <h6
                       class="position-absolute p-2 z-1 text-white text-capitalize tag"
                       style="background: #68a325; margin-left: -7px"
@@ -99,9 +94,7 @@
                     <div>
                       <div class="mt-5">
                         <div class="col-12 p-3">
-                          <h4
-                            class="card-title text-nowrap fw-bold text-capitalize"
-                          >
+                          <h4 class="card-title text-nowrap fw-bold text-capitalize">
                             {{ getSiteDatas?.client_name }}
                           </h4>
                           <span>
@@ -148,15 +141,8 @@
                         </div>
                       </div>
                     </div>
-                    <ul
-                      class="nav nav-pills ps-3 mt-4"
-                      id="pills-tab"
-                      role="tablist"
-                    >
-                      <li
-                        class="nav-item d-inline-flex gap-5"
-                        role="presentation"
-                      >
+                    <ul class="nav nav-pills ps-3 mt-4" id="pills-tab" role="tablist">
+                      <li class="nav-item d-inline-flex gap-5" role="presentation">
                         <button
                           class="nav-link py-2 px-0"
                           :class="{ active: activeTab === index }"
@@ -178,9 +164,7 @@
                   <div class="card-body">
                     <div class="mt-3">
                       <div class="d-flex justify-content-between">
-                        <h6 class="text-muted fw-semibold mb-3 mt-1">
-                          Details
-                        </h6>
+                        <h6 class="text-muted fw-semibold mb-3 mt-1">Details</h6>
                         <div>
                           <button
                             type="button"
@@ -244,9 +228,7 @@
                     </div>
                     <hr />
 
-                    <div
-                      class="mt-3 d-flex justify-content-between align-items-center"
-                    >
+                    <div class="mt-3 d-flex justify-content-between align-items-center">
                       <div>
                         <h6
                           class="card-title text-nowrap fw-bold text-capitalize"
@@ -255,9 +237,7 @@
                           Visit Us at:
                         </h6>
                         Address:
-                        <span class="text-lowercase">{{
-                          getSiteDatas.address
-                        }}</span>
+                        <span class="text-lowercase">{{ getSiteDatas.address }}</span>
                       </div>
                     </div>
                   </div>
