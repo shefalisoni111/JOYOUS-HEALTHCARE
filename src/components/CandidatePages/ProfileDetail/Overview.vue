@@ -34,8 +34,8 @@
               </div>
             </div>
 
-            <div class="card-body">
-              <table class="table table-borderless">
+            <div class="card-body table-wrapper">
+              <table class="table table-borderless candidateTable">
                 <thead>
                   <tr class=""></tr>
                 </thead>
@@ -156,7 +156,7 @@
                     <input type="checkbox" id="togBtn" checked />
                     <div class="slider round"></div>
                   </label> -->
-                  <label class="switch">
+                  <label class="switch mt-2">
                     <input
                       type="checkbox"
                       id="togBtn"
@@ -168,8 +168,8 @@
                 </div>
               </div>
             </div>
-            <div class="card-body">
-              <table class="table table-borderless">
+            <div class="card-body col-12 table-wrapper">
+              <table class="table table-borderless candidateTable">
                 <thead>
                   <tr class=""></tr>
                 </thead>
@@ -206,10 +206,11 @@
                 <div>
                   <button
                     type="button"
-                    class="btn text-nowrap btn-bg-color"
+                    class="btn btn-primary text-nowrap"
                     data-bs-toggle="modal"
                     data-bs-target="#addStaffJobs"
                     data-bs-whatever="@mdo"
+                    style="background: #f9944b; color: #fff"
                   >
                     + Add
                   </button>
@@ -250,8 +251,10 @@
                 <!-- <button type="button" class="btn btn-primary mb-3">Edit</button> -->
               </div>
             </div>
-            <div class="card-body">
-              <table class="table table-borderless">
+            <div class="card-body col-12 table-wrapper">
+              <table
+                class="table table-borderless table-responsive candidateTable"
+              >
                 <thead>
                   <tr class=""></tr>
                 </thead>
@@ -296,7 +299,7 @@
               <div class="d-flex justify-content-between">
                 <div class="d-flex align-items-center">
                   <div class="d-flex fs-smaller text-nowrap">Profile View</div>
-                  <label class="switch">
+                  <label class="switch mt-2">
                     <input type="checkbox" id="togBtn" checked />
                     <div class="slider round"></div>
                   </label>
@@ -307,8 +310,8 @@
                 </div>
               </div>
             </div>
-            <div class="card-body">
-              <table class="table table-borderless">
+            <div class="card-body col-12 table-wrapper">
+              <table class="table table-borderless candidateTable">
                 <thead>
                   <tr class=""></tr>
                 </thead>
@@ -337,17 +340,18 @@
 
                 <button
                   type="button"
-                  class="btn text-nowrap text-nowrap mb-3 btn-bg-color"
+                  class="btn btn-primary text-nowrap text-nowrap mb-3"
                   data-bs-toggle="modal"
                   data-bs-target="#addNextToKin"
                   data-bs-whatever="@mdo"
+                  style="background: #f9944b; color: #fff"
                 >
                   + Add
                 </button>
               </div>
             </div>
-            <div class="card-body">
-              <table class="table">
+            <div class="card-body col-12 table-wrapper">
+              <table class="table table-responsive candidateTable">
                 <thead class="">
                   <tr>
                     <th scope="col">
@@ -355,7 +359,7 @@
                       <img
                         src="../../../assets/ArrowDown.png"
                         class="img-fluid pe-2"
-                        :alt="getCompanyName"
+                        alt="logo"
                         loading="eager"
                       />
                     </th>
@@ -364,7 +368,7 @@
                       <img
                         src="../../../assets/ArrowDown.png"
                         class="img-fluid pe-2"
-                        :alt="getCompanyName"
+                        alt="logo"
                         loading="eager"
                       />
                     </th>
@@ -373,7 +377,7 @@
                       <img
                         src="../../../assets/ArrowDown.png"
                         class="img-fluid pe-2"
-                        :alt="getCompanyName"
+                        alt="logo"
                         loading="eager"
                       />
                     </th>
@@ -382,7 +386,7 @@
                       <img
                         src="../../../assets/ArrowDown.png"
                         class="img-fluid pe-2"
-                        :alt="getCompanyName"
+                        alt="logo"
                         loading="eager"
                       />
                     </th>
@@ -391,7 +395,7 @@
                       <img
                         src="../../../assets/ArrowDown.png"
                         class="img-fluid pe-2"
-                        :alt="getCompanyName"
+                        alt="logo"
                         loading="eager"
                       />
                     </th>
@@ -400,7 +404,7 @@
                       <img
                         src="../../../assets/ArrowDown.png"
                         class="img-fluid pe-2"
-                        :alt="getCompanyName"
+                        alt="logo"
                         loading="eager"
                       />
                     </th>
@@ -409,7 +413,7 @@
                       <img
                         src="../../../assets/ArrowDown.png"
                         class="img-fluid pe-2"
-                        :alt="getCompanyName"
+                        alt="logo"
                         loading="eager"
                       />
                     </th>
@@ -418,7 +422,7 @@
                       <img
                         src="../../../assets/ArrowDown.png"
                         class="img-fluid pe-2"
-                        :alt="getCompanyName"
+                        alt="logo"
                         loading="eager"
                       />
                     </th>
@@ -476,18 +480,19 @@
                   Work experience
                 </h5>
                 <button
-                  class="btn rounded-1 text-capitalize fw-medium mb-3 btn-bg-color"
+                  class="btn btn-primary rounded-1 text-capitalize fw-medium mb-3"
                   data-bs-toggle="modal"
                   data-bs-target="#addWorkExperience"
                   data-bs-whatever="@mdo"
                   type="button"
+                  style="background: #f9944b; color: #fff"
                 >
                   + Add
                 </button>
               </div>
             </div>
-            <div class="card-body">
-              <table class="table">
+            <div class="card-body col-12 table-wrapper">
+              <table class="table table-responsive candidateTable">
                 <thead class="">
                   <tr>
                     <th>
@@ -495,7 +500,7 @@
                       <img
                         src="../../../assets/ArrowDown.png"
                         class="img-fluid pe-2"
-                        :alt="getCompanyName"
+                        alt="logo"
                         loading="eager"
                       />
                     </th>
@@ -504,7 +509,7 @@
                       <img
                         src="../../../assets/ArrowDown.png"
                         class="img-fluid pe-2"
-                        :alt="getCompanyName"
+                        alt="logo"
                         loading="eager"
                       />
                     </th>
@@ -513,7 +518,7 @@
                       <img
                         src="../../../assets/ArrowDown.png"
                         class="img-fluid pe-2"
-                        :alt="getCompanyName"
+                        alt="logo"
                         loading="eager"
                       />
                     </th>
@@ -522,7 +527,7 @@
                       <img
                         src="../../../assets/ArrowDown.png"
                         class="img-fluid pe-2"
-                        :alt="getCompanyName"
+                        alt="logo"
                         loading="eager"
                       />
                     </th>
@@ -531,7 +536,7 @@
                       <img
                         src="../../../assets/ArrowDown.png"
                         class="img-fluid pe-2"
-                        :alt="getCompanyName"
+                        alt="logo"
                         loading="eager"
                       />
                     </th>
@@ -540,7 +545,7 @@
                       <img
                         src="../../../assets/ArrowDown.png"
                         class="img-fluid pe-2"
-                        :alt="getCompanyName"
+                        alt="logo"
                         loading="eager"
                       />
                     </th>
@@ -581,18 +586,19 @@
                   Education
                 </h5>
                 <button
-                  class="btn rounded-1 text-capitalize fw-medium mb-3 btn-bg-color"
+                  class="btn btn-primary rounded-1 text-capitalize fw-medium mb-3"
                   data-bs-toggle="modal"
                   data-bs-target="#addEducation"
                   data-bs-whatever="@mdo"
                   type="button"
+                  style="background: #f9944b; color: #fff"
                 >
                   + Add
                 </button>
               </div>
             </div>
-            <div class="card-body">
-              <table class="table">
+            <div class="card-body col-12 table-wrapper">
+              <table class="table table-responsive candidateTable">
                 <thead class="">
                   <tr>
                     <th scope="col">
@@ -600,7 +606,7 @@
                       <img
                         src="../../../assets/ArrowDown.png"
                         class="img-fluid pe-2"
-                        :alt="getCompanyName"
+                        alt="logo"
                         loading="eager"
                       />
                     </th>
@@ -609,7 +615,7 @@
                       <img
                         src="../../../assets/ArrowDown.png"
                         class="img-fluid pe-2"
-                        :alt="getCompanyName"
+                        alt="logo"
                         loading="eager"
                       />
                     </th>
@@ -986,6 +992,8 @@ export default {
   border-top: 1px solid transparent;
 }
 #main {
+  height: 100vh;
+  overflow: auto;
   transition: all 0.3s;
   padding: 10px;
   transition: all 0.3s;
@@ -1031,7 +1039,9 @@ ul.nav-pills {
   border-radius: 0px;
   padding: 5px 13px;
 }
-
+.table-wrapper {
+  overflow-x: auto;
+}
 .accordion-item {
   margin-bottom: 8px;
 }
@@ -1052,5 +1062,13 @@ ul.nav-pills {
 
 .expanded {
   transform: rotate(90deg);
+}
+@media (max-width: 1120px) {
+  .candidateTable {
+    width: 1090px;
+  }
+  .table-wrapper {
+    overflow-x: scroll;
+  }
 }
 </style>

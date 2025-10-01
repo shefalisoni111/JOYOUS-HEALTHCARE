@@ -66,7 +66,10 @@
             </div>
           </div>
           <div class="col-12 col-lg-8 px-3">
-            <div class="bg-white" style="border-radius: 30px">
+            <div
+              class="bg-white"
+              style="border-radius: 30px; height: 100vh; overflow-y: scroll"
+            >
               <div class="settingsdetails">
                 <div class="pagetitle d-flex justify-content-between">
                   <div class="d-flex align-items-center">

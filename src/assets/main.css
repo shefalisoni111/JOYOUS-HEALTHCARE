@@ -225,10 +225,7 @@ input[type="search"]::-webkit-search-cancel-button {
 .nav-pills .show > .nav-link img {
   color: rgb(82 115 45) !important;
 }
-.nav-link:hover,
-.nav-link:focus {
-  color: grey !important;
-}
+
 .nav-pills .nav-link {
   color: grey;
 }

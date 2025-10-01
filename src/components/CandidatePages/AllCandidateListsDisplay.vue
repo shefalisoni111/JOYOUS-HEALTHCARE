@@ -135,7 +135,7 @@
     <div
       class="mx-3 d-flex justify-content-between"
       style="text-align: right"
-      v-if="getCandidatesData?.length"
+      v-if="getCandidatesData?.length >= 10"
     >
       <div class="d-flex">
         <h6 class="d-flex align-items-center">Show: &nbsp;</h6>

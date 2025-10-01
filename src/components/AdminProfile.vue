@@ -11,7 +11,7 @@
         <Navbar :profileImage="profileImage" />
       </div>
       <div
-        class="container-fluid px-5 pt-4"
+        class="container-fluid px-5 pt-4 content-area"
         style="background: rgb(82 74 74 / 6%); height: 100vh"
       >
         <div class="p-0">

@@ -35,7 +35,7 @@
             <div class="w-100 rounded-3"><Sidebar /></div>
           </div>
           <div
-            class="col-10 col-md-10 col-lg-3 p-3 bg-white borderight d-flex"
+            class="col-10 col-md-10 col-lg-3 p-3 bg-white borderight"
             style="border-radius: 30px"
           >
             <div class="leftside">
@@ -69,7 +69,10 @@
             </div>
           </div>
           <div class="col-12 col-lg-8 px-3 d-flex">
-            <div class="bg-white" style="border-radius: 30px">
+            <div
+              class="bg-white"
+              style="border-radius: 30px; overflow-y: scroll; height: 100vh"
+            >
               <div class="col-12">
                 <div class="pagetitle d-flex justify-content-between">
                   <div class="d-flex align-items-center">

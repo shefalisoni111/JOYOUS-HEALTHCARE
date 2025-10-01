@@ -12,7 +12,7 @@
       </div>
 
       <!-- <CandidateAdd /> -->
-      <div class="container-fluid col-10 content-area" style="height: 100vh">
+      <div class="container-fluid col-10 content-area">
         <router-view />
       </div>
     </div>

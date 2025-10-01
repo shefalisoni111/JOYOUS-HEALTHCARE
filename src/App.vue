@@ -11,7 +11,7 @@ import "@fontsource/inter/700.css";
 
 export default {
   name: "App",
-  data() {},
+
   components: { Navbar },
   computed: {
     ...mapGetters(["getCompanyName", "getFavicon"]),

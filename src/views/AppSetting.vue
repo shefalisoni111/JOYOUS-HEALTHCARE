@@ -135,7 +135,10 @@
           </div>
 
           <!-- Right Content -->
-          <div class="col-12 col-lg-8 d-flex" style="height: 100vh">
+          <div
+            class="col-12 col-lg-8 d-flex"
+            style="border-radius: 30px; height: 100vh; overflow-y: scroll"
+          >
             <div class="w-100 bg-white p-4">
               <RouterView />
             </div>
@@ -148,20 +151,11 @@
 <script>
 import Navbar from "../components/Navbar.vue";
 import Sidebar from "../components/Sidebar.vue";
-// import AppJobDetail from "../components/appsettingcomponent/AppJobDetail.vue";
-
-// import CandidateStatus from "../components/appsettingcomponent/CandidateStatus.vue";
-// import EmploymentTypeDetails from "../components/appsettingcomponent/EmploymentTypeDetails.vue";
-// import Shift from "../components/appset-tingcomponent/Shift.vue";
 
 export default {
   components: {
     Navbar,
     Sidebar,
-    // AppJobDetail,
-    // CandidateStatus,
-    // EmploymentTypeDetails,
-    // Shift,
   },
   data() {
     return {};

@@ -35,8 +35,9 @@
             <div class="w-100 rounded-3"><Sidebar /></div>
           </div>
           <div
-            class="col-10 col-md-10 col-lg-3 p-3 bg-white borderight d-flex"
-            style="border-radius: 30px !important"
+            class="col-10 col-md-10 col-lg-3 p-3 bg-white borderight"
+            style="border-radius: 30px !important    height: 100vh;
+    "
           >
             <div class="leftside">
               <div class="heading mb-3 position-relative">
@@ -72,7 +73,10 @@
             class="col-12 col-lg-8 px-3"
             style="border-radius: 30px !important"
           >
-            <div class="bg-white" style="height: 100vh">
+            <div
+              class="bg-white"
+              style="border-radius: 30px; height: 100vh; overflow-y: scroll"
+            >
               <div class="col-12">
                 <div class="pagetitle d-flex justify-content-between">
                   <div class="d-flex align-items-center">
